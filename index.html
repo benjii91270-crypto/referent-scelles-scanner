@@ -58,8 +58,8 @@
   <div id="footer" class="footer">Scanner local • aucune donnée de scellé n’est stockée dans le site public.</div>
 </div>
 
-<script type="module">
-import { BrowserQRCodeReader } from 'https://cdn.jsdelivr.net/npm/@zxing/browser@0.1.5/+esm';
+<script src="https://unpkg.com/@zxing/browser@0.1.5/umd/zxing-browser.min.js"></script>
+<script>
 
 const WORKER_API = 'https://referent-scelles-api.benjii91270.workers.dev/api';
 const DEVICE_KEY = 'rs_scanner_device_token_v26';
@@ -196,7 +196,7 @@ async function startScanner(forceDeviceId=null){
   if(!navigator.mediaDevices?.getUserMedia){setStatus('Caméra indisponible','bad');cameraMsg.textContent='Ce navigateur ne permet pas l’accès caméra.';return;}
   try{
     // Permission first. Then enumerate devices, so mobile labels become available.
-    if(!state.reader) state.reader=new BrowserQRCodeReader();
+    if(!state.reader) state.reader=new ZXingBrowser.BrowserQRCodeReader();
     const temp=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}},audio:false});
     temp.getTracks().forEach(t=>t.stop());
     state.devices=await loadDevices();
@@ -303,7 +303,7 @@ async function doPhoto(file){
   try{
     // ZXing image decoding: object URL keeps memory bounded and uses the same reader.
     const url=URL.createObjectURL(file);
-    if(!state.reader)state.reader=new BrowserQRCodeReader();
+    if(!state.reader)state.reader=new ZXingBrowser.BrowserQRCodeReader();
     const result=await state.reader.decodeFromImageUrl(url);
     URL.revokeObjectURL(url);
     await handleDecodedToken(normalizeToken(result.getText ? result.getText() : result.text));
