@@ -41,7 +41,7 @@ textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);
   <header class="top">
     <div class="brand">RÉFÉRENT SCELLÉS</div>
     <div class="title">Scanner QR</div>
-    <div class="sub">Mode contrôle terrain • V2.5</div>
+    <div class="sub">Mode contrôle terrain • V2.10</div>
     <div id="camp" class="camp"><div id="campTitle" class="camp-title"></div><div id="campMeta" class="camp-meta"></div><div class="bar"><i id="campBar" style="width:0%"></i></div></div>
   </header>
 
@@ -162,14 +162,14 @@ function controlChoices(){
 async function lookupToken(token){
   token=String(token||'').trim();if(!token||state.busy)return;
   state.token=token;state.busy=true;stopCamera();updateUrlWithoutToken();$('sealCard').classList.remove('hidden');$('sealCard').innerHTML='<div class="status"><span>QR reconnu • recherche du scellé…</span></div>';setStatus('QR reconnu • lecture…','good');$('frame').classList.add('ok');beep();vibrate(70);
-  try{const data=await jsonp('lookup',{scan:token});renderSeal(data);}catch(e){state.busy=false;$('sealCard').innerHTML=`<div class="error"><b>Base temporairement indisponible</b><div style="margin-top:4px">${esc(e.message)}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Revenir au scanner</button>`;setStatus('Erreur de communication','bad');}
+  try{const data=await apiCall('lookup',{scan:token},10000);renderSeal(data);}catch(e){state.busy=false;$('sealCard').innerHTML=`<div class="error"><b>Base temporairement indisponible</b><div style="margin-top:4px">${esc(e.message)}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Revenir au scanner</button>`;setStatus('Erreur de communication','bad');}
 }
 async function submitControl(result,button){
   if(state.busy)return;state.busy=true;button.disabled=true;
   const card=$('sealCard');const obs=(card.querySelector('#obs')?.value||'').trim();
   card.insertAdjacentHTML('beforeend','<div id="saving" class="status">Enregistrement du contrôle…</div>');
   try{
-    const out=await jsonp('control',{scan:state.token,result,obs},10000);
+    const out=await apiCall('control',{scan:state.token,result,obs},12000);
     document.getElementById('saving')?.remove();
     if(!out?.ok)throw new Error(out?.message||'Contrôle refusé.');
     beep();vibrate([60,40,60]);const p=out.progress||{};if(out.campaignTitle)campaignUI({title:out.campaignTitle,progress:p});
