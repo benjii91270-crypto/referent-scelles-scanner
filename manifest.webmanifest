@@ -1,0 +1,9 @@
+{
+  "name": "Scanner Pro — Référent Scellés",
+  "short_name": "Scanner Pro",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#eef2f6",
+  "theme_color": "#172033",
+  "lang": "fr"
+}

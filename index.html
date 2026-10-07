@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#172033">
+<meta name="color-scheme" content="light">
+<meta name="description" content="Scanner Pro terrain — Référent Scellés">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Scanner Pro — Référent Scellés</title>
+<script src="https://unpkg.com/@zxing/browser@0.2.1"></script>
+<style>
+*{box-sizing:border-box}:root{--bg:#eef2f6;--ink:#1d2735;--muted:#6c7787;--line:#d8dee6;--navy:#172033;--green:#24724b;--red:#a33732;--amber:#986f12}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{padding:10px 10px 24px}.app{max-width:680px;margin:auto}
+.top{background:var(--navy);color:#fff;border-radius:20px;padding:15px 16px;box-shadow:0 8px 24px rgba(28,39,57,.12)}
+.brand{font-size:10px;font-weight:900;letter-spacing:.05em;opacity:.9}.title{font-size:24px;font-weight:950;line-height:1.05;margin-top:6px}.sub{font-size:11px;opacity:.78;margin-top:4px}
+.camp{margin-top:10px;background:#fff;color:var(--ink);border:1px solid rgba(255,255,255,.15);border-radius:13px;padding:10px 11px;display:none}
+.camp.show{display:block}.camp-title{font-size:12px;font-weight:900}.camp-meta{font-size:10px;color:var(--muted);margin-top:2px}.bar{height:7px;background:#e4e8ee;border-radius:99px;overflow:hidden;margin-top:7px}.bar i{display:block;height:100%;background:#748194}
+.panel{margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:12px;box-shadow:0 4px 16px rgba(26,37,54,.05)}
+.camera{position:relative;background:#0d1420;border-radius:16px;overflow:hidden;min-height:340px;display:grid;place-items:center}
+video{width:100%;height:min(58vh,520px);object-fit:cover;background:#0d1420;display:block}.overlay{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.frame{width:min(78vw,360px);height:min(78vw,360px);max-height:52vh;border:3px solid rgba(255,255,255,.86);border-radius:24px;box-shadow:0 0 0 9999px rgba(5,9,15,.34),0 0 0 2px rgba(0,0,0,.08)}
+.frame.ok{border-color:#5bd28e;box-shadow:0 0 0 9999px rgba(5,9,15,.28),0 0 0 2px rgba(91,210,142,.15)}
+.hint{position:absolute;bottom:12px;left:12px;right:12px;text-align:center;background:rgba(8,14,24,.72);color:#fff;border-radius:12px;padding:8px 10px;font-size:11px;font-weight:800;backdrop-filter:blur(5px)}
+.status{min-height:22px;text-align:center;font-size:12px;font-weight:800;color:var(--muted);margin-top:9px}.status.good{color:var(--green)}.status.bad{color:var(--red)}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}button,.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit;font-weight:900;border-radius:12px;min-height:42px;padding:10px 12px;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}.btn.good{border-color:#bcdcc8;background:#eef8f2;color:var(--green)}.btn.warn{border-color:#ead7a9;background:#fff8e8;color:#795d18}
+.card{margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px}.hidden{display:none!important}
+.entry{display:inline-block;background:#f0f3f7;border:1px solid #e0e5eb;border-radius:9px;padding:5px 8px;font-size:11px;font-weight:950}.sealname{font-size:23px;font-weight:950;line-height:1.12;margin-top:8px;word-break:break-word}.muted{color:var(--muted);font-size:11px;line-height:1.45}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.fact{background:#f8fafb;border:1px solid #e4e8ed;border-radius:11px;padding:9px}.fact.full{grid-column:1/-1}.fact span{display:block;font-size:8px;color:#788494;font-weight:950;letter-spacing:.06em}.fact b{display:block;font-size:13px;margin-top:3px;word-break:break-word}
+.choice{width:100%;display:flex;align-items:center;text-align:left;padding:11px;margin-top:7px;border-radius:14px}.choice .ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:none;font-size:18px}.choice .txt{margin-left:9px}.choice b{display:block;font-size:13px}.choice small{display:block;color:var(--muted);font-size:10px;margin-top:1px}.choice.green .ico{background:#e8f5ed;color:var(--green)}.choice.red .ico{background:#fbe9e8;color:var(--red)}.choice.amber .ico{background:#fff2d5;color:var(--amber)}
+textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);border-radius:11px;padding:10px;font:inherit;resize:vertical}
+.saved{text-align:center;background:#eff8f2;border:1px solid #c6e0cf;border-radius:14px;padding:13px}.saved .big{font-size:30px}.pill{display:inline-block;margin-top:7px;padding:6px 9px;border-radius:10px;background:#fff;border:1px solid #cfe1d5;font-size:11px;font-weight:900;color:var(--green)}
+.error{background:#fff2f1;border:1px solid #efc7c5;color:#91332d;border-radius:13px;padding:11px;font-size:11px;line-height:1.45}.small-note{text-align:center;color:#7a8594;font-size:10px;margin-top:9px;line-height:1.4}
+@media(max-width:520px){.facts{grid-template-columns:1fr 1fr}video{height:55vh}.frame{width:76vw;height:76vw}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">GENDARMERIE NATIONALE — RÉFÉRENT SCELLÉS</div>
+    <div class="title">Scanner Pro</div>
+    <div class="sub">Contrôle physique QR en continu • V2.4</div>
+    <div id="camp" class="camp"><div id="campTitle" class="camp-title"></div><div id="campMeta" class="camp-meta"></div><div class="bar"><i id="campBar" style="width:0%"></i></div></div>
+  </header>
+
+  <section class="panel">
+    <div class="camera" id="cameraBox">
+      <video id="video" autoplay muted playsinline></video>
+      <div class="overlay"><div id="frame" class="frame"></div><div id="hint" class="hint">Préparation de la caméra…</div></div>
+    </div>
+    <div id="status" class="status">Initialisation…</div>
+    <div class="actions">
+      <button id="torch" class="btn">🔦 Torche</button>
+      <button id="switch" class="btn">↻ Caméra</button>
+      <button id="zoomMinus" class="btn">− Zoom</button>
+      <button id="zoomPlus" class="btn">＋ Zoom</button>
+      <button id="cameraStart" class="btn primary">📷 Activer la caméra</button>
+    </div>
+  </section>
+
+  <section id="sealCard" class="card hidden"></section>
+  <div class="small-note">Le scanner reste ouvert entre les contrôles. Après validation, le QR suivant peut être présenté immédiatement.</div>
+</div>
+
+<script>
+'use strict';
+const APPS_SCRIPT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyqtYW1tqfWFyz80AIPZCLJngdX-skcVYMdl2-C3TPfy9RGCNm-qPFi71qIbpa1xq440g/exec';
+const state={controls:null,reader:null,stream:null,track:null,deviceId:null,devices:[],deviceIndex:0,token:'',busy:false,lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null};
+const $=id=>document.getElementById(id);
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function setStatus(t,k=''){const e=$('status');e.textContent=t;e.className='status'+(k?' '+k:'');}
+function beep(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=880;g.gain.value=.045;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.08);}catch(e){}}
+function vibrate(x=70){try{navigator.vibrate&&navigator.vibrate(x)}catch(e){}}
+function jsonp(api,params={},timeout=7000){
+  return new Promise((resolve,reject)=>{
+    const name='rs_cb_'+Date.now()+'_'+Math.floor(Math.random()*100000);let done=false;
+    const script=document.createElement('script');
+    const clean=()=>{done=true;clearTimeout(timer);script.remove();try{delete window[name]}catch(e){window[name]=undefined}};
+    const timer=setTimeout(()=>{if(done)return;clean();reject(new Error('Délai de réponse dépassé.'));},timeout);
+    window[name]=(data)=>{if(done)return;clean();resolve(data)};
+    const q=new URLSearchParams({api,callback:name,_:String(Date.now()),...params});
+    script.src=APPS_SCRIPT_ENDPOINT+'?'+q.toString();script.onerror=()=>{if(done)return;clean();reject(new Error('Communication avec la base impossible.'));};document.head.appendChild(script);
+  });
+}
+function tokenFrom(raw){
+  const v=String(raw||'').trim();if(!v)return '';
+  try{const u=new URL(v);return u.searchParams.get('scan')||u.searchParams.get('qr')||u.searchParams.get('s')||u.hash.replace(/^#s=/,'')||v;}catch(e){}
+  if(v.startsWith('RSCELL|'))return v.split('|').slice(1).join('|');return v;
+}
+function campaignUI(c){
+  if(!c){$('camp').classList.remove('show');return;}
+  state.campaign=c;const p=c.progress||{};$('campTitle').textContent=c.title||'Campagne active';$('campMeta').textContent=`${Number(p.done||0)}/${Number(p.total||0)} contrôlés • ${Number(p.remaining||0)} restant(s)`;$('campBar').style.width=(Number(p.pct)||0)+'%';$('camp').classList.add('show');
+}
+function renderSeal(data){
+  state.busy=false;
+  const card=$('sealCard');card.classList.remove('hidden');
+  if(!data||!data.ok){card.innerHTML=`<div class="error"><b>QR non reconnu</b><div style="margin-top:4px">${esc(data?.message||'Aucun scellé correspondant.')}</div></div><div class="actions"><button class="btn primary" onclick="resumeCamera()">📷 Scanner de nouveau</button></div>`;setStatus('QR non reconnu','bad');return;}
+  campaignUI(data.campaign);state.campaign=data.campaign||null;
+  const c=data.campaign;let html=`<div class="entry">N° ${esc(data.entry)}</div><div class="sealname">${esc(data.scelle||'Scellé')}</div><div class="muted">Procédure : <b>${esc(data.procedure||'—')}</b></div>`;
+  if(!c)html+=`<div class="error" style="margin-top:10px"><b>Aucune campagne active.</b><div>Le scellé est reconnu, mais aucun contrôle physique n’est ouvert.</div></div>`;
+  else if(!c.inCampaign)html+=`<div class="error" style="margin-top:10px;background:#fff8e8;border-color:#ead7aa;color:#795d18"><b>Scellé hors périmètre.</b><div>Ce scellé ne fait pas partie de la campagne active.</div></div>`;
+  else if(c.itemStatus!=='A_FAIRE')html+=`<div class="saved" style="margin-top:10px"><div class="big">✅</div><b>Déjà contrôlé</b><div class="pill">${esc(c.itemResult||c.itemStatus)}</div></div>`;
+  else {html+=`<div class="facts"><div class="fact"><span>CATÉGORIE</span><b>${esc(data.category||'—')}</b></div><div class="fact"><span>TAILLE</span><b>${esc(data.size||'—')}</b></div><div class="fact full"><span>EMPLACEMENT ATTENDU</span><b>${esc(data.locationDetail||data.location||'—')}</b></div></div>`;
+    html+=`<div style="margin-top:10px"><button class="choice green" data-result="CONFORME"><span class="ico">✓</span><span class="txt"><b>Présent et conforme</b><small>Présence, emplacement et intégrité OK</small></span></button><button class="choice red" data-result="ABSENT"><span class="ico">!</span><span class="txt"><b>Scellé absent</b><small>Le scellé n’a pas été retrouvé</small></span></button><button class="choice amber" data-result="EMPLACEMENT NON CONFORME"><span class="ico">⌖</span><span class="txt"><b>Emplacement non conforme</b><small>Présent à un autre emplacement</small></span></button><button class="choice amber" data-result="SCELLÉ À VÉRIFIER"><span class="ico">⚠</span><span class="txt"><b>Intégrité à vérifier</b><small>Conditionnement ou scellement à examiner</small></span></button><label class="muted" style="display:block;font-weight:900;margin-top:10px">Observation facultative</label><textarea id="obs" placeholder="Constatation complémentaire…"></textarea></div>`;
+  }
+  html+=`<div class="actions"><button class="btn" id="cancelSeal">↩ Retour au scanner</button></div>`;card.innerHTML=html;
+  card.querySelectorAll('[data-result]').forEach(b=>b.addEventListener('click',()=>submitControl(b.dataset.result,b)));
+  $('cancelSeal').onclick=resumeCamera;setStatus('Scellé reconnu','good');
+}
+async function lookupToken(token){
+  state.token=token;state.busy=true;stopCamera();$('sealCard').classList.remove('hidden');$('sealCard').innerHTML='<div class="muted"><b>QR reconnu</b> • Lecture du scellé…</div>';setStatus('QR reconnu • lecture…','good');
+  try{const data=await jsonp('lookup',{scan:token});renderSeal(data);}catch(e){state.busy=false;$('sealCard').innerHTML=`<div class="error"><b>Base temporairement indisponible</b><div style="margin-top:4px">${esc(e.message)}</div></div><div class="actions"><button class="btn primary" onclick="lookupToken(state.token)">↻ Réessayer</button></div>`;setStatus('Erreur de communication','bad');}
+}
+async function submitControl(result,button){
+  if(state.busy)return;state.busy=true;button.disabled=true;state.token=state.token||'';const obs=($('obs')?.value||'').trim();
+  try{const out=await jsonp('control',{scan:state.token,result:result,obs:obs} ,9000);if(!out?.ok)throw new Error(out?.message||'Contrôle refusé.');beep();vibrate([60,40,60]);
+    const p=out.progress||{};campaignUI(out.campaignId?{id:out.campaignId,title:out.campaignTitle,progress:p}:state.campaign);
+    $('sealCard').innerHTML=`<div class="saved"><div class="big">✅</div><b>${out.already?'Déjà contrôlé':'Contrôle enregistré'}</b><div class="pill">${esc(out.result||result)}</div><div class="muted" style="margin-top:7px">${out.campaignTitle?esc(out.campaignTitle)+' • ':''}${Number(p.done||0)}/${Number(p.total||0)} contrôlés</div></div><div class="actions"><button class="btn primary" id="nextBtn">📷 Scanner le suivant</button></div>`;
+    $('nextBtn').onclick=resumeCamera;setStatus('Contrôle enregistré • prêt pour le suivant','good');state.busy=false;
+  }catch(e){state.busy=false;button.disabled=false;$('sealCard').insertAdjacentHTML('beforeend',`<div class="error" style="margin-top:9px"><b>Échec de l’enregistrement</b><div>${esc(e.message)}</div></div>`);}
+}
+function stopCamera(){
+  try{state.controls?.stop?.();}catch(e){}state.controls=null;
+  try{state.stream?.getTracks()?.forEach(t=>t.stop());}catch(e){}state.stream=null;state.track=null;$('video').srcObject=null;
+}
+async function chooseDevice(){
+  try{state.devices=await ZXingBrowser.BrowserCodeReader.listVideoInputDevices();}catch(e){state.devices=[];}
+  if(!state.devices.length){state.deviceId=undefined;return;}
+  const env=state.devices.find(d=>/back|rear|environment|arrière/i.test(String(d.label||'')));state.deviceId=(env||state.devices[state.deviceIndex%state.devices.length]).deviceId;
+}
+async function startCamera(){
+  if(state.busy)return;state.busy=true;setStatus('Activation de la caméra…');$('hint').textContent='Autorisation caméra en cours…';
+  try{
+    if(!window.ZXingBrowser?.BrowserQRCodeReader)throw new Error('Moteur QR indisponible.');
+    await chooseDevice();
+    state.reader=new ZXingBrowser.BrowserQRCodeReader();
+    const preview=$('video');
+    state.controls=await state.reader.decodeFromVideoDevice(state.deviceId,preview,(result,error)=>{
+      if(!result||state.busy)return;const raw=String(result.getText?.()||result.text||'').trim();const token=tokenFrom(raw);if(!token)return;
+      const now=Date.now();if(token===state.lastToken && now-state.lastAt<1800)return;state.lastToken=token;state.lastAt=now;lookupToken(token);
+    });
+    await new Promise(r=>setTimeout(r,250));
+    state.stream=preview.srcObject;state.track=state.stream?.getVideoTracks?.()[0]||null;state.busy=false;setStatus('Scanner prêt','good');$('hint').textContent='Présentez le QR du prochain scellé';$('frame').classList.remove('ok');
+    await applyCameraCaps();
+  }catch(e){state.busy=false;setStatus('Impossible d’activer la caméra','bad');$('hint').textContent='Appuyez sur « Activer la caméra » et autorisez la caméra.';}
+}
+async function resumeCamera(){
+  $('sealCard').classList.add('hidden');$('sealCard').innerHTML='';state.token='';state.lastToken='';state.busy=false;$('frame').classList.remove('ok');await startCamera();
+}
+async function applyCameraCaps(){
+  const caps=state.track?.getCapabilities?.();if(!caps)return;state.zoom={min:caps.zoom?.min,max:caps.zoom?.max,step:caps.zoom?.step||0.1,value:state.track.getSettings?.().zoom||caps.zoom?.min};
+  $('torch').disabled=!('torch' in caps);['zoomMinus','zoomPlus'].forEach(id=>$(id).disabled=!(caps.zoom));
+}
+$('torch').onclick=async()=>{if(!state.track)return;try{const caps=state.track.getCapabilities?.();if(!caps?.torch)return;state.torch=!state.torch;await state.track.applyConstraints({advanced:[{torch:state.torch}]});$('torch').textContent=state.torch?'🔦 Torche ON':'🔦 Torche';}catch(e){}};
+$('switch').onclick=async()=>{if(!state.devices.length)return;state.deviceIndex=(state.deviceIndex+1)%state.devices.length;await resumeCamera();};
+async function setZoom(delta){if(!state.track||!state.zoom?.max)return;const z=state.zoom;z.value=Math.max(z.min,Math.min(z.max,z.value+delta*z.step));try{await state.track.applyConstraints({advanced:[{zoom:z.value}]})}catch(e){}}
+$('zoomMinus').onclick=()=>setZoom(-1);$('zoomPlus').onclick=()=>setZoom(1);$('cameraStart').onclick=resumeCamera;
+async function boot(){
+  try{const u=new URL(location.href);const token=u.searchParams.get('s')||u.searchParams.get('scan')||u.searchParams.get('qr');
+    if(token){await lookupToken(token);$('cameraStart').textContent='📷 Scanner le suivant';} else {await startCamera();}
+  }catch(e){await startCamera();}
+}
+boot();
+</script>
+</body></html>
