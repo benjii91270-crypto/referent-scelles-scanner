@@ -3,349 +3,228 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#18212b">
+<meta name="theme-color" content="#172033">
 <meta name="color-scheme" content="light">
-<link rel="manifest" href="./manifest.webmanifest">
+<meta name="description" content="Scanner QR terrain — Référent Scellés">
+<link rel="manifest" href="manifest.webmanifest">
 <title>Scanner QR — Référent Scellés</title>
+<script src="https://unpkg.com/@zxing/browser@0.2.1"></script>
 <style>
-:root{--ink:#18212b;--muted:#657180;--line:#d8dee5;--bg:#f3f5f7;--card:#fff;--dark:#1f2a36;--green:#24704a;--greenp:#eaf5ee;--red:#a23a34;--redp:#fbeceb;--amber:#8a6618;--amberp:#fff5dc;--blue:#315a7d;--bluep:#edf4f9;}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{padding:10px}.wrap{max-width:620px;margin:0 auto}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 5px 18px rgba(25,36,48,.06);padding:14px;margin-top:10px}.head{background:var(--dark);color:#fff;border-radius:18px;padding:15px 16px;border-bottom:3px solid #c6a15d}.brand{font-size:10px;font-weight:900;letter-spacing:.08em}.title{font-size:24px;font-weight:900;line-height:1.08;margin-top:5px}.sub{font-size:12px;opacity:.82;margin-top:4px}.status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}.dot{width:9px;height:9px;border-radius:50%;background:#b47b1b;box-shadow:0 0 0 4px rgba(180,123,27,.10)}.dot.ok{background:#2f8157;box-shadow:0 0 0 4px rgba(47,129,87,.10)}.dot.bad{background:#a43c35;box-shadow:0 0 0 4px rgba(164,60,53,.10)}.dot.blue{background:#58718a;box-shadow:0 0 0 4px rgba(88,113,138,.10)}.tiny{font-size:10px}.muted{color:var(--muted)}.hidden{display:none!important}.hero{padding:4px 0}.hero h2{margin:0;font-size:18px}.hero p{margin:4px 0 0;font-size:11px;color:var(--muted);line-height:1.45}.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:11px 13px;font:inherit;font-size:12px;font-weight:850;cursor:pointer}.btn:active{transform:scale(.99)}.btn.primary{background:var(--dark);border-color:var(--dark);color:#fff}.btn.green{background:var(--green);border-color:var(--green);color:#fff}.btn.danger{background:#fff;border-color:#e2b5b1;color:var(--red)}.btn.block{width:100%}.btn.small{padding:9px 10px;font-size:11px}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions .btn{flex:1;min-width:140px}.input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font:inherit;font-size:18px;letter-spacing:.18em;text-align:center}.input:focus{outline:2px solid #aebdca;border-color:#9aaebe}.label{display:block;font-size:10px;color:var(--muted);font-weight:850;margin:10px 0 5px}.camera-wrap{position:relative;background:#0c1319;border-radius:18px;overflow:hidden;margin-top:10px}.camera{width:100%;height:min(66vh,520px);object-fit:cover;display:block;background:#0c1319}.aim{position:absolute;left:15%;right:15%;top:23%;bottom:23%;border:2px solid rgba(255,255,255,.96);border-radius:22px;box-shadow:0 0 0 999px rgba(0,0,0,.26);pointer-events:none}.aim:after{content:"";position:absolute;left:12%;right:12%;height:2px;top:50%;background:rgba(255,255,255,.9);box-shadow:0 0 10px rgba(255,255,255,.75);opacity:.65}.camera-msg{position:absolute;left:10px;right:10px;bottom:10px;padding:9px 11px;border-radius:11px;background:rgba(0,0,0,.56);color:#fff;text-align:center;font-size:11px}.camera-status{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:9px}.camera-status .left{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted)}.scanner-toolbar{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.scanner-toolbar .btn{flex:1;min-width:120px}.file{display:none}.seal-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.entry{display:inline-block;background:#eef1f4;border:1px solid var(--line);border-radius:9px;padding:5px 8px;font-size:11px;font-weight:900}.seal-name{font-size:22px;font-weight:900;line-height:1.12;margin-top:8px;word-break:break-word}.facts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:11px}.fact{background:#f8f9fa;border:1px solid #e1e6eb;border-radius:12px;padding:9px}.fact.full{grid-column:1/-1}.fact span{display:block;font-size:8px;color:#768293;font-weight:900;letter-spacing:.05em}.fact b{display:block;margin-top:3px;font-size:13px;word-break:break-word}.camp{margin-top:10px;padding:11px;border-radius:13px;background:#f5f7f9;border:1px solid #dde3e9}.camp-title{font-size:15px;font-weight:900}.camp-meta{font-size:10px;color:#707e8e;margin-top:2px}.progress{height:8px;background:#e6e9ec;border-radius:8px;overflow:hidden;margin-top:8px}.progress i{height:100%;display:block;background:#6f8293}.progress-txt{font-size:10px;color:#697687;margin-top:5px}.choices{display:grid;gap:8px;margin-top:11px}.choice{width:100%;text-align:left;display:flex;align-items:center;gap:9px;border:1px solid var(--line);background:#fff;border-radius:14px;padding:11px;cursor:pointer}.choice:disabled{opacity:.55}.choice-ico{flex:0 0 40px;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:20px;font-weight:950}.choice-txt b{display:block;font-size:13px}.choice-txt small{display:block;color:#748194;font-size:9.5px;margin-top:2px}.g .choice-ico{background:var(--greenp);color:var(--green)}.r .choice-ico{background:var(--redp);color:var(--red)}.a .choice-ico{background:var(--amberp);color:var(--amber)}textarea{width:100%;min-height:72px;resize:vertical;padding:10px;border:1px solid var(--line);border-radius:12px;font:inherit;font-size:12px;margin-top:5px}.notice,.error,.success{padding:11px 12px;border-radius:13px;font-size:11px;line-height:1.45}.notice{background:var(--amberp);border:1px solid #ecd9a2;color:#765a16}.error{background:var(--redp);border:1px solid #edc6c2;color:#8c302a}.success{background:var(--greenp);border:1px solid #c6dfcf;color:#276340}.saved{text-align:center;padding:16px 8px}.saved .big{font-size:42px}.saved h3{margin:5px 0 3px;font-size:18px}.saved p{margin:0;color:var(--muted);font-size:11px}.device-badge{display:inline-flex;align-items:center;gap:6px;background:#edf3f7;color:#4f6578;border:1px solid #d8e2ea;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:850}.footer{padding:8px 2px 2px;text-align:center;color:#84909d;font-size:9px;line-height:1.4}.spinner{width:18px;height:18px;border:2px solid #dce2e7;border-top-color:#64798c;border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.center{display:flex;align-items:center;justify-content:center;gap:9px}.switchline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px}.mini-select{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);font:inherit;font-size:11px}.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.offline{font-size:10px;color:#765a16;margin-top:6px}.diag{font-size:9px;color:#7e8b98;margin-top:7px;word-break:break-word}
-@media(max-width:420px){body{padding:8px}.facts{grid-template-columns:1fr}.fact.full{grid-column:auto}.camera{height:58vh}.aim{left:11%;right:11%}.actions .btn{min-width:130px}}
+*{box-sizing:border-box}:root{--bg:#eef2f6;--ink:#182333;--muted:#6f7b8b;--line:#d8dee6;--navy:#172033;--green:#24724b;--red:#a33732;--amber:#986f12;--white:#fff}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{padding:10px 10px 28px}.app{max-width:680px;margin:auto}
+.top{background:var(--navy);color:#fff;border-radius:20px;padding:15px 16px 14px;box-shadow:0 8px 24px rgba(28,39,57,.12)}
+.brand{font-size:10px;font-weight:900;letter-spacing:.06em;opacity:.92}.title{font-size:25px;font-weight:950;line-height:1.04;margin-top:5px}.sub{font-size:11px;opacity:.8;margin-top:4px}
+.camp{margin-top:10px;background:#f8fafc;color:var(--ink);border:1px solid #e0e6ee;border-radius:13px;padding:10px 11px;display:none}.camp.show{display:block}.camp-title{font-size:12px;font-weight:900}.camp-meta{font-size:10px;color:var(--muted);margin-top:2px}.bar{height:7px;background:#e4e8ee;border-radius:99px;overflow:hidden;margin-top:7px}.bar i{display:block;height:100%;background:#66758b;transition:width .25s ease}
+.panel{margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:12px;box-shadow:0 4px 16px rgba(26,37,54,.05)}
+.camera{position:relative;background:#0d1420;border-radius:16px;overflow:hidden;min-height:340px;display:grid;place-items:center}.camera.hide{display:none}
+video{width:100%;height:min(58vh,520px);object-fit:cover;background:#0d1420;display:block}.overlay{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}.frame{width:min(76vw,360px);height:min(76vw,360px);max-height:50vh;border:3px solid rgba(255,255,255,.86);border-radius:24px;box-shadow:0 0 0 9999px rgba(5,9,15,.36),0 0 0 2px rgba(0,0,0,.08);transition:border-color .15s ease,box-shadow .15s ease}.frame.ready{border-color:#8ac9a6}.frame.ok{border-color:#5bd28e;box-shadow:0 0 0 9999px rgba(5,9,15,.28),0 0 0 2px rgba(91,210,142,.16)}
+.hint{position:absolute;bottom:12px;left:12px;right:12px;text-align:center;background:rgba(8,14,24,.76);color:#fff;border-radius:12px;padding:9px 10px;font-size:11px;font-weight:850;backdrop-filter:blur(5px)}
+.status{min-height:22px;text-align:center;font-size:12px;font-weight:850;color:var(--muted);margin-top:9px}.status.good{color:var(--green)}.status.bad{color:var(--red)}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}button,.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit;font-weight:900;border-radius:12px;min-height:44px;padding:10px 12px;cursor:pointer}button:active{transform:translateY(1px)}button:disabled{opacity:.45;cursor:not-allowed}.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}.btn.good{border-color:#bcdcc8;background:#eef8f2;color:var(--green)}.btn.warn{border-color:#ead7a9;background:#fff8e8;color:#795d18}.btn.danger{border-color:#ecc9c6;background:#fff1f0;color:var(--red)}
+.card{margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}.hidden{display:none!important}
+.entry{display:inline-block;background:#f0f3f7;border:1px solid #e0e5eb;border-radius:9px;padding:5px 8px;font-size:11px;font-weight:950}.sealname{font-size:24px;font-weight:950;line-height:1.1;margin-top:8px;word-break:break-word}.muted{color:var(--muted);font-size:11px;line-height:1.48}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.fact{background:#f8fafb;border:1px solid #e4e8ed;border-radius:11px;padding:9px}.fact.full{grid-column:1/-1}.fact span{display:block;font-size:8px;color:#788494;font-weight:950;letter-spacing:.06em}.fact b{display:block;font-size:13px;margin-top:3px;word-break:break-word}
+.notice{border-radius:13px;padding:10px 11px;margin-top:10px;font-size:11px;line-height:1.45}.notice.info{background:#f2f5f8;border:1px solid #dce3ea;color:#405068}.notice.warn{background:#fff8e8;border:1px solid #ead7a9;color:#795d18}.notice.bad{background:#fff1f0;border:1px solid #ecc9c6;color:#91332d}.notice.good{background:#eff8f2;border:1px solid #c6e0cf;color:#266340}
+.choice{width:100%;display:flex;align-items:center;text-align:left;padding:11px;margin-top:8px;border-radius:14px;background:#fff}.choice .ico{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;flex:none;font-size:18px}.choice .txt{margin-left:9px}.choice b{display:block;font-size:13px}.choice small{display:block;color:var(--muted);font-size:10px;margin-top:1px}.choice.green{border-color:#cce2d3}.choice.green .ico{background:#e8f5ed;color:var(--green)}.choice.red{border-color:#edd0cd}.choice.red .ico{background:#fbe9e8;color:var(--red)}.choice.amber{border-color:#ead9ad}.choice.amber .ico{background:#fff2d5;color:var(--amber)}
+textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);border-radius:11px;padding:10px;font:inherit;resize:vertical}label{user-select:none}
+.saved{text-align:center;background:#eff8f2;border:1px solid #c6e0cf;border-radius:14px;padding:15px}.saved .big{font-size:34px}.pill{display:inline-block;margin-top:7px;padding:6px 9px;border-radius:10px;background:#fff;border:1px solid #cfe1d5;font-size:11px;font-weight:900;color:var(--green)}
+.next{width:100%;margin-top:10px;background:var(--navy);color:#fff;border:0;border-radius:13px;padding:14px;font:inherit;font-weight:950;cursor:pointer}.small-note{text-align:center;color:#7a8594;font-size:10px;margin-top:9px;line-height:1.45}.error{background:#fff2f1;border:1px solid #efc7c5;color:#91332d;border-radius:13px;padding:11px;font-size:11px;line-height:1.45}
+.photoRow{display:none;margin-top:8px}.photoRow.show{display:block}.file{display:none}.photoBtn{width:100%;display:flex;justify-content:center;align-items:center}
+ .activation-overlay{position:fixed;inset:0;background:rgba(11,18,29,.82);display:none;place-items:center;padding:16px;z-index:9999}.activation-overlay.show{display:grid}.activation-card{width:min(460px,100%);background:#fff;border-radius:20px;padding:22px;box-shadow:0 22px 70px rgba(0,0,0,.28)}.activation-kicker{font-size:10px;font-weight:950;letter-spacing:.08em;color:#6b7788}.activation-card h1{margin:6px 0;font-size:24px;color:var(--navy)}.activation-card p{margin:0 0 14px;font-size:12px;line-height:1.45;color:var(--muted)}.activation-input{width:100%;height:50px;border:1px solid #cad3de;border-radius:12px;padding:0 13px;font:inherit;font-size:17px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.activation-btn{width:100%;margin-top:9px;min-height:46px;border:0;border-radius:12px;background:var(--navy);color:#fff;font:inherit;font-weight:950}.activation-help{margin-top:9px;font-size:10px;line-height:1.45;color:#7a8695}
+@media(max-width:520px){.facts{grid-template-columns:1fr 1fr}video{height:55vh}.frame{width:74vw;height:74vw}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="head">
+<div id="activation" class="activation-overlay"><div class="activation-card"><div class="activation-kicker">RÉFÉRENT SCELLÉS</div><h1>Autoriser ce téléphone</h1><p id="activationMsg">Entrez le code d’activation fourni par l’administrateur.</p><input id="pairCode" class="activation-input" inputmode="text" autocomplete="one-time-code" maxlength="10" placeholder="CODE D’ACTIVATION"><button id="activateBtn" class="activation-btn" type="button">Activer le scanner</button><div class="activation-help">L’autorisation est mémorisée sur ce téléphone. Elle peut être révoquée à tout moment par un administrateur.</div></div></div>
+<div class="app">
+  <header class="top">
     <div class="brand">RÉFÉRENT SCELLÉS</div>
     <div class="title">Scanner QR</div>
-    <div class="sub">Contrôle physique mobile</div>
-  </div>
+    <div class="sub">Mode contrôle terrain • V2.5</div>
+    <div id="camp" class="camp"><div id="campTitle" class="camp-title"></div><div id="campMeta" class="camp-meta"></div><div class="bar"><i id="campBar" style="width:0%"></i></div></div>
+  </header>
 
-  <div id="pairCard" class="card hidden">
-    <div class="hero">
-      <div class="device-badge">🔐 Autorisation requise</div>
-      <h2 style="margin-top:9px">Autoriser ce téléphone</h2>
-      <p>Un administrateur doit générer un code d’activation depuis le logiciel. Le code est valable 10 minutes et ne peut être utilisé qu’une seule fois.</p>
+  <section id="scannerPanel" class="panel">
+    <div class="camera" id="cameraBox">
+      <video id="video" autoplay muted playsinline></video>
+      <div class="overlay"><div id="frame" class="frame"></div><div id="hint" class="hint">Préparation de la caméra…</div></div>
     </div>
-    <label class="label" for="deviceName">Nom du téléphone</label>
-    <input id="deviceName" class="input" style="font-size:14px;letter-spacing:0;text-align:left" maxlength="50" placeholder="Ex. Téléphone contrôle">
-    <label class="label" for="pairCode">Code d’activation</label>
-    <input id="pairCode" class="input" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="••••••••">
-    <div id="pairMsg" class="diag"></div>
-    <button id="pairBtn" class="btn primary block" style="margin-top:10px">✅ Autoriser ce téléphone</button>
-  </div>
+    <div id="status" class="status">Initialisation…</div>
+    <div class="actions">
+      <button id="torch" class="btn">🔦 Torche</button>
+      <button id="switch" class="btn">↻ Caméra</button>
+      <button id="zoomMinus" class="btn">− Zoom</button>
+      <button id="zoomPlus" class="btn">＋ Zoom</button>
+      <button id="cameraStart" class="btn primary">📷 Activer la caméra</button>
+    </div>
+    <div id="photoRow" class="photoRow">
+      <label class="btn photoBtn" for="qrPhoto">📷 Scanner avec une photo</label>
+      <input id="qrPhoto" class="file" type="file" accept="image/*" capture="environment">
+    </div>
+  </section>
 
-  <div id="readerCard" class="card">
-    <div class="camera-status">
-      <div class="left"><span id="statusDot" class="dot blue"></span><span id="statusText">Préparation du scanner…</span></div>
-      <span id="deviceBadge" class="device-badge hidden">✓ Téléphone autorisé</span>
-    </div>
-    <div class="camera-wrap">
-      <video id="video" class="camera" playsinline muted autoplay></video>
-      <div id="aim" class="aim"></div>
-      <div id="cameraMsg" class="camera-msg">Initialisation de la caméra…</div>
-    </div>
-    <div class="scanner-toolbar">
-      <button id="torchBtn" class="btn" type="button">🔦 Torche</button>
-      <button id="switchBtn" class="btn" type="button">↻ Caméra</button>
-      <label class="btn" for="photoInput">📷 Photo QR</label>
-      <input id="photoInput" class="file" type="file" accept="image/*" capture="environment">
-    </div>
-    <div id="cameraDiag" class="diag"></div>
-  </div>
-
-  <div id="sealCard" class="card hidden"></div>
-  <div id="footer" class="footer">Scanner local • aucune donnée de scellé n’est stockée dans le site public.</div>
+  <section id="sealCard" class="card hidden"></section>
+  <div class="small-note">Un QR est lu une seule fois. Le contrôle est validé séparément, puis le scanner reprend pour le scellé suivant.</div>
 </div>
 
-<script src="https://unpkg.com/@zxing/browser@0.1.5/umd/zxing-browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 <script>
-
-const WORKER_API = 'https://referent-scelles-api.benjii91270.workers.dev/api';
-const DEVICE_KEY = 'rs_scanner_device_token_v26';
-const DEVICE_NAME_KEY = 'rs_scanner_device_name_v26';
-
-const $ = id => document.getElementById(id);
-const video = $('video');
-const pairCard = $('pairCard');
-const readerCard = $('readerCard');
-const sealCard = $('sealCard');
-const statusText = $('statusText');
-const statusDot = $('statusDot');
-const cameraMsg = $('cameraMsg');
-const cameraDiag = $('cameraDiag');
-const deviceBadge = $('deviceBadge');
-const pairBtn = $('pairBtn');
-const pairCode = $('pairCode');
-const pairMsg = $('pairMsg');
-const deviceName = $('deviceName');
-const photoInput = $('photoInput');
-const torchBtn = $('torchBtn');
-const switchBtn = $('switchBtn');
-
-const state = {
-  reader: null,
-  controls: null,
-  devices: [],
-  deviceIndex: 0,
-  stream: null,
-  track: null,
-  busy: false,
-  currentToken: '',
-  lastToken: '',
-  lastAt: 0,
-  torch: false,
-  zoom: null,
-  paired: false
-};
-
-function esc(v){return String(v ?? '').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-function getDeviceToken(){try{return localStorage.getItem(DEVICE_KEY)||''}catch(_){return ''}}
-function setDeviceToken(v){try{localStorage.setItem(DEVICE_KEY,v)}catch(_){} }
-function getDeviceName(){try{return localStorage.getItem(DEVICE_NAME_KEY)||''}catch(_){return ''}}
-function setDeviceName(v){try{localStorage.setItem(DEVICE_NAME_KEY,v)}catch(_){} }
-function setStatus(text,kind='blue'){statusText.textContent=text;statusDot.className='dot '+kind;}
-function apiUrl(params){const u=new URL(WORKER_API);Object.entries(params).forEach(([k,v])=>{if(v!==undefined&&v!==null)u.searchParams.set(k,String(v))});return u.toString();}
-async function callApi(params,{auth=true,timeout=12000}={}){
-  const ctrl=new AbortController(); const timer=setTimeout(()=>ctrl.abort(),timeout);
+'use strict';
+const SCANNER_API_ENDPOINT='https://referent-scelles-api.benjii91270.workers.dev/api';
+const DEVICE_TOKEN_KEY='referent_scelles_device_token_v2';
+const SCANNER_VERSION='2.5.0';
+const state={reader:null,controls:null,stream:null,track:null,devices:[],deviceIndex:0,deviceId:null,busy:false,token:'',lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null,photoMode:false};
+const $=id=>document.getElementById(id);
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function setStatus(t,k=''){const e=$('status');e.textContent=t;e.className='status'+(k?' '+k:'');}
+function beep(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=880;g.gain.value=.045;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.09);}catch(e){}}
+function vibrate(x=70){try{navigator.vibrate&&navigator.vibrate(x)}catch(e){}}
+async function apiCall(api,params={},timeout=9000){
+  const deviceToken=localStorage.getItem(DEVICE_TOKEN_KEY)||'';
+  if(api!=='pair' && !deviceToken) throw new Error('SCANNER_NOT_ACTIVATED');
+  const u=new URL(SCANNER_API_ENDPOINT);
+  u.searchParams.set('api',api);
+  Object.entries(params||{}).forEach(([k,v])=>{if(v!==undefined&&v!==null)u.searchParams.set(k,String(v));});
+  const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),timeout);
   try{
-    const headers={Accept:'application/json'};
-    const token=getDeviceToken();
-    if(auth){ if(!token) throw new Error('Téléphone non autorisé.'); headers.Authorization='Bearer '+token; }
-    const res=await fetch(apiUrl(params),{method:'GET',headers,cache:'no-store',signal:ctrl.signal});
+    const res=await fetch(u.toString(),{method:'GET',headers:{Accept:'application/json',...(deviceToken?{Authorization:'Bearer '+deviceToken}:{})},cache:'no-store',signal:controller.signal});
     const data=await res.json().catch(()=>null);
-    if(!res.ok) throw new Error(data?.message||('Erreur HTTP '+res.status));
+    if(!res.ok || !data) throw new Error(data?.message||('HTTP '+res.status));
+    if(data.code==='DEVICE_INVALID'||data.code==='DEVICE_REQUIRED'){localStorage.removeItem(DEVICE_TOKEN_KEY);showActivation('Cette autorisation n’est plus valide.');throw new Error('SCANNER_NOT_ACTIVATED');}
     return data;
   }finally{clearTimeout(timer)}
 }
-
-function currentQrToken(){
-  try{
-    const u=new URL(location.href);
-    return (u.searchParams.get('s')||u.searchParams.get('scan')||u.searchParams.get('qr')||'').trim();
-  }catch(_){return '';}
+function showActivation(message){
+  state.busy=false;stopCamera();$('activation').classList.add('show');$('activationMsg').textContent=message||'Ce téléphone doit être autorisé une seule fois avant le premier contrôle.';
 }
-function normalizeToken(raw){
-  const s=String(raw||'').trim(); if(!s)return '';
-  try{
-    const u=new URL(s,location.href);
-    return (u.searchParams.get('s')||u.searchParams.get('scan')||u.searchParams.get('qr')||s).trim();
-  }catch(_){
-    const m=s.match(/[?&](?:s|scan|qr)=([^&#]+)/i); if(m)return decodeURIComponent(m[1]);
-    return s;
-  }
+function hideActivation(){$('activation').classList.remove('show');}
+async function activateScanner(){
+  const code=$('pairCode').value.trim().toUpperCase(); if(!code)return;
+  $('activateBtn').disabled=true;$('activationMsg').textContent='Vérification du code…';
+  try{const d=await apiCall('pair',{code,deviceName:'Téléphone terrain'});if(!d?.ok)throw new Error(d?.message||'Code invalide.');localStorage.setItem(DEVICE_TOKEN_KEY,d.token);hideActivation();$('pairCode').value='';await boot();}
+  catch(e){$('activationMsg').textContent=e.message==='SCANNER_NOT_ACTIVATED'?'Autorisation nécessaire.':String(e.message||e);}
+  finally{$('activateBtn').disabled=false;}
 }
-function clearQrUrl(){
-  try{history.replaceState(null,'',location.pathname+location.search.replace(/(^|&)(?:s|scan|qr)=[^&]*/,'').replace(/^\?&/,'?').replace(/[?&]$/,''));}catch(_){ }
+function tokenFrom(raw){
+  const v=String(raw||'').trim();if(!v)return '';
+  try{const u=new URL(v);return u.searchParams.get('scan')||u.searchParams.get('qr')||u.searchParams.get('s')||v;}catch(e){}
+  const m=v.match(/[?&](?:scan|qr|s)=([^&#]+)/i);if(m)return decodeURIComponent(m[1]);
+  if(v.startsWith('RSCELL|'))return v.split('|').slice(1).join('|');
+  return v;
 }
-function setDirectTokenUrl(token){
-  try{const u=new URL(location.href);u.searchParams.set('s',token);history.replaceState(null,'',u.toString());}catch(_){ }
+function updateUrlWithoutToken(){try{const u=new URL(location.href);u.searchParams.delete('s');u.searchParams.delete('scan');u.searchParams.delete('qr');history.replaceState({},document.title,u.pathname+(u.search||'')+(u.hash||''));}catch(e){}}
+function campaignUI(c){
+  if(!c){$('camp').classList.remove('show');state.campaign=null;return;}
+  state.campaign=c;const p=c.progress||{};$('campTitle').textContent=c.title||'Campagne active';$('campMeta').textContent=`${Number(p.done||0)}/${Number(p.total||0)} contrôlés • ${Number(p.remaining||0)} restant(s)`;$('campBar').style.width=(Number(p.pct)||0)+'%';$('camp').classList.add('show');
 }
-
-function showPairScreen(reason=''){
-  pairCard.classList.remove('hidden');
-  readerCard.classList.add('hidden');
-  deviceBadge.classList.add('hidden');
-  if(getDeviceName()) deviceName.value=getDeviceName();
-  if(reason) pairMsg.textContent=reason;
+function resetReaderVisual(){
+  $('cameraBox').classList.remove('hide');$('video').classList.remove('hidden');$('frame').className='frame ready';$('hint').textContent='Présentez le QR au centre';
 }
-function hidePairScreen(){pairCard.classList.add('hidden');readerCard.classList.remove('hidden');deviceBadge.classList.remove('hidden');}
-
-async function doPair(){
-  const code=pairCode.value.replace(/\D/g,'');
-  const name=(deviceName.value||'Scanner terrain').trim().slice(0,50)||'Scanner terrain';
-  if(!/^\d{8}$/.test(code)){pairMsg.textContent='Le code doit contenir 8 chiffres.';return;}
-  pairBtn.disabled=true;pairBtn.textContent='Autorisation…';pairMsg.textContent='';
-  try{
-    const data=await callApi({api:'pair',code,deviceName:name},{auth:false,timeout:12000});
-    if(!data?.ok) throw new Error(data?.message||'Code invalide.');
-    setDeviceToken(data.deviceToken);setDeviceName(data.deviceName||name);state.paired=true;
-    pairMsg.textContent='Téléphone autorisé.';hidePairScreen();await afterPair();
-  }catch(e){pairMsg.textContent=String(e?.message||e);}
-  finally{pairBtn.disabled=false;pairBtn.textContent='✅ Autoriser ce téléphone';}
+function hideReaderVisual(){
+  $('cameraBox').classList.add('hide');$('photoRow').classList.remove('show');
 }
-pairBtn.addEventListener('click',doPair);
-pairCode.addEventListener('input',()=>{pairCode.value=pairCode.value.replace(/\D/g,'').slice(0,8)});
-
-async function probe(){
-  try{const d=await callApi({api:'ping'},{auth:false,timeout:8000}); return !!d?.ok;}
-  catch(e){return false;}
+function showPhotoFallback(){
+  $('photoRow').classList.add('show');setStatus('Mode photo disponible','');$('hint').textContent='La caméra directe n’est pas disponible sur cet appareil.';
 }
-
-async function stopCamera(){
-  try{state.controls?.stop?.()}catch(_){ }
-  state.controls=null;
-  try{video.pause()}catch(_){ }
-  if(state.stream){state.stream.getTracks().forEach(t=>{try{t.stop()}catch(_){}});state.stream=null;}
-  state.track=null;state.torch=false;torchBtn.textContent='🔦 Torche';
-}
-
-async function loadDevices(){
-  try{
-    if(!navigator.mediaDevices?.enumerateDevices) return [];
-    const all=await navigator.mediaDevices.enumerateDevices();
-    return all.filter(d=>d.kind==='videoinput');
-  }catch(_){return []}
-}
-
-async function startScanner(forceDeviceId=null){
-  if(state.busy||!state.paired)return;
-  await stopCamera();
-  setStatus('Démarrage caméra…','blue');cameraMsg.textContent='Ouverture de la caméra arrière…';cameraDiag.textContent='';
-  if(!window.isSecureContext){setStatus('Connexion non sécurisée','bad');cameraMsg.textContent='Le scanner doit être ouvert en HTTPS.';return;}
-  if(!navigator.mediaDevices?.getUserMedia){setStatus('Caméra indisponible','bad');cameraMsg.textContent='Ce navigateur ne permet pas l’accès caméra.';return;}
-  try{
-    // Permission first. Then enumerate devices, so mobile labels become available.
-    if(!state.reader) state.reader=new ZXingBrowser.BrowserQRCodeReader();
-    const temp=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}},audio:false});
-    temp.getTracks().forEach(t=>t.stop());
-    state.devices=await loadDevices();
-    let deviceId=forceDeviceId;
-    if(!deviceId && state.devices.length){
-      const rear=state.devices.find(d=>/back|rear|environment|arrière|dos/i.test(d.label));
-      deviceId=(rear||state.devices[state.devices.length-1]).deviceId;
-      state.deviceIndex=Math.max(0,state.devices.findIndex(d=>d.deviceId===deviceId));
-    }
-    const controls=await state.reader.decodeFromVideoDevice(deviceId||undefined,video,(result,error)=>{
-      if(!result||state.busy)return;
-      const raw=result.getText ? result.getText() : result.text;
-      const token=normalizeToken(raw);if(!token)return;
-      const now=Date.now();
-      if(token===state.lastToken && now-state.lastAt<2200)return;
-      state.lastToken=token;state.lastAt=now;state.currentToken=token;handleDecodedToken(token);
-    });
-    state.controls=controls;state.stream=video.srcObject||null;state.track=video.srcObject?.getVideoTracks?.()[0]||null;
-    setStatus('Scanner prêt','ok');cameraMsg.textContent='Place le QR dans le cadre';
-    if(state.track) enableTrackFeatures(state.track);
-  }catch(e){
-    const msg=String(e?.message||e||'Erreur caméra.');
-    setStatus('Caméra indisponible','bad');
-    cameraMsg.textContent='Impossible d’activer la caméra. Vérifie l’autorisation du navigateur.';
-    cameraDiag.textContent=msg;
-  }
-}
-function enableTrackFeatures(track){
-  try{
-    const caps=track.getCapabilities?.();
-    if(!caps?.torch) torchBtn.disabled=true; else torchBtn.disabled=false;
-    state.zoom=caps?.zoom||null;
-  }catch(_){torchBtn.disabled=true}
-}
-
-async function handleDecodedToken(token){
-  state.busy=true;await stopCamera();setStatus('QR détecté','ok');cameraMsg.textContent='Lecture du scellé…';
-  if(navigator.vibrate)navigator.vibrate(70);
-  setDirectTokenUrl(token);
-  await lookupToken(token);
-}
-
-async function lookupToken(token){
-  sealCard.classList.remove('hidden');
-  sealCard.innerHTML='<div class="center" style="padding:10px 0"><span class="spinner"></span><span class="muted">Lecture du scellé…</span></div>';
-  try{
-    const data=await callApi({api:'lookup',s:token},{auth:true,timeout:12000});
-    if(data?.code==='DEVICE_UNAUTHORIZED') throw new Error(data.message||'Téléphone non autorisé.');
-    renderSeal(data);
-  }catch(e){
-    sealCard.innerHTML='<div class="error"><b>Impossible de lire ce QR</b><div style="margin-top:4px">'+esc(e?.message||e||'Erreur de communication.')+'</div></div><div class="actions" style="margin-top:9px"><button class="btn primary" onclick="window.__resumeScanner()">📷 Scanner de nouveau</button></div>';
-    state.busy=false;setStatus('Prêt','ok');
-  }
-}
-
-function progress(p){return '<div class="progress"><i style="width:'+(Number(p?.pct)||0)+'%"></i></div><div class="progress-txt"><b>'+(Number(p?.done)||0)+'/'+(Number(p?.total)||0)+'</b> contrôlés • <b>'+(Number(p?.remaining)||0)+'</b> restant(s)</div>';}
-function actionBtn(result,icon,cls,title,sub){return '<button class="choice '+cls+'" type="button" data-result="'+esc(result)+'" onclick="window.__submitControl(this)"><span class="choice-ico">'+icon+'</span><span class="choice-txt"><b>'+title+'</b><small>'+sub+'</small></span></button>';}
 function renderSeal(data){
-  if(!data?.ok){throw new Error(data?.message||'QR inconnu.');}
-  const c=data.campaign,p=c?.progress||{};
-  let html='';
-  html+='<div class="seal-top"><div><span class="entry">N° '+esc(data.entry)+'</span><div class="seal-name">'+esc(data.scelle||'Scellé')+'</div><div class="muted" style="font-size:11px;margin-top:4px">Procédure : <b>'+esc(data.procedure||'—')+'</b></div></div><div class="tiny muted">'+esc(data.status||'')+'</div></div>';
-  html+='<div class="facts"><div class="fact"><span>CATÉGORIE</span><b>'+esc(data.category||'—')+'</b></div><div class="fact"><span>TAILLE</span><b>'+esc(data.size||'—')+'</b></div><div class="fact full"><span>EMPLACEMENT ATTENDU</span><b>'+esc(data.locationDetail||data.location||'—')+'</b></div></div>';
-  if(!c){html+='<div class="notice" style="margin-top:10px"><b>Aucune campagne active</b><div style="margin-top:3px">Le scellé est reconnu. Aucun contrôle physique n’est actuellement ouvert.</div></div>';}
-  else if(!c.inCampaign){html+='<div class="notice" style="margin-top:10px"><b>Scellé hors périmètre</b><div style="margin-top:3px">Ce scellé ne fait pas partie de la campagne active.</div></div>'}
-  else if(c.itemStatus!=='A_FAIRE'){html+='<div class="success" style="margin-top:10px"><b>✅ Déjà contrôlé dans cette campagne</b><div style="margin-top:3px">Résultat : <b>'+esc(c.itemResult||c.itemStatus)+'</b></div>'+progress(p)+'</div>'}
-  else{
-    html+='<div class="camp"><div class="camp-title">'+esc(c.title||'Campagne active')+'</div><div class="camp-meta">Contrôleur : <b>'+esc(c.operator||'—')+'</b></div>'+progress(p)+'</div>';
-    html+='<div class="choices">'+actionBtn('CONFORME','✓','g','Présent et conforme','Présence + emplacement + intégrité OK')+actionBtn('ABSENT','!','r','Scellé absent','Le scellé n’a pas été retrouvé')+actionBtn('EMPLACEMENT NON CONFORME','⌖','a','Emplacement non conforme','Le scellé est ailleurs')+actionBtn('SCELLÉ À VÉRIFIER','⚠','a','Intégrité à vérifier','Conditionnement ou scellement à examiner')+'</div>';
-    html+='<label class="label">Observation facultative</label><textarea id="obs" placeholder="Constatation complémentaire…"></textarea>';
-  }
-  html+='<div class="actions" style="margin-top:10px"><button class="btn" onclick="window.__resumeScanner()">📷 Scanner un autre</button></div>';
-  sealCard.innerHTML=html;
   state.busy=false;
+  const card=$('sealCard');card.classList.remove('hidden');hideReaderVisual();
+  if(!data||!data.ok){
+    card.innerHTML=`<div class="error"><b>QR non reconnu</b><div style="margin-top:4px">${esc(data?.message||'Aucun scellé correspondant.')}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Scanner un autre scellé</button>`;
+    setStatus('QR non reconnu','bad');return;
+  }
+  campaignUI(data.campaign);state.token=String(data.qrId||state.token||'');
+  const c=data.campaign;let html=`<div class="entry">N° ${esc(data.entry)}</div><div class="sealname">${esc(data.scelle||'Scellé')}</div><div class="muted">Procédure : <b>${esc(data.procedure||'—')}</b></div>`;
+  html+=`<div class="facts"><div class="fact"><span>CATÉGORIE</span><b>${esc(data.category||'—')}</b></div><div class="fact"><span>TAILLE</span><b>${esc(data.size||'—')}</b></div><div class="fact"><span>STATUT</span><b>${esc(data.status||'—')}</b></div><div class="fact"><span>ENQUÊTEUR</span><b>${esc(data.investigator||'—')}</b></div><div class="fact full"><span>EMPLACEMENT ATTENDU</span><b>${esc(data.locationDetail||data.location||'—')}</b></div></div>`;
+  if(data.status && data.status!=='EN STOCK'){
+    html+=`<div class="notice.bad notice bad"><b>Scellé non disponible au contrôle physique</b><div style="margin-top:3px">Statut actuel : ${esc(data.status)}</div></div>`;
+  } else if(!c){
+    html+=`<div class="notice warn"><b>Aucune campagne active</b><div style="margin-top:3px">Le scellé est reconnu. Les choix ci-dessous enregistreront un contrôle hors campagne.</div></div>`;
+    html+=controlChoices();
+  } else if(!c.inCampaign){
+    html+=`<div class="notice warn"><b>Scellé hors périmètre</b><div style="margin-top:3px">Il n’appartient pas à la campagne « ${esc(c.title||'Campagne active')} ». Aucun contrôle ne sera envoyé.</div></div>`;
+  } else if(c.itemStatus!=='A_FAIRE'){
+    html+=`<div class="notice good"><b>Contrôle déjà effectué</b><div style="margin-top:3px">Résultat : <b>${esc(c.itemResult||c.itemStatus||'Contrôlé')}</b></div></div>`;
+  } else {
+    html+=`<div class="notice info"><b>Campagne active : ${esc(c.title||'Contrôle physique')}</b><div style="margin-top:3px">Emplacement attendu : <b>${esc(data.locationDetail||data.location||'—')}</b></div></div>`;
+    html+=controlChoices();
+  }
+  html+=`<div class="actions"><button class="btn" id="cancelSeal" type="button">↩ Retour au scanner</button></div>`;
+  card.innerHTML=html;
+  card.querySelector('#cancelSeal').onclick=resumeScanner;
+  card.querySelectorAll('[data-result]').forEach(b=>b.addEventListener('click',()=>submitControl(b.dataset.result,b)));
+  setStatus('Scellé reconnu • choisissez le contrôle','good');
 }
-
-window.__submitControl=async function(button){
-  if(!button||button.disabled||!state.currentToken)return;
-  const result=button.dataset.result||'CONFORME';
-  sealCard.querySelectorAll('.choice').forEach(b=>b.disabled=true);
-  const obs=(sealCard.querySelector('#obs')?.value||'').trim();
-  sealCard.insertAdjacentHTML('beforeend','<div id="saving" class="center muted" style="margin-top:10px"><span class="spinner"></span><span>Enregistrement…</span></div>');
+function controlChoices(){
+  return `<div style="margin-top:11px"><button class="choice green" data-result="CONFORME"><span class="ico">✓</span><span class="txt"><b>Présent et conforme</b><small>Présence, emplacement et intégrité OK</small></span></button><button class="choice red" data-result="ABSENT"><span class="ico">!</span><span class="txt"><b>Scellé absent</b><small>Le scellé n’a pas été retrouvé</small></span></button><button class="choice amber" data-result="EMPLACEMENT NON CONFORME"><span class="ico">⌖</span><span class="txt"><b>Emplacement non conforme</b><small>Présent à un autre emplacement</small></span></button><button class="choice amber" data-result="SCELLÉ À VÉRIFIER"><span class="ico">⚠</span><span class="txt"><b>Intégrité à vérifier</b><small>Conditionnement ou scellement à examiner</small></span></button><label class="muted" style="display:block;font-weight:900;margin-top:10px">Observation facultative</label><textarea id="obs" placeholder="Constatation complémentaire…"></textarea></div>`;
+}
+async function lookupToken(token){
+  token=String(token||'').trim();if(!token||state.busy)return;
+  state.token=token;state.busy=true;stopCamera();updateUrlWithoutToken();$('sealCard').classList.remove('hidden');$('sealCard').innerHTML='<div class="status"><span>QR reconnu • recherche du scellé…</span></div>';setStatus('QR reconnu • lecture…','good');$('frame').classList.add('ok');beep();vibrate(70);
+  try{const data=await jsonp('lookup',{scan:token});renderSeal(data);}catch(e){state.busy=false;$('sealCard').innerHTML=`<div class="error"><b>Base temporairement indisponible</b><div style="margin-top:4px">${esc(e.message)}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Revenir au scanner</button>`;setStatus('Erreur de communication','bad');}
+}
+async function submitControl(result,button){
+  if(state.busy)return;state.busy=true;button.disabled=true;
+  const card=$('sealCard');const obs=(card.querySelector('#obs')?.value||'').trim();
+  card.insertAdjacentHTML('beforeend','<div id="saving" class="status">Enregistrement du contrôle…</div>');
   try{
-    const out=await callApi({api:'control',s:state.currentToken,result,obs,agent:getDeviceName()},{auth:true,timeout:15000});
+    const out=await jsonp('control',{scan:state.token,result,obs},10000);
     document.getElementById('saving')?.remove();
-    if(!out?.ok) throw new Error(out?.message||'Enregistrement refusé.');
-    const p=out.progress||{};
-    sealCard.innerHTML='<div class="saved"><div class="big">✅</div><h3>Contrôle enregistré</h3><p><b>'+esc(out.result||result)+'</b></p>'+(out.campaignTitle?'<p style="margin-top:7px"><b>'+esc(out.campaignTitle)+'</b><br>'+Number(p.done||0)+'/'+Number(p.total||0)+' contrôlés • '+Number(p.remaining||0)+' restant(s)</p>':'')+'</div><button class="btn green block" style="margin-top:8px" onclick="window.__resumeScanner()">📷 Scanner le suivant</button>';
-    if(navigator.vibrate)navigator.vibrate([60,40,60]);
-    // Ready for next scan only after explicit user tap.
-  }catch(e){
-    document.getElementById('saving')?.remove();sealCard.insertAdjacentHTML('beforeend','<div class="error" style="margin-top:10px"><b>Échec</b><div style="margin-top:3px">'+esc(e?.message||e||'Erreur')+'</div></div>');sealCard.querySelectorAll('.choice').forEach(b=>b.disabled=false);
-  }
-};
-
-window.__resumeScanner=async function(){
-  state.busy=false;state.currentToken='';clearQrUrl();sealCard.classList.add('hidden');sealCard.innerHTML='';cameraMsg.textContent='Préparation…';
-  await startScanner();
-};
-
-async function doPhoto(file){
-  if(!file||state.busy||!state.paired)return;
-  state.busy=true;await stopCamera();setStatus('Analyse de la photo…','blue');cameraMsg.textContent='Recherche du QR…';
+    if(!out?.ok)throw new Error(out?.message||'Contrôle refusé.');
+    beep();vibrate([60,40,60]);const p=out.progress||{};if(out.campaignTitle)campaignUI({title:out.campaignTitle,progress:p});
+    card.innerHTML=`<div class="saved"><div class="big">✅</div><b>${out.already?'Contrôle déjà enregistré':'Contrôle enregistré'}</b><div class="pill">${esc(out.result||result)}</div>${out.campaignTitle?`<div class="muted" style="margin-top:8px"><b>${esc(out.campaignTitle)}</b><br>${Number(p.done||0)}/${Number(p.total||0)} contrôlés • ${Number(p.remaining||0)} restant(s)</div>`:''}</div><button class="next" id="nextBtn" type="button">📷 Scanner le suivant</button>`;
+    $('nextBtn').onclick=resumeScanner;state.busy=false;setStatus('Contrôle enregistré • prêt pour le suivant','good');
+  }catch(e){state.busy=false;button.disabled=false;document.getElementById('saving')?.remove();card.insertAdjacentHTML('beforeend',`<div class="error" style="margin-top:9px"><b>Échec de l’enregistrement</b><div style="margin-top:4px">${esc(e.message)}</div></div>`);setStatus('Contrôle non enregistré','bad');}
+}
+function stopCamera(){
+  try{state.controls?.stop?.();}catch(e){}state.controls=null;
+  try{state.stream?.getTracks()?.forEach(t=>t.stop());}catch(e){}state.stream=null;state.track=null;$('video').srcObject=null;
+}
+async function chooseDevice(){
+  try{state.devices=await ZXingBrowser.BrowserCodeReader.listVideoInputDevices();}catch(e){state.devices=[];}
+  if(!state.devices.length){state.deviceId=undefined;return;}
+  const preferred=state.devices.find(d=>/back|rear|environment|arrière|dos/i.test(String(d.label||'')))||state.devices[state.deviceIndex%state.devices.length];state.deviceId=preferred.deviceId;
+}
+async function startCamera(){
+  if(state.busy)return;stopCamera();resetReaderVisual();state.busy=true;setStatus('Activation de la caméra…');$('hint').textContent='Autorisation caméra en cours…';
   try{
-    // ZXing image decoding: object URL keeps memory bounded and uses the same reader.
-    const url=URL.createObjectURL(file);
-    if(!state.reader)state.reader=new ZXingBrowser.BrowserQRCodeReader();
-    const result=await state.reader.decodeFromImageUrl(url);
-    URL.revokeObjectURL(url);
-    await handleDecodedToken(normalizeToken(result.getText ? result.getText() : result.text));
-  }catch(e){
-    setStatus('QR non détecté','bad');cameraMsg.textContent='QR non trouvé sur la photo.';cameraDiag.textContent=String(e?.message||e||'Aucun QR détecté.');state.busy=false;await startScanner();
-  }
+    if(!window.ZXingBrowser?.BrowserQRCodeReader)throw new Error('Moteur QR indisponible.');
+    await chooseDevice();state.reader=new ZXingBrowser.BrowserQRCodeReader();
+    state.controls=await state.reader.decodeFromVideoDevice(state.deviceId,$('video'),(result,error)=>{
+      if(!result||state.busy)return;const raw=String(result.getText?.()||result.text||'').trim(),token=tokenFrom(raw);if(!token)return;
+      const now=Date.now();if(token===state.lastToken&&now-state.lastAt<2000)return;state.lastToken=token;state.lastAt=now;lookupToken(token);
+    });
+    await new Promise(r=>setTimeout(r,220));state.stream=$('video').srcObject;state.track=state.stream?.getVideoTracks?.()[0]||null;state.busy=false;setStatus('Scanner prêt','good');$('hint').textContent='Présentez le QR au centre';$('frame').className='frame ready';await applyCameraCaps();
+  }catch(e){state.busy=false;setStatus('Caméra indisponible','bad');$('hint').textContent='Autorisez la caméra ou utilisez le scan par photo.';showPhotoFallback();}
 }
-photoInput.addEventListener('change',()=>{const f=photoInput.files?.[0];photoInput.value='';doPhoto(f)});
-
-torchBtn.addEventListener('click',async()=>{
-  if(!state.track)return;
-  try{const caps=state.track.getCapabilities?.();if(!caps?.torch){cameraDiag.textContent='Torche indisponible sur cette caméra.';return;}state.torch=!state.torch;await state.track.applyConstraints({advanced:[{torch:state.torch}]});torchBtn.textContent=state.torch?'🔦 Torche ON':'🔦 Torche';}catch(e){cameraDiag.textContent='Torche indisponible.';}
-});
-
-switchBtn.addEventListener('click',async()=>{
-  if(!state.paired||state.busy)return;
-  await stopCamera();state.devices=await loadDevices();
-  if(!state.devices.length){await startScanner();return;}
-  state.deviceIndex=(state.deviceIndex+1)%state.devices.length;
-  await startScanner(state.devices[state.deviceIndex].deviceId);
-});
-
-async function afterPair(){
-  const token=currentQrToken();
-  if(token){state.currentToken=normalizeToken(token);await lookupToken(state.currentToken);}
-  else await startScanner();
+async function resumeScanner(){
+  $('sealCard').classList.add('hidden');$('sealCard').innerHTML='';state.token='';state.lastToken='';state.busy=false;state.photoMode=false;updateUrlWithoutToken();$('cameraBox').classList.remove('hide');$('photoRow').classList.remove('show');$('frame').className='frame';$('hint').textContent='Préparation de la caméra…';setStatus('Préparation…');await startCamera();
 }
-
+async function applyCameraCaps(){
+  const caps=state.track?.getCapabilities?.();if(!caps)return;$('torch').disabled=!('torch'in caps);['zoomMinus','zoomPlus'].forEach(id=>$(id).disabled=!(caps.zoom));state.zoom=caps.zoom?{min:caps.zoom.min,max:caps.zoom.max,step:caps.zoom.step||0.1,value:state.track.getSettings?.().zoom||caps.zoom.min}:null;
+}
+$('torch').onclick=async()=>{if(!state.track)return;try{const caps=state.track.getCapabilities?.();if(!caps?.torch)return;state.torch=!state.torch;await state.track.applyConstraints({advanced:[{torch:state.torch}]});$('torch').textContent=state.torch?'🔦 Torche ON':'🔦 Torche';}catch(e){}};
+$('switch').onclick=async()=>{if(!state.devices.length)return;state.deviceIndex=(state.deviceIndex+1)%state.devices.length;await startCamera();};
+async function setZoom(d){if(!state.track||!state.zoom)return;const z=state.zoom;z.value=Math.max(z.min,Math.min(z.max,z.value+d*z.step));try{await state.track.applyConstraints({advanced:[{zoom:z.value}]})}catch(e){}}
+$('zoomMinus').onclick=()=>setZoom(-1);$('zoomPlus').onclick=()=>setZoom(1);$('cameraStart').onclick=resumeScanner;
+$('activateBtn').onclick=activateScanner;
+$('pairCode').addEventListener('keydown',e=>{if(e.key==='Enter')activateScanner();});
+$('qrPhoto').onchange=async()=>{
+  const file=$('qrPhoto').files?.[0];$('qrPhoto').value='';if(!file||state.busy)return;stopCamera();state.busy=true;setStatus('Analyse de la photo…');
+  try{if(!window.jsQR)throw new Error('Lecteur photo indisponible.');const bmp=await createImageBitmap(file),max=1600,scale=Math.min(1,max/Math.max(bmp.width,bmp.height)),canvas=document.createElement('canvas');canvas.width=Math.round(bmp.width*scale);canvas.height=Math.round(bmp.height*scale);const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(bmp,0,0,canvas.width,canvas.height);const image=ctx.getImageData(0,0,canvas.width,canvas.height);const code=jsQR(image.data,image.width,image.height,{inversionAttempts:'attemptBoth'});bmp.close();if(!code)throw new Error('Aucun QR trouvé sur la photo.');await lookupToken(tokenFrom(code.data));}catch(e){state.busy=false;$('sealCard').classList.remove('hidden');$('sealCard').innerHTML=`<div class="error"><b>QR non détecté</b><div style="margin-top:4px">${esc(e.message)}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Revenir au scanner</button>`;setStatus('Lecture impossible','bad');}
+};
 async function boot(){
-  const token=currentQrToken();
-  const device=getDeviceToken();
-  // Never show the full scanner to an unpaired device.
-  if(!device){showPairScreen(token?'Téléphone non autorisé : active-le une fois avec un code administrateur.':'');return;}
-  state.paired=true;hidePairScreen();
-  deviceBadge.textContent='✓ '+(getDeviceName()||'Téléphone autorisé');
-  // Lightweight connectivity check; do not block the UI on it.
-  probe().then(ok=>{if(!ok)cameraDiag.textContent='Serveur momentanément indisponible. Le scanner pourra réessayer.';});
-  await afterPair();
+  try{
+    const deviceToken=localStorage.getItem(DEVICE_TOKEN_KEY)||'';
+    if(!deviceToken){showActivation();return;}
+    hideActivation();
+    const u=new URL(location.href),token=u.searchParams.get('s')||u.searchParams.get('scan')||u.searchParams.get('qr');
+    if(token){updateUrlWithoutToken();await lookupToken(token);}
+    else{await startCamera();}
+  }catch(e){if(e.message==='SCANNER_NOT_ACTIVATED'){showActivation();return;}await startCamera();}
 }
-
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
-boot();
+window.resumeScanner=resumeScanner;boot();
 </script>
 </body>
 </html>
