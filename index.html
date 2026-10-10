@@ -95,15 +95,40 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
 .error{font-size:12px}
 @media(max-width:390px){.control-grid{grid-template-columns:1fr}.control-grid .choice{min-height:72px}.seal-meta{grid-template-columns:1fr 1fr}}
 
+
+/* V2.8.1 — comptes et droits terrain */
+.user-bar{display:none;align-items:center;justify-content:space-between;gap:8px;margin-top:9px;padding:8px 10px;border:1px solid rgba(255,255,255,.18);border-radius:11px;background:rgba(255,255,255,.08);color:#fff}
+.user-bar.show{display:flex}.user-label{font-size:11px;font-weight:850;line-height:1.35;overflow-wrap:anywhere}
+.user-role{display:inline-block;margin-left:5px;padding:3px 6px;background:rgba(255,255,255,.16);border-radius:6px;font-size:9px;font-weight:950}
+.user-change{min-height:36px;padding:7px 9px;border-color:rgba(255,255,255,.3);background:transparent;color:#fff;font-size:10px;flex:none}
+.session-login-select{width:100%;height:50px;border:1px solid #cad3de;border-radius:12px;padding:0 10px;font:inherit;font-size:14px;background:#fff;color:var(--ink)}
+.session-login-label{display:block;margin:10px 0 5px;font-size:11px;font-weight:900;color:var(--ink)}
+.session-login-error{display:none;margin-top:9px;padding:9px;border-radius:10px;background:#fff1f0;border:1px solid #ecc9c6;color:#91332d;font-size:11px;line-height:1.4}
+.session-login-error.show{display:block}
+.session-login-secondary{width:100%;margin-top:8px;min-height:40px;background:#fff;color:var(--navy);border:1px solid var(--line);border-radius:11px;font-size:11px}
+.move-panel{margin-top:10px;padding:12px;border:1px solid var(--line);background:#f8fafc;border-radius:14px}
+.move-panel h3{font-size:14px;margin:0 0 5px;font-weight:950}
+.move-panel .hintline{font-size:11px;line-height:1.45;color:var(--muted);margin:0 0 8px}
+.move-panel .move-form{margin-top:9px;padding:10px;background:#fff;border:1px solid var(--line);border-radius:12px}
+.move-panel label{display:block;font-size:11px;font-weight:900;margin:10px 0 5px}
+.move-panel input,.move-panel select,.move-panel textarea{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:9px 10px;font:inherit;font-size:13px;background:#fff;color:var(--ink)}
+.move-panel textarea{min-height:78px}
+.move-panel .actions{grid-template-columns:1fr 1fr}
+.move-panel .actions button{font-size:11px;min-height:45px}
+.move-panel .move-note{font-size:11px;line-height:1.45;color:var(--muted);margin-top:7px}
+@media(max-width:390px){.user-bar{align-items:flex-start}.user-change{min-height:34px}.move-panel .actions{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
-<div id="activation" class="activation-overlay"><div class="activation-card"><div class="activation-kicker">RÉFÉRENT SCELLÉS</div><h1>Autoriser ce téléphone</h1><p id="activationMsg">Entrez le code d’activation fourni par l’administrateur.</p><input id="pairCode" class="activation-input" inputmode="text" autocomplete="one-time-code" maxlength="10" placeholder="CODE D’ACTIVATION"><button id="activateBtn" class="activation-btn" type="button">Activer le scanner</button><div class="activation-help">L’autorisation est mémorisée sur ce téléphone. Elle peut être révoquée à tout moment par un administrateur.</div></div></div>
+<div id="activation" class="activation-overlay"><div class="activation-card"><div class="activation-kicker">RÉFÉRENT SCELLÉS</div><h1>Autoriser ce téléphone</h1><p id="activationMsg">Entrez le code d’activation fourni par l’administrateur.</p><input id="pairCode" class="activation-input" inputmode="text" autocomplete="one-time-code" maxlength="10" placeholder="CODE D’ACTIVATION"><button id="activateBtn" class="activation-btn" type="button">Activer le scanner</button><div class="activation-help">L’autorisation du téléphone est distincte de la connexion nominative. Elle peut être révoquée par un administrateur.</div></div></div>
+<div id="sessionLogin" class="activation-overlay"><div class="activation-card"><div class="activation-kicker">RÉFÉRENT SCELLÉS • SESSION</div><h1>Qui utilise le scanner ?</h1><p>Connecte-toi avec ton compte nominatif. Les contrôles physiques sont réservés aux administrateurs ; un enquêteur peut uniquement déclarer la prise en charge et le déplacement d’un scellé.</p><label class="session-login-label" for="sessionAccount">Compte</label><select id="sessionAccount" class="session-login-select"><option value="">Chargement des comptes…</option></select><label class="session-login-label" for="sessionPassword">Mot de passe</label><input id="sessionPassword" class="activation-input" type="password" autocomplete="current-password" maxlength="256" placeholder="Mot de passe du compte"><div id="sessionLoginError" class="session-login-error" role="alert"></div><button id="sessionLoginButton" class="activation-btn" type="button">Ouvrir ma session</button><button id="sessionReloadButton" class="session-login-secondary" type="button">Recharger les comptes</button><div class="activation-help">La session nominative expire au bout de six heures ou lorsqu’elle est révoquée.</div></div></div>
 <div class="app">
   <header class="top">
     <div class="brand">RÉFÉRENT SCELLÉS</div>
     <div class="title">Scanner QR</div>
-    <div class="sub">Contrôle terrain simplifié • V2.8.0</div>
+    <div class="sub">Contrôle terrain simplifié • V2.8.1 — connexion nominative</div>
+    <div id="userBar" class="user-bar" aria-live="polite"><div id="userLabel" class="user-label">Connexion requise</div><button id="changeUser" class="user-change" type="button">Changer de session</button></div>
     <div id="camp" class="camp"><div id="campTitle" class="camp-title"></div><div id="campMeta" class="camp-meta"></div><div class="bar"><i id="campBar" style="width:0%"></i></div></div>
   </header>
 
@@ -152,18 +177,31 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
 'use strict';
 const SCANNER_API_ENDPOINT='https://referent-scelles-api.benjii91270.workers.dev/api';
 const DEVICE_TOKEN_KEY='referent_scelles_device_token_v2';
-const SCANNER_VERSION='2.8.0';
+const SCANNER_VERSION='2.8.1';
 const SERIES_MODE_KEY='referent_scelles_series_mode_v1';
 const SOUND_PREF_KEY='referent_scelles_scanner_sound_v1';
 const VIBRATION_PREF_KEY='referent_scelles_scanner_vibration_v1';
 const CAMERA_DEVICE_KEY='referent_scelles_camera_device_v1';
+const APP_SESSION_STORAGE_KEY='referent_scelles_scanner_user_session_v2';
+const APP_SESSION_TTL_MS=6*60*60*1000;
 function readSeriesMode(){try{const saved=localStorage.getItem(SERIES_MODE_KEY);return saved===null?true:saved==='1';}catch(e){return true;}}
 function readBoolPreference(key,fallback=true){try{const saved=localStorage.getItem(key);return saved===null?fallback:saved==='1';}catch(e){return fallback;}}
 function readPreferredCamera(){try{return localStorage.getItem(CAMERA_DEVICE_KEY)||null;}catch(e){return null;}}
 function savePreferredCamera(id){try{if(id)localStorage.setItem(CAMERA_DEVICE_KEY,id);}catch(e){}}
-const state={reader:null,controls:null,readerMode:'none',readerRunning:false,readerGeneration:0,decodeLoopTimer:null,nativeDetector:null,nativeDecodeErrors:0,stream:null,track:null,devices:[],deviceIndex:0,deviceId:readPreferredCamera(),busy:false,cameraOpening:false,cameraSwitching:false,cameraResumeOnVisible:false,resumeDecodeAfterVisibility:false,seriesMode:readSeriesMode(),soundEnabled:readBoolPreference(SOUND_PREF_KEY,true),vibrationEnabled:readBoolPreference(VIBRATION_PREF_KEY,true),sessionChecks:0,token:'',lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null,photoMode:false};
+const state={reader:null,controls:null,readerMode:'none',readerRunning:false,readerGeneration:0,decodeLoopTimer:null,nativeDetector:null,nativeDecodeErrors:0,stream:null,track:null,devices:[],deviceIndex:0,deviceId:readPreferredCamera(),busy:false,cameraOpening:false,cameraSwitching:false,cameraResumeOnVisible:false,resumeDecodeAfterVisibility:false,seriesMode:readSeriesMode(),soundEnabled:readBoolPreference(SOUND_PREF_KEY,true),vibrationEnabled:readBoolPreference(VIBRATION_PREF_KEY,true),sessionChecks:0,token:'',lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null,photoMode:false,userAuth:null,pendingToken:'',sealData:null,sessionOptionsLoading:false};
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function loadSavedScannerSession(){
+  try{const raw=localStorage.getItem(APP_SESSION_STORAGE_KEY);if(!raw)return null;const a=JSON.parse(raw),expiresAt=Number(a.expiresAt||0);if(!a.token||!a.session?.id||!expiresAt||Date.now()>=expiresAt){localStorage.removeItem(APP_SESSION_STORAGE_KEY);return null;}return a;}catch(e){try{localStorage.removeItem(APP_SESSION_STORAGE_KEY);}catch(_){}return null;}
+}
+function activeScannerSession(){const a=state.userAuth;if(!a?.token||!a?.session?.id)return null;if(!Number(a.expiresAt)||Date.now()>=Number(a.expiresAt)){clearSavedScannerSession();return null;}return a;}
+function clearSavedScannerSession(){state.userAuth=null;try{localStorage.removeItem(APP_SESSION_STORAGE_KEY);}catch(e){}updateSessionBadge();}
+function updateSessionBadge(){
+  const bar=$('userBar'),label=$('userLabel'),button=$('changeUser'),auth=activeScannerSession(),sess=auth?.session;if(!bar||!label||!button)return;
+  label.replaceChildren();if(!auth){bar.classList.remove('show');label.textContent='Connexion nominative requise';button.classList.add('hidden');return;}
+  bar.classList.add('show');button.classList.remove('hidden');label.appendChild(document.createTextNode('Connecté : '+String(sess.name||'Utilisateur')+(sess.grade?' • '+String(sess.grade):'')));
+  const role=document.createElement('span');role.className='user-role';role.textContent=sess.isAdmin?'ADMINISTRATEUR':'ENQUÊTEUR';label.appendChild(role);
+}
 function setStatus(t,k=''){const e=$('status');e.textContent=t;e.className='status'+(k?' '+k:'');}
 function beep(){if(!state.soundEnabled)return;try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=880;g.gain.value=.045;o.connect(g);g.connect(c.destination);o.onended=()=>{try{c.close();}catch(e){}};o.start();o.stop(c.currentTime+.09);}catch(e){}}
 function vibrate(x=70){if(!state.vibrationEnabled)return;try{navigator.vibrate&&navigator.vibrate(x)}catch(e){}}
@@ -171,28 +209,32 @@ function updateFeedbackControls(){const s=$('soundToggle'),v=$('vibrationToggle'
 function updateSessionProgress(){$('sessionProgress').textContent=`Contrôles enregistrés pendant cette session : ${state.sessionChecks}`;}
 async function apiCall(api,params={},timeout=9000){
   const deviceToken=localStorage.getItem(DEVICE_TOKEN_KEY)||'';
-  if(api!=='pair' && !deviceToken) throw new Error('SCANNER_NOT_ACTIVATED');
+  if(api!=='pair' && !deviceToken)throw Object.assign(new Error('SCANNER_NOT_ACTIVATED'),{code:'SCANNER_NOT_ACTIVATED'});
   if(typeof navigator!=='undefined'&&navigator.onLine===false)throw new Error('Aucune connexion Internet. Rétablis le réseau avant de rechercher ou d’enregistrer un contrôle.');
-  const u=new URL(SCANNER_API_ENDPOINT);
-  u.searchParams.set('api',api);
+  const u=new URL(SCANNER_API_ENDPOINT);u.searchParams.set('api',api);
   Object.entries(params||{}).forEach(([k,v])=>{if(v!==undefined&&v!==null)u.searchParams.set(k,String(v));});
-  const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),timeout);
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeout);
   try{
-    let res;
-    try{res=await fetch(u.toString(),{method:'GET',headers:{Accept:'application/json',...(deviceToken?{Authorization:'Bearer '+deviceToken}:{})},cache:'no-store',signal:controller.signal});}
-    catch(e){
-      if(e?.name==='AbortError')throw new Error('Le serveur met trop de temps à répondre. Réessaie quand la connexion sera stable.');
-      if(e instanceof TypeError)throw new Error(typeof navigator!=='undefined'&&navigator.onLine===false?'Téléphone hors ligne. Vérifie la connexion Internet.':'Connexion au serveur impossible. Vérifie le réseau puis réessaie.');
-      throw e;
-    }
-    const data=await res.json().catch(()=>null);
-    if(!res.ok || !data) throw new Error(data?.message||(!data?'Réponse serveur illisible. Réessaie.':'HTTP '+res.status));
-    if(data.code==='DEVICE_INVALID'||data.code==='DEVICE_REQUIRED'){localStorage.removeItem(DEVICE_TOKEN_KEY);showActivation('Cette autorisation n’est plus valide.');throw new Error('SCANNER_NOT_ACTIVATED');}
-    return data;
-  }finally{clearTimeout(timer)}
+    let res;try{res=await fetch(u.toString(),{method:'GET',headers:{Accept:'application/json',...(deviceToken?{Authorization:'Bearer '+deviceToken}:{})},cache:'no-store',signal:controller.signal});}
+    catch(e){if(e?.name==='AbortError')throw new Error('Le serveur met trop de temps à répondre. Réessaie quand la connexion sera stable.');if(e instanceof TypeError)throw new Error(typeof navigator!=='undefined'&&navigator.onLine===false?'Téléphone hors ligne. Vérifie la connexion Internet.':'Connexion au serveur impossible. Vérifie le réseau puis réessaie.');throw e;}
+    const data=await res.json().catch(()=>null);if(!res.ok||!data)throw new Error(data?.message||(!data?'Réponse serveur illisible. Réessaie.':'HTTP '+res.status));
+    if(data.code==='DEVICE_INVALID'||data.code==='DEVICE_REQUIRED'){localStorage.removeItem(DEVICE_TOKEN_KEY);showActivation('Cette autorisation n’est plus valide.');throw Object.assign(new Error('SCANNER_NOT_ACTIVATED'),{code:'SCANNER_NOT_ACTIVATED'});}return data;
+  }finally{clearTimeout(timer);}
+}
+async function apiPost(api,params={},timeout=12000){
+  const deviceToken=localStorage.getItem(DEVICE_TOKEN_KEY)||'';if(!deviceToken)throw Object.assign(new Error('SCANNER_NOT_ACTIVATED'),{code:'SCANNER_NOT_ACTIVATED'});
+  if(typeof navigator!=='undefined'&&navigator.onLine===false)throw new Error('Aucune connexion Internet. Rétablis le réseau puis réessaie.');
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeout);
+  try{
+    let res;try{res=await fetch(SCANNER_API_ENDPOINT,{method:'POST',headers:{Accept:'application/json','Content-Type':'application/json',Authorization:'Bearer '+deviceToken},body:JSON.stringify(Object.assign({api},params||{})),cache:'no-store',signal:controller.signal});}
+    catch(e){if(e?.name==='AbortError')throw new Error('Le serveur met trop de temps à répondre. Réessaie quand la connexion sera stable.');if(e instanceof TypeError)throw new Error(typeof navigator!=='undefined'&&navigator.onLine===false?'Téléphone hors ligne. Vérifie la connexion Internet.':'Connexion au serveur impossible. Vérifie le réseau puis réessaie.');throw e;}
+    const data=await res.json().catch(()=>null);if(!res.ok||!data)throw new Error(data?.message||(!data?'Réponse serveur illisible. Réessaie.':'HTTP '+res.status));
+    if(data.code==='DEVICE_INVALID'||data.code==='DEVICE_REQUIRED'){localStorage.removeItem(DEVICE_TOKEN_KEY);showActivation('Cette autorisation n’est plus valide.');throw Object.assign(new Error('SCANNER_NOT_ACTIVATED'),{code:'SCANNER_NOT_ACTIVATED'});}return data;
+  }finally{clearTimeout(timer);}
 }
 function showActivation(message){
-  state.busy=false;stopCamera();$('activation').classList.add('show');$('activationMsg').textContent=message||'Ce téléphone doit être autorisé une seule fois avant le premier contrôle.';
+  state.busy=false;stopCamera();try{localStorage.removeItem(APP_SESSION_STORAGE_KEY);}catch(e){}state.userAuth=null;
+  $('sessionLogin')?.classList.remove('show');updateSessionBadge();$('activation').classList.add('show');$('activationMsg').textContent=message||'Ce téléphone doit être autorisé une seule fois avant le premier contrôle.';
 }
 function hideActivation(){$('activation').classList.remove('show');}
 async function activateScanner(){
@@ -202,6 +244,65 @@ async function activateScanner(){
   catch(e){$('activationMsg').textContent=e.message==='SCANNER_NOT_ACTIVATED'?'Autorisation nécessaire.':String(e.message||e);}
   finally{$('activateBtn').disabled=false;}
 }
+async function showSessionLogin(message){
+  stopCamera();$('activation').classList.remove('show');$('sessionLogin').classList.add('show');
+  const error=$('sessionLoginError');if(error){error.textContent=message||'';error.classList.toggle('show',!!message);}
+  await loadScannerSessionOptions();
+}
+async function loadScannerSessionOptions(){
+  if(state.sessionOptionsLoading)return;state.sessionOptionsLoading=true;
+  const select=$('sessionAccount'),error=$('sessionLoginError'),button=$('sessionReloadButton');if(select){select.disabled=true;select.innerHTML='<option value="">Chargement des comptes…</option>';}
+  try{
+    const result=await apiPost('session-options',{},12000);if(!result?.ok)throw Object.assign(new Error(result?.message||'Impossible de charger les comptes.'),{code:result?.code||''});
+    const sessions=(result.sessions||[]).filter(x=>x&&x.id&&!x.disabled&&x.passwordEnabled);
+    if(!sessions.length)throw new Error('Aucun compte avec mot de passe serveur disponible. Un administrateur doit vérifier les sessions dans Référent Scellés.');
+    if(select){select.innerHTML='<option value="">Sélectionne ton compte…</option>'+sessions.map(x=>'<option value="'+esc(x.id)+'">'+esc(x.name)+(x.grade?' • '+esc(x.grade):'')+(x.isAdmin?' • ADMINISTRATEUR':' • ENQUÊTEUR')+'</option>').join('');select.disabled=false;}
+    if(error){error.textContent='';error.classList.remove('show');}
+  }catch(e){if(error){error.textContent=String(e.message||e||'Connexion impossible.');error.classList.add('show');}}
+  finally{state.sessionOptionsLoading=false;if(button)button.disabled=false;}
+}
+async function scannerSha256(value){
+  if(!globalThis.crypto?.subtle||!globalThis.TextEncoder)throw new Error('Le navigateur doit être en HTTPS pour l’authentification sécurisée.');
+  const bits=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(String(value??'')));
+  return Array.from(new Uint8Array(bits),b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function scannerSha256Salt(value,salt){return scannerSha256(String(salt??'')+'\0'+String(value??''));}
+async function authenticateScannerUser(){
+  const select=$('sessionAccount'),input=$('sessionPassword'),button=$('sessionLoginButton'),error=$('sessionLoginError');
+  if(!select||!input)return;const sessionId=String(select.value||''),password=String(input.value||'');
+  const fail=message=>{if(error){error.textContent=String(message||'Connexion refusée.');error.classList.add('show');}};
+  if(!sessionId||!password){fail('Choisis un compte et saisis son mot de passe.');return;}
+  if(button){button.disabled=true;button.textContent='Vérification…';}
+  try{
+    const challenge=await apiPost('session-challenge',{sessionId},12000);if(!challenge?.ok)throw new Error(challenge?.message||'Connexion refusée.');
+    const candidates=[await scannerSha256Salt(password,String(challenge.salt||''))];
+    if(/^PBKDF2-SHA256(?:-120K)?$/i.test(String(challenge.passwordAlgorithm||''))&&globalThis.crypto?.subtle&&globalThis.TextEncoder){
+      const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveBits']);
+      const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:new TextEncoder().encode(String(challenge.salt||'')),iterations:120000,hash:'SHA-256'},key,256);
+      candidates.push(Array.from(new Uint8Array(bits),b=>b.toString(16).padStart(2,'0')).join(''));
+    }
+    const proofs=[];for(const candidate of [...new Set(candidates)].slice(0,5))proofs.push(await scannerSha256Salt(candidate,String(challenge.nonce||'')));
+    const result=await apiPost('session-authenticate',{sessionId,nonce:String(challenge.nonce||''),response:JSON.stringify(proofs)},15000);
+    if(!result?.ok||!result.token||!result.session)throw new Error(result?.message||'Mot de passe incorrect.');
+    const savedAt=Date.now(),expiresIn=Math.max(60,Number(result.expiresIn)||21600);
+    state.userAuth={token:String(result.token),session:result.session,savedAt,expiresAt:savedAt+expiresIn*1000};
+    try{localStorage.setItem(APP_SESSION_STORAGE_KEY,JSON.stringify(state.userAuth));}catch(e){}
+    $('sessionLogin').classList.remove('show');input.value='';updateSessionBadge();
+    const pending=state.pendingToken;state.pendingToken='';
+    if(state.sealData){renderSeal(state.sealData);return;}
+    if(pending){await lookupToken(pending);return;}
+    await startCamera({decode:true});
+  }catch(e){fail(String(e.message||e||'Connexion impossible.'));}
+  finally{if(button){button.disabled=false;button.textContent='Ouvrir ma session';}}
+}
+async function switchScannerUser(){
+  const auth=activeScannerSession();if(auth?.token){try{await apiPost('session-logout',{authToken:auth.token},5000);}catch(e){}}
+  state.pendingToken=state.pendingToken||state.token||'';state.sealData=null;clearSavedScannerSession();await showSessionLogin('Choisis le compte nominatif qui doit utiliser le scanner.');
+}
+$('changeUser').addEventListener('click',switchScannerUser);
+$('sessionLoginButton').addEventListener('click',authenticateScannerUser);
+$('sessionReloadButton').addEventListener('click',loadScannerSessionOptions);
+$('sessionPassword').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();authenticateScannerUser();}});
 function tokenFrom(raw){
   const v=String(raw||'').trim();if(!v)return '';
   try{const u=new URL(v);return u.searchParams.get('scan')||u.searchParams.get('qr')||u.searchParams.get('s')||v;}catch(e){}
@@ -254,39 +355,45 @@ function showPhotoFallback(){
   $('photoRow').classList.add('show');if(!$('status').classList.contains('bad'))setStatus('Mode photo disponible','');$('hint').textContent='La caméra directe n’est pas disponible sur cet appareil.';
 }
 function renderSeal(data){
-  state.busy=false;
+  state.busy=false;state.sealData=data;
   const card=$('sealCard');card.classList.remove('hidden');hideReaderVisual();
   if(!data||!data.ok){
     card.innerHTML=`<div class="error"><b>Scellé non reconnu</b><div style="margin-top:4px">${esc(data?.message||'Aucun scellé correspondant à ce QR.')}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Scanner un autre scellé</button>`;
     setStatus('QR non reconnu','bad');updateCameraControls();return;
   }
-  campaignUI(data.campaign);state.token=String(data.qrId||state.token||'');
-  const c=data.campaign,status=String(data.status||'').trim(),inStock=!status||status.toUpperCase()==='EN STOCK';
+  const auth=activeScannerSession(),session=auth?.session,isAdmin=!!session?.isAdmin;
+  if(!auth){state.pendingToken=state.token;void showSessionLogin('La session a expiré. Reconnecte-toi pour accéder aux actions terrain.');return;}
+  updateSessionBadge();campaignUI(data.campaign);state.token=String(data.qrId||state.token||'');
+  const c=data.campaign,status=String(data.status||'').trim(),statusUpper=status.toUpperCase(),inStock=statusUpper==='EN STOCK';
   const location=String(data.locationDetail||data.location||'—');
   let html=`<div class="result-kicker"><span><i class="dot"></i>Scellé identifié</span><span class="entry">Entrée ${esc(data.entry||'—')}</span></div>
     <div class="seal-summary"><div class="sealname">${esc(data.scelle||'Scellé sans désignation')}</div>
     <div class="procedure-line">Procédure : <b>${esc(data.procedure||'—')}</b></div>
     <div class="location-highlight"><div class="label">EMPLACEMENT ATTENDU</div><div class="value">${esc(location)}</div></div>
-    <div class="seal-meta"><div class="fact"><span>STATUT ACTUEL</span><b>${esc(status||'Non renseigné')}</b></div><div class="fact"><span>CONTRÔLE</span><b>${c?(c.itemStatus==='A_FAIRE'?'À réaliser':c.itemStatus==='A_VERIFIER'?'À vérifier':'Suivi campagne'):'Hors campagne'}</b></div></div>
-    <details class="more-info"><summary>Autres informations du scellé</summary><div class="facts"><div class="fact"><span>CATÉGORIE</span><b>${esc(data.category||'—')}</b></div><div class="fact"><span>TAILLE</span><b>${esc(data.size||'—')}</b></div><div class="fact full"><span>ENQUÊTEUR</span><b>${esc(data.investigator||'—')}</b></div></div></details></div>`;
-  if(!inStock){
-    html+=`<div class="notice bad"><b>Contrôle bloqué : statut non disponible</b><div style="margin-top:4px">Statut enregistré : ${esc(status)}. Vérifie le registre avant de poursuivre.</div></div>`;
-  } else if(!c){
-    html+=`<div class="notice info"><b>Aucune campagne active</b><div style="margin-top:3px">Le scellé est identifié. Tu peux enregistrer le contrôle individuel.</div></div>`;
-    html+=controlChoices();
-  } else if(!c.inCampaign){
-    html+=`<div class="notice warn"><b>Scellé hors périmètre</b><div style="margin-top:3px">Il ne fait pas partie de la campagne « ${esc(c.title||'Campagne active')} ». Aucun résultat ne sera envoyé à cette campagne.</div></div>`;
-  } else if(c.itemStatus!=='A_FAIRE'){
-    html+=`<div class="notice good"><b>Déjà contrôlé dans cette campagne</b><div style="margin-top:3px">Dernier résultat : <b>${esc(c.itemResult||c.itemStatus||'Contrôle enregistré')}</b></div></div>`;
-  } else {
-    html+=`<div class="notice info"><b>${esc(c.title||'Contrôle physique')}</b><div style="margin-top:3px">Enregistre le résultat correspondant à ce que tu constates sur place.</div></div>`;
-    html+=controlChoices();
+    <div class="seal-meta"><div class="fact"><span>STATUT ACTUEL</span><b>${esc(status||'Non renseigné')}</b></div><div class="fact"><span>SESSION CONNECTÉE</span><b>${isAdmin?'Administrateur':'Enquêteur'}</b></div></div>
+    <details class="more-info"><summary>Autres informations du scellé</summary><div class="facts"><div class="fact"><span>CATÉGORIE</span><b>${esc(data.category||'—')}</b></div><div class="fact"><span>TAILLE</span><b>${esc(data.size||'—')}</b></div><div class="fact full"><span>ENQUÊTEUR RÉFÉRENT</span><b>${esc(data.investigator||'—')}</b></div></div></details></div>`;
+  if(statusUpper==='EN MOUVEMENT'){
+    html+=`<div class="notice warn"><b>Scellé en déplacement</b><div style="margin-top:5px">Pris en charge par : <b>${esc(data.retrievedBy||'—')}</b></div><div>Motif : <b>${esc(data.motif||'Motif non renseigné')}</b></div><div>Destination : <b>${esc(data.destination||'Non renseignée')}</b></div><div>Date de sortie : <b>${esc(formatMovementDate(data.dateSortieHeure||data.dateSortie))}</b></div></div>`;
+    if(isAdmin)html+=`<section class="move-panel"><h3>Retour en stock</h3><p class="hintline">Réservé à l’administrateur connecté. Vérifie physiquement la présence du scellé à son emplacement attendu.</p><div id="movementForm"></div><button class="next" id="openReturnForm" type="button">↩ Confirmer le retour en stock</button></section>`;
+    else html+=`<div class="notice info"><b>Retour réservé à l’administrateur</b><div style="margin-top:4px">L’enquêteur ne peut pas clôturer le déplacement ni réaliser le contrôle physique.</div></div>`;
+  }else if(!inStock){
+    html+=`<div class="notice bad"><b>Actions bloquées</b><div style="margin-top:4px">Statut enregistré : ${esc(status||'inconnu')}. Le scellé doit être en stock pour démarrer un mouvement ou être contrôlé.</div></div>`;
+  }else{
+    if(isAdmin){
+      if(!c){html+=`<div class="notice info"><b>Contrôle administrateur</b><div style="margin-top:3px">Choisis le résultat qui correspond au constat physique.</div></div>`;html+=controlChoices();}
+      else if(!c.inCampaign)html+=`<div class="notice warn"><b>Scellé hors périmètre</b><div style="margin-top:3px">Il ne fait pas partie de la campagne « ${esc(c.title||'Campagne active')} ». Aucun résultat de campagne ne sera envoyé.</div></div>`;
+      else if(c.itemStatus!=='A_FAIRE')html+=`<div class="notice good"><b>Déjà contrôlé dans cette campagne</b><div style="margin-top:3px">Dernier résultat : <b>${esc(c.itemResult||c.itemStatus||'Contrôle enregistré')}</b></div></div>`;
+      else{html+=`<div class="notice info"><b>${esc(c.title||'Contrôle physique')}</b><div style="margin-top:3px">Enregistre le résultat correspondant au constat sur place.</div></div>`;html+=controlChoices();}
+    }else html+=`<div class="notice warn"><b>Session enquêteur</b><div style="margin-top:4px">Tu peux uniquement prendre en charge le scellé et le passer en déplacement. Le contrôle physique est réservé à un administrateur.</div></div>`;
+    html+=`<section class="move-panel"><h3>Prise en charge du scellé</h3><p class="hintline">Le nom est repris de ta session nominative. Le motif est obligatoire ; la destination est facultative.</p><div id="${String('movementForm')}"></div><button class="next" id="openMovementForm" type="button">📦 Prendre en charge et passer en déplacement</button></section>`;
   }
   html+=`<button class="next secondary-next" id="cancelSeal" type="button">↩ Retour au scanner</button>`;
   card.innerHTML=html;
   card.querySelector('#cancelSeal').onclick=resumeScanner;
   card.querySelectorAll('[data-result]').forEach(b=>b.addEventListener('click',()=>submitControl(b.dataset.result,b)));
-  setStatus('Scellé reconnu • vérifie l’emplacement attendu','good');updateCameraControls();
+  card.querySelector('#openMovementForm')?.addEventListener('click',showMovementForm);
+  card.querySelector('#openReturnForm')?.addEventListener('click',showReturnForm);
+  setStatus(isAdmin?'Scellé reconnu • droits administrateur':'Scellé reconnu • action limitée à la prise en charge','good');updateCameraControls();
 }
 function controlChoices(){
   return `<h2 class="control-heading">Résultat du contrôle</h2><div class="control-subtitle">Choisis une seule réponse.</div>
@@ -298,9 +405,49 @@ function controlChoices(){
   </div>
   <details class="observation-drawer"><summary>Ajouter une observation (facultatif)</summary><textarea id="obs" aria-label="Observation du contrôle" placeholder="Décris brièvement le constat, si nécessaire…"></textarea></details>`;
 }
+function formatMovementDate(value){
+  const raw=String(value||'').trim();if(!raw)return 'Non renseignée';
+  let m=raw.match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?/);
+  if(m)return m[3]+'/'+m[2]+'/'+m[1]+(m[4]?' à '+m[4]+':'+m[5]:'');
+  m=raw.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:[ T](\d{2}):(\d{2}))?/);
+  if(m)return m[1]+'/'+m[2]+'/'+m[3]+(m[4]?' à '+m[4]+':'+m[5]:'');return raw;
+}
+function showMovementForm(){
+  const auth=activeScannerSession(),session=auth?.session,form=$('movementForm');if(!auth||!session){void showSessionLogin('Session expirée : reconnecte-toi avant de déclarer un mouvement.');return;}if(!form)return;
+  form.innerHTML=`<div class="move-form"><label for="movementInvestigator">Enquêteur (obligatoire)</label><input id="movementInvestigator" value="${esc(session.name||'')}" readonly required><label for="movementMotif">Motif du déplacement (obligatoire)</label><textarea id="movementMotif" maxlength="500" required placeholder="Ex. expertise, transport, présentation au magistrat…"></textarea><label for="movementDestination">Destination (facultative)</label><input id="movementDestination" maxlength="500" placeholder="Ex. laboratoire, tribunal, autre service…"><div id="movementError" class="session-login-error"></div><div class="actions"><button id="submitMovementButton" class="btn primary" type="button">Confirmer la prise en charge</button><button id="cancelMovementButton" class="btn" type="button">Annuler</button></div></div>`;
+  $('submitMovementButton').onclick=submitScannerMovement;$('cancelMovementButton').onclick=()=>{form.innerHTML='';};$('movementMotif')?.focus();
+}
+async function submitScannerMovement(){
+  if(state.busy)return;const auth=activeScannerSession(),session=auth?.session,token=String(state.token||''),investigatorName=String($('movementInvestigator')?.value||'').trim(),motif=String($('movementMotif')?.value||'').trim(),destination=String($('movementDestination')?.value||'').trim(),button=$('submitMovementButton'),err=$('movementError');
+  const fail=message=>{if(err){err.textContent=String(message||'Opération refusée.');err.classList.add('show');}};
+  if(!auth||!session){fail('Connexion nominative obligatoire.');return;}
+  if(!investigatorName||investigatorName!==String(session.name||'').trim()){fail('Le nom de l’enquêteur doit correspondre à la session connectée.');return;}
+  if(!motif){fail('Le motif du déplacement est obligatoire.');return;}
+  state.busy=true;if(button){button.disabled=true;button.textContent='Enregistrement…';}
+  try{
+    const out=await apiPost('movement-start',{scan:token,destination,motif,investigatorName,authToken:auth.token},18000);
+    if(!out?.ok)throw Object.assign(new Error(out?.message||'La prise en charge a été refusée.'),{code:out?.code||'MOVEMENT_REFUSED'});
+    if(!out.already){state.sessionChecks++;updateSessionProgress();}beep();vibrate([70,35,70]);state.busy=false;state.sealData=null;await lookupToken(token);
+  }catch(e){state.busy=false;if(button){button.disabled=false;button.textContent='Confirmer la prise en charge';}if(['AUTH_REQUIRED','AUTH_EXPIRED','AUTH_REVOKED'].includes(String(e.code||''))){clearSavedScannerSession();await showSessionLogin('La session a expiré. Reconnecte-toi puis recommence.');return;}fail(String(e.message||e||'Échec de la prise en charge.'));}
+  finally{updateCameraControls();}
+}
+function showReturnForm(){
+  const auth=activeScannerSession(),form=$('movementForm');if(!auth||!auth.session?.isAdmin){void showSessionLogin('Le retour en stock exige une session administrateur.');return;}if(!form)return;
+  form.innerHTML=`<div class="move-form"><b>Contrôle du retour en stock</b><p class="move-note">Confirme la présence physique du scellé à son emplacement attendu.</p><label style="display:flex;gap:8px;align-items:flex-start"><input id="confirmedInPlace" type="checkbox" style="width:18px;min-height:18px;flex:none">Je confirme que le scellé est présent à l’emplacement attendu.</label><label for="returnState">État constaté</label><select id="returnState"><option value="CONFORME">Conforme</option><option value="DETERIORE">Détérioré</option><option value="INTEGRITE DOUTEUSE">Intégrité douteuse</option></select><label for="returnObservation">Observation (facultative)</label><textarea id="returnObservation" maxlength="1000" placeholder="Précision utile…"></textarea><div id="returnError" class="session-login-error"></div><div class="actions"><button id="submitReturnButton" class="btn primary" type="button">Confirmer le retour</button><button id="cancelReturnButton" class="btn" type="button">Annuler</button></div></div>`;
+  $('submitReturnButton').onclick=submitScannerReturn;$('cancelReturnButton').onclick=()=>{form.innerHTML='';};
+}
+async function submitScannerReturn(){
+  if(state.busy)return;const auth=activeScannerSession(),confirmedInPlace=!!$('confirmedInPlace')?.checked,returnState=String($('returnState')?.value||'CONFORME'),obs=String($('returnObservation')?.value||'').trim(),token=String(state.token||''),button=$('submitReturnButton'),err=$('returnError');
+  const fail=message=>{if(err){err.textContent=String(message||'Opération refusée.');err.classList.add('show');}};
+  if(!auth?.session?.isAdmin){fail('Connexion administrateur obligatoire.');return;}if(!confirmedInPlace){fail('Confirme que le scellé est physiquement présent à son emplacement attendu.');return;}
+  state.busy=true;if(button){button.disabled=true;button.textContent='Vérification…';}
+  try{const out=await apiPost('movement-return',{scan:token,authToken:auth.token,returnState,confirmedInPlace,obs},18000);if(!out?.ok)throw Object.assign(new Error(out?.message||'Le retour a été refusé.'),{code:out?.code||'RETURN_REFUSED'});state.busy=false;beep();vibrate([70,35,70]);state.sealData=null;await lookupToken(token);}
+  catch(e){state.busy=false;if(button){button.disabled=false;button.textContent='Confirmer le retour';}if(['AUTH_REQUIRED','AUTH_EXPIRED','AUTH_REVOKED'].includes(String(e.code||''))){clearSavedScannerSession();await showSessionLogin('La session a expiré. Reconnecte-toi puis recommence.');return;}fail(String(e.message||e||'Échec du retour.'));}finally{updateCameraControls();}
+}
 async function lookupToken(token){
   token=String(token||'').trim();if(!token||state.busy)return;
-  state.token=token;state.busy=true;pauseReader();
+  if(!activeScannerSession()){state.pendingToken=token;await showSessionLogin('Connecte-toi avec ton compte nominatif pour continuer.');return;}
+  state.token=token;state.sealData=null;state.busy=true;pauseReader();
   if(!state.seriesMode)stopCamera();
   updateUrlWithoutToken();$('sealCard').classList.remove('hidden');$('sealCard').innerHTML='<div class="status"><span>QR reconnu • recherche du scellé…</span></div>';
   showResultCameraState();setStatus('QR reconnu • recherche du scellé…','good');$('frame').classList.add('ok');beep();vibrate(70);updateCameraControls();
@@ -309,18 +456,18 @@ async function lookupToken(token){
     $('retryLookup').onclick=()=>lookupToken(state.token);$('backToScan').onclick=resumeScanner;showResultCameraState();setStatus('Erreur de communication • nouvelle tentative possible','bad');updateCameraControls();}
 }
 async function submitControl(result,button){
-  if(state.busy)return;state.busy=true;button.disabled=true;
-  const card=$('sealCard');const obs=(card.querySelector('#obs')?.value||'').trim();
-  card.querySelectorAll('[data-result]').forEach(b=>b.disabled=true);
-  card.insertAdjacentHTML('beforeend','<div id="saving" class="status">Enregistrement du contrôle…</div>');
+  if(state.busy)return;const auth=activeScannerSession();
+  if(!auth){await showSessionLogin('Connecte-toi pour enregistrer le contrôle physique.');return;}
+  if(!auth.session?.isAdmin){setStatus('Contrôle physique réservé à un administrateur.','bad');return;}
+  state.busy=true;if(button)button.disabled=true;const card=$('sealCard'),obs=(card.querySelector('#obs')?.value||'').trim();
+  card.querySelectorAll('[data-result]').forEach(b=>b.disabled=true);card.insertAdjacentHTML('beforeend','<div id="saving" class="status">Enregistrement du contrôle…</div>');
   try{
-    const out=await apiCall('control',{scan:state.token,result,obs},12000);
-    document.getElementById('saving')?.remove();
-    if(!out?.ok)throw new Error(out?.message||'Contrôle refusé.');
+    const out=await apiPost('control',{scan:state.token,result,obs,authToken:auth.token,agent:auth.session.name||''},12000);$('saving')?.remove();
+    if(!out?.ok)throw Object.assign(new Error(out?.message||'Contrôle refusé.'),{code:out?.code||'CONTROL_REFUSED'});
     if(!out.already){state.sessionChecks++;updateSessionProgress();}beep();vibrate([60,40,60]);const p=out.progress||{};if(out.campaignTitle)campaignUI({title:out.campaignTitle,progress:p});
     card.innerHTML=`<div class="saved"><div class="big">✅</div><b>${out.already?'Résultat déjà enregistré':'Contrôle enregistré'}</b><div class="pill">${esc(out.result||result)}</div>${out.campaignTitle?`<div class="muted" style="margin-top:8px"><b>${esc(out.campaignTitle)}</b><br>${Number(p.done||0)}/${Number(p.total||0)} contrôlés • ${Number(p.remaining||0)} restant(s)</div>`:''}</div><button class="next" id="nextBtn" type="button">📷 Contrôler le scellé suivant</button>`;
-    $('nextBtn').onclick=resumeScanner;state.busy=false;showResultCameraState();setStatus(state.seriesMode&&hasLiveCamera()?'Contrôle enregistré • suivant instantané disponible':'Contrôle enregistré • prêt pour le suivant','good');updateCameraControls();
-  }catch(e){state.busy=false;button.disabled=false;card.querySelectorAll('[data-result]').forEach(b=>b.disabled=false);document.getElementById('saving')?.remove();card.insertAdjacentHTML('beforeend',`<div class="error" style="margin-top:9px"><b>Échec de l’enregistrement</b><div style="margin-top:4px">${esc(e.message)}</div><div style="margin-top:4px">Le résultat n’est pas confirmé. Vérifie la connexion puis relance l’enregistrement ; le serveur signalera si le contrôle était déjà enregistré.</div></div>`);setStatus('Contrôle non confirmé • vérifie la connexion puis réessaie','bad');updateCameraControls();}
+    $('nextBtn').onclick=resumeScanner;state.busy=false;showResultCameraState();setStatus('Contrôle enregistré • prêt pour le suivant','good');updateCameraControls();
+  }catch(e){state.busy=false;if(button)button.disabled=false;card.querySelectorAll('[data-result]').forEach(b=>b.disabled=false);$('saving')?.remove();if(['AUTH_REQUIRED','AUTH_EXPIRED','AUTH_REVOKED'].includes(String(e.code||''))){clearSavedScannerSession();await showSessionLogin('La session a expiré. Reconnecte-toi puis recommence.');return;}card.insertAdjacentHTML('beforeend',`<div class="error" style="margin-top:9px"><b>Échec de l’enregistrement</b><div style="margin-top:4px">${esc(e.message)}</div><div style="margin-top:4px">Le contrôle n’est pas confirmé. Réessaie après vérification de la connexion.</div></div>`);setStatus('Contrôle non confirmé • vérifie la connexion puis réessaie','bad');updateCameraControls();}
 }
 function pauseReader(){
   state.readerGeneration++;
@@ -487,7 +634,7 @@ async function startReader(){
 }
 async function resumeScanner(){
   if(state.cameraSwitching||state.cameraOpening)return;
-  $('sealCard').classList.add('hidden');$('sealCard').innerHTML='';state.token='';state.lastToken='';state.busy=false;state.photoMode=false;updateUrlWithoutToken();$('photoRow').classList.remove('show');$('frame').className='frame';
+  $('sealCard').classList.add('hidden');$('sealCard').innerHTML='';state.token='';state.sealData=null;state.lastToken='';state.busy=false;state.photoMode=false;updateUrlWithoutToken();$('photoRow').classList.remove('show');$('frame').className='frame';
   $('cameraBox').classList.remove('hide','compact');$('hint').textContent='Préparation de la caméra…';
   if(state.seriesMode&&hasLiveCamera()){
     setCameraNote('⚡ Série rapide • reprise du lecteur sans redémarrer la caméra.','live');await startReader();setCameraNote('Caméra active • lecture en cours • mode série rapide','live');updateCameraControls();return;
@@ -594,16 +741,15 @@ $('qrPhoto').onchange=async()=>{
   try{if(!window.jsQR)await loadJsQR();const bmp=await createImageBitmap(file);let code=null;try{const max=1600,scale=Math.min(1,max/Math.max(bmp.width,bmp.height)),canvas=document.createElement('canvas');canvas.width=Math.round(bmp.width*scale);canvas.height=Math.round(bmp.height*scale);const ctx=canvas.getContext('2d',{willReadFrequently:true});if(!ctx)throw new Error('Canvas indisponible pour analyser la photo.');ctx.drawImage(bmp,0,0,canvas.width,canvas.height);const image=ctx.getImageData(0,0,canvas.width,canvas.height);code=jsQR(image.data,image.width,image.height,{inversionAttempts:'attemptBoth'});}finally{try{bmp.close();}catch(e){}}if(!code)throw new Error('Aucun QR trouvé sur la photo.');await lookupToken(tokenFrom(code.data));}catch(e){state.busy=false;$('sealCard').classList.remove('hidden');$('sealCard').innerHTML=`<div class="error"><b>QR non détecté</b><div style="margin-top:4px">${esc(e.message)}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Revenir au scanner</button>`;setStatus('Lecture impossible','bad');}
 };
 async function boot(){
-  updateModeButton();updateFeedbackControls();updateSessionProgress();
+  updateModeButton();updateFeedbackControls();updateSessionProgress();state.userAuth=loadSavedScannerSession();updateSessionBadge();
   try{
-    const deviceToken=localStorage.getItem(DEVICE_TOKEN_KEY)||'';
-    if(!deviceToken){showActivation();return;}
-    hideActivation();
-    const u=new URL(location.href),token=u.searchParams.get('s')||u.searchParams.get('scan')||u.searchParams.get('qr');
-    if(token){updateUrlWithoutToken();await lookupToken(token);}
-    else{await startCamera({decode:true});}
-  }catch(e){if(e.message==='SCANNER_NOT_ACTIVATED'){showActivation();return;}setStatus(String(e?.message||e),'bad');await startCamera({decode:true});}
-  updateCameraControls();
+    const deviceToken=localStorage.getItem(DEVICE_TOKEN_KEY)||'';if(!deviceToken){showActivation();return;}
+    hideActivation();const u=new URL(location.href),token=u.searchParams.get('s')||u.searchParams.get('scan')||u.searchParams.get('qr');if(token)state.pendingToken=token;
+    if(!activeScannerSession()){await showSessionLogin('Connecte-toi avec ton compte nominatif pour accéder au scanner.');return;}
+    if(token){updateUrlWithoutToken();state.pendingToken='';await lookupToken(token);}
+    else if(state.sealData)renderSeal(state.sealData);else await startCamera({decode:true});
+  }catch(e){if(e.message==='SCANNER_NOT_ACTIVATED'){showActivation();return;}setStatus(String(e?.message||e),'bad');if(activeScannerSession())await startCamera({decode:true});else await showSessionLogin('Connexion nominative requise.');}
+  updateCameraControls();updateSessionBadge();
 }
 window.resumeScanner=resumeScanner;boot();
 </script>
