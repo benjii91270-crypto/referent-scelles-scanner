@@ -74,7 +74,7 @@ textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);
 const SCANNER_API_ENDPOINT='https://referent-scelles-api.benjii91270.workers.dev/api';
 const DEVICE_TOKEN_KEY='referent_scelles_device_token_v2';
 const SCANNER_VERSION='2.5.0';
-const state={reader:null,controls:null,stream:null,track:null,devices:[],deviceIndex:0,deviceId:null,busy:false,token:'',lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null,photoMode:false};
+const state={reader:null,controls:null,stream:null,track:null,devices:[],deviceIndex:0,deviceId:null,busy:false,cameraSwitching:false,token:'',lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null,photoMode:false};
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
 function setStatus(t,k=''){const e=$('status');e.textContent=t;e.className='status'+(k?' '+k:'');}
@@ -211,15 +211,22 @@ async function startCamera(){
     if(!window.ZXingBrowser?.BrowserQRCodeReader)throw new Error('Moteur QR indisponible.');
     await chooseDevice();state.reader=new ZXingBrowser.BrowserQRCodeReader();
     state.controls=await state.reader.decodeFromVideoDevice(state.deviceId,$('video'),(result,error)=>{
-      if(!result||state.busy)return;const raw=String(result.getText?.()||result.text||'').trim(),token=tokenFrom(raw);if(!token)return;
+      // Ne pas traiter de QR pendant qu'un changement d'objectif est en cours.
+      if(!result||state.busy||state.cameraSwitching)return;const raw=String(result.getText?.()||result.text||'').trim(),token=tokenFrom(raw);if(!token)return;
       const now=Date.now();if(token===state.lastToken&&now-state.lastAt<2000)return;state.lastToken=token;state.lastAt=now;lookupToken(token);
     });
     const track=await waitForCameraTrack();
     if(!track)throw new Error('Le flux vidéo n’est pas prêt. Réessaie ou autorise la caméra.');
-    state.busy=false;setStatus('Scanner prêt','good');$('hint').textContent='Présentez le QR au centre';$('frame').className='frame ready';await applyCameraCaps();
+    state.busy=false;await applyCameraCaps();
+    const cameraCount=state.devices.length;
+    const cameraLabel=String(state.devices[state.deviceIndex]?.label||'').trim();
+    setStatus(cameraCount>1?`Scanner prêt • caméra ${state.deviceIndex+1}/${cameraCount}`:'Scanner prêt','good');
+    $('hint').textContent=cameraLabel?`Caméra ${state.deviceIndex+1}${cameraCount>1?'/'+cameraCount:''} — ${cameraLabel}. Présentez le QR au centre`:'Présentez le QR au centre';
+    $('frame').className='frame ready';
   }catch(e){state.busy=false;stopCamera();setStatus('Caméra indisponible : '+String(e?.message||e||'erreur inconnue'),'bad');$('hint').textContent='Vérifie l’autorisation caméra, puis réessaie.';showPhotoFallback();}
 }
 async function resumeScanner(){
+  if(state.cameraSwitching)return;
   $('sealCard').classList.add('hidden');$('sealCard').innerHTML='';state.token='';state.lastToken='';state.busy=false;state.photoMode=false;updateUrlWithoutToken();$('cameraBox').classList.remove('hide');$('photoRow').classList.remove('show');$('frame').className='frame';$('hint').textContent='Préparation de la caméra…';setStatus('Préparation…');await startCamera();
 }
 function getTrackCapabilities(track){try{return track?.getCapabilities?.()||null;}catch(e){return null;}}
@@ -265,11 +272,88 @@ async function toggleTorch(){
   }finally{await applyCameraCaps();}
 }
 $('torch').onclick=toggleTorch;
+function getCameraFacing(device,track){
+  const label=String(device?.label||'');
+  if(/back|rear|environment|arrière|\bdos\b|trasera|trás|facing back/i.test(label))return 'rear';
+  if(/front|user|avant|frontal|facetime|facing front/i.test(label))return 'front';
+  const facing=String(track?.getSettings?.().facingMode||'').toLowerCase();
+  if(facing==='environment')return 'rear';
+  if(facing==='user')return 'front';
+  return 'unknown';
+}
+function preferredRearCamera(devices,currentId){
+  const rear=devices.filter(d=>getCameraFacing(d,null)==='rear');
+  if(!rear.length)return null;
+  // Prefer the main rear camera over specialist ultra-wide/telephoto lenses when labels allow it.
+  const score=d=>{
+    const l=String(d.label||'').toLowerCase();let n=0;
+    if(/ultra.?wide|wide|macro|telephoto|depth|0[,.]5x|3x|5x/.test(l))n+=10;
+    if(/main|primary|back camera|rear camera|camera2 0|camera 0/.test(l))n-=2;
+    return n;
+  };
+  rear.sort((a,b)=>score(a)-score(b));
+  return rear.find(d=>d.deviceId!==currentId)||rear[0];
+}
 $('switch').onclick=async()=>{
-  if(!state.devices.length){setStatus('Aucune autre caméra détectée.','bad');return;}
-  state.deviceIndex=(state.deviceIndex+1)%state.devices.length;
-  state.deviceId=state.devices[state.deviceIndex]?.deviceId;
-  await startCamera();
+  // Verrou immédiat : les clics rapides ne désynchronisent plus l'index.
+  if(state.cameraSwitching)return;
+  if(state.busy){setStatus('Patiente jusqu’à ce que le scanner soit prêt avant de changer de caméra.','');return;}
+  const button=$('switch');
+  const restartButton=$('cameraStart');
+  state.cameraSwitching=true;
+  button.disabled=true;
+  restartButton.disabled=true;
+  button.textContent='⏳ Changement…';
+  try{
+    if(!window.ZXingBrowser?.BrowserCodeReader?.listVideoInputDevices){
+      throw new Error('La détection des caméras est indisponible dans ce navigateur.');
+    }
+    const listed=await ZXingBrowser.BrowserCodeReader.listVideoInputDevices();
+    if(Array.isArray(listed)&&listed.length)state.devices=listed.filter(d=>d&&d.deviceId);
+    if(!state.devices.length){setStatus('Aucune caméra détectée.','bad');return;}
+    if(state.devices.length===1){
+      state.deviceIndex=0;state.deviceId=state.devices[0].deviceId;
+      setStatus('Une seule caméra est accessible au navigateur. Autorise l’accès caméra puis recharge la page si ton téléphone possède plusieurs objectifs.','bad');
+      return;
+    }
+    const activeId=state.track?.getSettings?.().deviceId||state.deviceId;
+    const currentDevice=state.devices.find(d=>d.deviceId===activeId)||state.devices[state.deviceIndex];
+    const currentFacing=getCameraFacing(currentDevice,state.track);
+    const rearDevices=state.devices.filter(d=>getCameraFacing(d,null)==='rear');
+    const frontDevices=state.devices.filter(d=>getCameraFacing(d,null)==='front');
+    let nextDevice=null;
+    if(currentFacing==='front'){
+      // Un clic depuis la caméra avant va directement à l'objectif arrière.
+      nextDevice=preferredRearCamera(state.devices,activeId);
+    }else if(currentFacing==='rear'){
+      const caps=getTrackCapabilities(state.track);
+      if(caps?.torch===true&&frontDevices.length){
+        // Si la caméra arrière a un flash utilisable, l'action suivante revient à l'avant.
+        nextDevice=frontDevices.find(d=>d.deviceId!==activeId)||frontDevices[0];
+      }else{
+        // Si le flash est absent, essaie d'abord un autre objectif arrière avant l'avant.
+        nextDevice=rearDevices.find(d=>d.deviceId!==activeId)||frontDevices.find(d=>d.deviceId!==activeId)||null;
+      }
+    }
+    if(!nextDevice){
+      let currentIndex=state.devices.findIndex(d=>d.deviceId===activeId);
+      if(currentIndex<0)currentIndex=Number.isInteger(state.deviceIndex)?state.deviceIndex:0;
+      nextDevice=state.devices[(currentIndex+1)%state.devices.length];
+    }
+    if(!nextDevice?.deviceId)throw new Error('Impossible d’identifier la caméra suivante.');
+    state.deviceIndex=state.devices.findIndex(d=>d.deviceId===nextDevice.deviceId);
+    state.deviceId=nextDevice.deviceId;
+    setStatus(`Changement vers ${nextDevice.label||`la caméra ${state.deviceIndex+1}/${state.devices.length}`}…`,'');
+    await startCamera();
+  }catch(e){
+    state.busy=false;
+    setStatus('Impossible de changer de caméra : '+String(e?.message||e||'erreur inconnue'),'bad');
+  }finally{
+    state.cameraSwitching=false;
+    button.disabled=false;
+    restartButton.disabled=false;
+    button.textContent='↻ Caméra';
+  }
 };
 async function setZoom(d){if(!state.track||!state.zoom)return;const z=state.zoom;z.value=Math.max(z.min,Math.min(z.max,z.value+d*z.step));try{await state.track.applyConstraints({advanced:[{zoom:z.value}]})}catch(e){setStatus('Le zoom n’est pas disponible sur cette caméra.','bad');}}
 $('zoomMinus').onclick=()=>setZoom(-1);$('zoomPlus').onclick=()=>setZoom(1);$('cameraStart').onclick=resumeScanner;
