@@ -32,6 +32,69 @@ textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);
 .photoRow{display:none;margin-top:8px}.photoRow.show{display:block}.file{display:none}.photoBtn{width:100%;display:flex;justify-content:center;align-items:center}.preferences-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px}.preferences-row button{min-height:42px;font-size:11px;padding:8px}.session-progress{margin-top:7px;text-align:center;color:#667386;font-size:10px;font-weight:800}
  .activation-overlay{position:fixed;inset:0;background:rgba(11,18,29,.82);display:none;place-items:center;padding:16px;z-index:9999}.activation-overlay.show{display:grid}.activation-card{width:min(460px,100%);background:#fff;border-radius:20px;padding:22px;box-shadow:0 22px 70px rgba(0,0,0,.28)}.activation-kicker{font-size:10px;font-weight:950;letter-spacing:.08em;color:#6b7788}.activation-card h1{margin:6px 0;font-size:24px;color:var(--navy)}.activation-card p{margin:0 0 14px;font-size:12px;line-height:1.45;color:var(--muted)}.activation-input{width:100%;height:50px;border:1px solid #cad3de;border-radius:12px;padding:0 13px;font:inherit;font-size:17px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.activation-btn{width:100%;margin-top:9px;min-height:46px;border:0;border-radius:12px;background:var(--navy);color:#fff;font:inherit;font-weight:950}.activation-help{margin-top:9px;font-size:10px;line-height:1.45;color:#7a8695}
 @media(max-width:520px){body{padding:7px 7px 22px}.facts{grid-template-columns:1fr 1fr}video{height:55vh}.frame{width:74vw;height:74vw}.actions{grid-template-columns:repeat(2,minmax(0,1fr))}.actions button{font-size:12px;padding:10px 8px}.camera.compact video{height:110px}.camera.compact{min-height:110px}}@media(min-width:521px){.actions{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* V2.7 — terrain-first interface; V2.8 — accessibility and resilience polish */
+body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
+.top{padding:13px 14px 12px;border-radius:17px}
+.title{font-size:23px}.sub{font-size:12px}
+.panel{padding:10px;border-radius:17px}
+.primary-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.primary-actions button{min-height:52px;font-size:13px;padding:11px 10px}
+.primary-actions #cameraStart:not(.hidden){grid-column:1/-1}
+.settings-drawer{margin-top:9px;border:1px solid var(--line);border-radius:13px;background:#f8fafc;overflow:hidden}
+.settings-drawer>summary{cursor:pointer;list-style:none;min-height:44px;display:flex;align-items:center;justify-content:space-between;padding:11px 12px;font-size:12px;font-weight:950;touch-action:manipulation}
+.settings-drawer>summary::-webkit-details-marker{display:none}
+.settings-drawer>summary::after{content:'＋';font-size:16px;color:var(--muted)}
+.settings-drawer[open]>summary::after{content:'−'}
+.settings-content{padding:2px 10px 12px;border-top:1px solid var(--line)}
+.settings-label{font-size:10px;font-weight:950;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:11px 0 6px}
+.settings-content #modeSeries{width:100%;min-height:44px}
+.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.settings-grid button{min-height:43px;font-size:11px;padding:8px}
+.preferences-row{margin-top:0}
+.session-progress{padding:6px;border-radius:10px;background:#f7f9fb}
+.camera{min-height:300px}
+@media(max-width:520px){.camera{min-height:260px}video{height:48vh;min-height:250px;max-height:450px}.frame{width:min(72vw,330px);height:min(72vw,330px)}.card{padding:12px}.primary-actions button{min-height:54px}}
+/* Simplified scellé summary */
+.result-kicker{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;color:var(--green);font-size:10px;font-weight:950;letter-spacing:.06em;text-transform:uppercase}
+.result-kicker .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#2f8755;margin-right:6px}
+.seal-summary{margin-top:9px}
+.sealname{font-size:23px;margin-top:8px}
+.procedure-line{margin-top:6px;font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.procedure-line b{color:var(--ink);font-weight:850}
+.location-highlight{margin-top:12px;border:1px solid #cad9ed;background:#f1f6fd;border-radius:14px;padding:12px}
+.location-highlight .label{font-size:9px;font-weight:950;letter-spacing:.06em;color:#536b8d}
+.location-highlight .value{font-size:16px;font-weight:950;line-height:1.25;margin-top:4px;overflow-wrap:anywhere}
+.seal-meta{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+.seal-meta .fact{margin:0}
+.more-info{border:1px solid var(--line);border-radius:12px;margin-top:8px;overflow:hidden;background:#fff}
+.more-info summary{padding:11px;min-height:42px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-size:11px;font-weight:900;list-style:none}
+.more-info summary::-webkit-details-marker{display:none}
+.more-info summary::after{content:'＋';font-size:15px;color:var(--muted)}
+.more-info[open] summary::after{content:'−'}
+.more-info .facts{margin:0;padding:0 8px 8px}
+.control-heading{margin:15px 0 4px;font-size:16px;font-weight:950}
+.control-subtitle{font-size:11px;color:var(--muted);margin-bottom:8px}
+.control-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.control-grid .choice{min-height:96px;margin:0;padding:10px;display:flex;align-items:flex-start;gap:8px;border-radius:13px}
+.control-grid .choice .ico{width:34px;height:34px;border-radius:10px;font-size:17px}
+.control-grid .choice .txt{margin-left:0;flex:1}
+.control-grid .choice b{font-size:13px;line-height:1.2}
+.control-grid .choice small{font-size:10px;line-height:1.3;margin-top:4px}
+.control-grid .choice:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #4b91d1;outline-offset:2px}
+.observation-drawer{margin-top:9px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.observation-drawer summary{list-style:none;min-height:43px;padding:11px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-size:11px;font-weight:850}
+.observation-drawer summary::-webkit-details-marker{display:none}
+.observation-drawer summary::after{content:'＋';color:var(--muted);font-size:15px}
+.observation-drawer[open] summary::after{content:'−'}
+.observation-drawer textarea{margin:0;border:0;border-top:1px solid var(--line);border-radius:0;min-height:75px}
+.notice{font-size:12px}
+.saved{padding:16px 12px}
+.saved .big{font-size:30px}
+.next{min-height:52px}
+.error{font-size:12px}
+@media(max-width:390px){.control-grid{grid-template-columns:1fr}.control-grid .choice{min-height:72px}.seal-meta{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
@@ -40,7 +103,7 @@ textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);
   <header class="top">
     <div class="brand">RÉFÉRENT SCELLÉS</div>
     <div class="title">Scanner QR</div>
-    <div class="sub">Mode contrôle terrain • V2.6.0 — série rapide</div>
+    <div class="sub">Contrôle terrain simplifié • V2.8.0</div>
     <div id="camp" class="camp"><div id="campTitle" class="camp-title"></div><div id="campMeta" class="camp-meta"></div><div class="bar"><i id="campBar" style="width:0%"></i></div></div>
   </header>
 
@@ -51,19 +114,29 @@ textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);
     </div>
     <div id="cameraNote" class="camera-note" aria-live="polite">La caméra est inactive.</div>
     <div id="status" class="status" role="status" aria-live="polite" aria-atomic="true">Initialisation…</div>
-    <div class="actions">
-      <button id="modeSeries" class="btn good" type="button" aria-pressed="true" title="Garde la caméra ouverte entre deux contrôles pour accélérer les scans.">⚡ Série rapide : ON</button>
+    <div class="actions primary-actions" id="primaryActions" aria-label="Actions principales">
       <button id="torch" class="btn" type="button" disabled>🔦 Torche</button>
       <button id="switch" class="btn" type="button">↻ Changer de caméra</button>
-      <button id="zoomMinus" class="btn" type="button" disabled>− Zoom</button>
-      <button id="zoomPlus" class="btn" type="button" disabled>＋ Zoom</button>
       <button id="cameraStart" class="btn primary" type="button">📷 Activer la caméra</button>
-      <button id="cameraStop" class="btn warn" type="button" disabled>⏸ Pause caméra</button>
     </div>
-    <div class="preferences-row" aria-label="Préférences de retour">
-      <button id="soundToggle" class="btn" type="button" aria-pressed="true">🔊 Son : ON</button>
-      <button id="vibrationToggle" class="btn" type="button" aria-pressed="true">📳 Vibration : ON</button>
-    </div>
+    <details id="advancedSettings" class="settings-drawer">
+      <summary>⚙ Réglages complémentaires</summary>
+      <div class="settings-content">
+        <div class="settings-label">Mode de contrôle</div>
+        <button id="modeSeries" class="btn good" type="button" aria-pressed="true" title="Garde la caméra ouverte entre deux contrôles pour accélérer les scans.">⚡ Série rapide : ON</button>
+        <div class="settings-label">Réglages de l’image</div>
+        <div class="settings-grid">
+          <button id="zoomMinus" class="btn" type="button" disabled>− Réduire le zoom</button>
+          <button id="zoomPlus" class="btn" type="button" disabled>＋ Augmenter le zoom</button>
+          <button id="cameraStop" class="btn warn" type="button" disabled>⏸ Arrêter la caméra</button>
+        </div>
+        <div class="settings-label">Retours de confirmation</div>
+        <div class="preferences-row" aria-label="Préférences de retour">
+          <button id="soundToggle" class="btn" type="button" aria-pressed="true">🔊 Son : ON</button>
+          <button id="vibrationToggle" class="btn" type="button" aria-pressed="true">📳 Vibration : ON</button>
+        </div>
+      </div>
+    </details>
     <div id="sessionProgress" class="session-progress" aria-live="polite">Contrôles enregistrés pendant cette session : 0</div>
     <div id="photoRow" class="photoRow">
       <label class="btn photoBtn" for="qrPhoto">📷 Scanner avec une photo</label>
@@ -71,15 +144,15 @@ textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);
     </div>
   </section>
 
-  <section id="sealCard" class="card hidden"></section>
-  <div class="small-note">Mode série rapide conserve la caméra active mais met la lecture en pause pendant la fiche. Tu peux couper la caméra à tout moment. Le mode classique coupe le flux après chaque lecture.</div>
+  <section id="sealCard" class="card hidden" aria-live="polite" aria-atomic="false" aria-label="Informations et contrôle du scellé"></section>
+  <div class="small-note">Interface terrain simplifiée • Les réglages complémentaires restent accessibles dans le volet « Réglages ». Le mode série rapide maintient la caméra entre deux fiches ; tu peux l’arrêter à tout moment.</div>
 </div>
 
 <script>
 'use strict';
 const SCANNER_API_ENDPOINT='https://referent-scelles-api.benjii91270.workers.dev/api';
 const DEVICE_TOKEN_KEY='referent_scelles_device_token_v2';
-const SCANNER_VERSION='2.6.0';
+const SCANNER_VERSION='2.8.0';
 const SERIES_MODE_KEY='referent_scelles_series_mode_v1';
 const SOUND_PREF_KEY='referent_scelles_scanner_sound_v1';
 const VIBRATION_PREF_KEY='referent_scelles_scanner_vibration_v1';
@@ -99,14 +172,21 @@ function updateSessionProgress(){$('sessionProgress').textContent=`Contrôles en
 async function apiCall(api,params={},timeout=9000){
   const deviceToken=localStorage.getItem(DEVICE_TOKEN_KEY)||'';
   if(api!=='pair' && !deviceToken) throw new Error('SCANNER_NOT_ACTIVATED');
+  if(typeof navigator!=='undefined'&&navigator.onLine===false)throw new Error('Aucune connexion Internet. Rétablis le réseau avant de rechercher ou d’enregistrer un contrôle.');
   const u=new URL(SCANNER_API_ENDPOINT);
   u.searchParams.set('api',api);
   Object.entries(params||{}).forEach(([k,v])=>{if(v!==undefined&&v!==null)u.searchParams.set(k,String(v));});
   const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),timeout);
   try{
-    const res=await fetch(u.toString(),{method:'GET',headers:{Accept:'application/json',...(deviceToken?{Authorization:'Bearer '+deviceToken}:{})},cache:'no-store',signal:controller.signal});
+    let res;
+    try{res=await fetch(u.toString(),{method:'GET',headers:{Accept:'application/json',...(deviceToken?{Authorization:'Bearer '+deviceToken}:{})},cache:'no-store',signal:controller.signal});}
+    catch(e){
+      if(e?.name==='AbortError')throw new Error('Le serveur met trop de temps à répondre. Réessaie quand la connexion sera stable.');
+      if(e instanceof TypeError)throw new Error(typeof navigator!=='undefined'&&navigator.onLine===false?'Téléphone hors ligne. Vérifie la connexion Internet.':'Connexion au serveur impossible. Vérifie le réseau puis réessaie.');
+      throw e;
+    }
     const data=await res.json().catch(()=>null);
-    if(!res.ok || !data) throw new Error(data?.message||('HTTP '+res.status));
+    if(!res.ok || !data) throw new Error(data?.message||(!data?'Réponse serveur illisible. Réessaie.':'HTTP '+res.status));
     if(data.code==='DEVICE_INVALID'||data.code==='DEVICE_REQUIRED'){localStorage.removeItem(DEVICE_TOKEN_KEY);showActivation('Cette autorisation n’est plus valide.');throw new Error('SCANNER_NOT_ACTIVATED');}
     return data;
   }finally{clearTimeout(timer)}
@@ -142,9 +222,14 @@ function updateModeButton(){
   b.title=state.seriesMode?'Caméra maintenue active entre les fiches. La lecture s’arrête pendant le contrôle.':'Le flux caméra est coupé dès qu’un QR est lu.';
 }
 function updateCameraControls(){
-  const live=hasLiveCamera();$('cameraStart').disabled=state.cameraOpening||state.busy&&!resultCardVisible();
-  $('cameraStart').textContent=live?(state.readerRunning?'↺ Nouveau scan':'▶ Reprendre le scan'):'📷 Activer la caméra';
-  $('cameraStop').disabled=!live||state.cameraOpening;$('switch').disabled=state.cameraOpening||state.cameraSwitching||state.busy;
+  const live=hasLiveCamera(),hasResult=resultCardVisible();
+  const showStart=!hasResult&&(!live||!state.readerRunning);
+  $('cameraStart').classList.toggle('hidden',!showStart);
+  $('cameraStart').disabled=state.cameraOpening||state.cameraSwitching||state.busy;
+  $('cameraStart').textContent=live?'▶ Reprendre la lecture':'📷 Activer la caméra';
+  $('cameraStop').disabled=!live||state.cameraOpening||state.cameraSwitching;
+  $('switch').disabled=state.cameraOpening||state.cameraSwitching||state.busy;
+  if(!live)$('torch').disabled=true;
   if($('modeSeries'))updateModeButton();
 }
 function setCameraNote(text,kind=''){
@@ -172,33 +257,46 @@ function renderSeal(data){
   state.busy=false;
   const card=$('sealCard');card.classList.remove('hidden');hideReaderVisual();
   if(!data||!data.ok){
-    card.innerHTML=`<div class="error"><b>QR non reconnu</b><div style="margin-top:4px">${esc(data?.message||'Aucun scellé correspondant.')}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Scanner un autre scellé</button>`;
-    setStatus('QR non reconnu','bad');return;
+    card.innerHTML=`<div class="error"><b>Scellé non reconnu</b><div style="margin-top:4px">${esc(data?.message||'Aucun scellé correspondant à ce QR.')}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Scanner un autre scellé</button>`;
+    setStatus('QR non reconnu','bad');updateCameraControls();return;
   }
   campaignUI(data.campaign);state.token=String(data.qrId||state.token||'');
-  const c=data.campaign;let html=`<div class="entry">N° ${esc(data.entry)}</div><div class="sealname">${esc(data.scelle||'Scellé')}</div><div class="muted">Procédure : <b>${esc(data.procedure||'—')}</b></div>`;
-  html+=`<div class="facts"><div class="fact"><span>CATÉGORIE</span><b>${esc(data.category||'—')}</b></div><div class="fact"><span>TAILLE</span><b>${esc(data.size||'—')}</b></div><div class="fact"><span>STATUT</span><b>${esc(data.status||'—')}</b></div><div class="fact"><span>ENQUÊTEUR</span><b>${esc(data.investigator||'—')}</b></div><div class="fact full"><span>EMPLACEMENT ATTENDU</span><b>${esc(data.locationDetail||data.location||'—')}</b></div></div>`;
-  if(data.status && data.status!=='EN STOCK'){
-    html+=`<div class="notice.bad notice bad"><b>Scellé non disponible au contrôle physique</b><div style="margin-top:3px">Statut actuel : ${esc(data.status)}</div></div>`;
+  const c=data.campaign,status=String(data.status||'').trim(),inStock=!status||status.toUpperCase()==='EN STOCK';
+  const location=String(data.locationDetail||data.location||'—');
+  let html=`<div class="result-kicker"><span><i class="dot"></i>Scellé identifié</span><span class="entry">Entrée ${esc(data.entry||'—')}</span></div>
+    <div class="seal-summary"><div class="sealname">${esc(data.scelle||'Scellé sans désignation')}</div>
+    <div class="procedure-line">Procédure : <b>${esc(data.procedure||'—')}</b></div>
+    <div class="location-highlight"><div class="label">EMPLACEMENT ATTENDU</div><div class="value">${esc(location)}</div></div>
+    <div class="seal-meta"><div class="fact"><span>STATUT ACTUEL</span><b>${esc(status||'Non renseigné')}</b></div><div class="fact"><span>CONTRÔLE</span><b>${c?(c.itemStatus==='A_FAIRE'?'À réaliser':c.itemStatus==='A_VERIFIER'?'À vérifier':'Suivi campagne'):'Hors campagne'}</b></div></div>
+    <details class="more-info"><summary>Autres informations du scellé</summary><div class="facts"><div class="fact"><span>CATÉGORIE</span><b>${esc(data.category||'—')}</b></div><div class="fact"><span>TAILLE</span><b>${esc(data.size||'—')}</b></div><div class="fact full"><span>ENQUÊTEUR</span><b>${esc(data.investigator||'—')}</b></div></div></details></div>`;
+  if(!inStock){
+    html+=`<div class="notice bad"><b>Contrôle bloqué : statut non disponible</b><div style="margin-top:4px">Statut enregistré : ${esc(status)}. Vérifie le registre avant de poursuivre.</div></div>`;
   } else if(!c){
-    html+=`<div class="notice warn"><b>Aucune campagne active</b><div style="margin-top:3px">Le scellé est reconnu. Les choix ci-dessous enregistreront un contrôle hors campagne.</div></div>`;
+    html+=`<div class="notice info"><b>Aucune campagne active</b><div style="margin-top:3px">Le scellé est identifié. Tu peux enregistrer le contrôle individuel.</div></div>`;
     html+=controlChoices();
   } else if(!c.inCampaign){
-    html+=`<div class="notice warn"><b>Scellé hors périmètre</b><div style="margin-top:3px">Il n’appartient pas à la campagne « ${esc(c.title||'Campagne active')} ». Aucun contrôle ne sera envoyé.</div></div>`;
+    html+=`<div class="notice warn"><b>Scellé hors périmètre</b><div style="margin-top:3px">Il ne fait pas partie de la campagne « ${esc(c.title||'Campagne active')} ». Aucun résultat ne sera envoyé à cette campagne.</div></div>`;
   } else if(c.itemStatus!=='A_FAIRE'){
-    html+=`<div class="notice good"><b>Contrôle déjà effectué</b><div style="margin-top:3px">Résultat : <b>${esc(c.itemResult||c.itemStatus||'Contrôlé')}</b></div></div>`;
+    html+=`<div class="notice good"><b>Déjà contrôlé dans cette campagne</b><div style="margin-top:3px">Dernier résultat : <b>${esc(c.itemResult||c.itemStatus||'Contrôle enregistré')}</b></div></div>`;
   } else {
-    html+=`<div class="notice info"><b>Campagne active : ${esc(c.title||'Contrôle physique')}</b><div style="margin-top:3px">Emplacement attendu : <b>${esc(data.locationDetail||data.location||'—')}</b></div></div>`;
+    html+=`<div class="notice info"><b>${esc(c.title||'Contrôle physique')}</b><div style="margin-top:3px">Enregistre le résultat correspondant à ce que tu constates sur place.</div></div>`;
     html+=controlChoices();
   }
-  html+=`<div class="actions"><button class="btn" id="cancelSeal" type="button">↩ Retour au scanner</button></div>`;
+  html+=`<button class="next secondary-next" id="cancelSeal" type="button">↩ Retour au scanner</button>`;
   card.innerHTML=html;
   card.querySelector('#cancelSeal').onclick=resumeScanner;
   card.querySelectorAll('[data-result]').forEach(b=>b.addEventListener('click',()=>submitControl(b.dataset.result,b)));
-  setStatus('Scellé reconnu • choisissez le contrôle','good');
+  setStatus('Scellé reconnu • vérifie l’emplacement attendu','good');updateCameraControls();
 }
 function controlChoices(){
-  return `<div style="margin-top:11px"><button class="choice green" data-result="CONFORME"><span class="ico">✓</span><span class="txt"><b>Présent et conforme</b><small>Présence, emplacement et intégrité OK</small></span></button><button class="choice red" data-result="ABSENT"><span class="ico">!</span><span class="txt"><b>Scellé absent</b><small>Le scellé n’a pas été retrouvé</small></span></button><button class="choice amber" data-result="EMPLACEMENT NON CONFORME"><span class="ico">⌖</span><span class="txt"><b>Emplacement non conforme</b><small>Présent à un autre emplacement</small></span></button><button class="choice amber" data-result="SCELLÉ À VÉRIFIER"><span class="ico">⚠</span><span class="txt"><b>Intégrité à vérifier</b><small>Conditionnement ou scellement à examiner</small></span></button><label class="muted" style="display:block;font-weight:900;margin-top:10px">Observation facultative</label><textarea id="obs" placeholder="Constatation complémentaire…"></textarea></div>`;
+  return `<h2 class="control-heading">Résultat du contrôle</h2><div class="control-subtitle">Choisis une seule réponse.</div>
+  <div class="control-grid">
+    <button class="choice green" data-result="CONFORME" type="button"><span class="ico">✓</span><span class="txt"><b>Conforme</b><small>Présent, bon emplacement et intégrité correcte</small></span></button>
+    <button class="choice red" data-result="ABSENT" type="button"><span class="ico">!</span><span class="txt"><b>Absent</b><small>Introuvable à l’emplacement attendu</small></span></button>
+    <button class="choice amber" data-result="EMPLACEMENT NON CONFORME" type="button"><span class="ico">⌖</span><span class="txt"><b>Mauvais emplacement</b><small>Scellé trouvé ailleurs</small></span></button>
+    <button class="choice amber" data-result="SCELLÉ À VÉRIFIER" type="button"><span class="ico">⚠</span><span class="txt"><b>À vérifier</b><small>Conditionnement ou intégrité douteuse</small></span></button>
+  </div>
+  <details class="observation-drawer"><summary>Ajouter une observation (facultatif)</summary><textarea id="obs" aria-label="Observation du contrôle" placeholder="Décris brièvement le constat, si nécessaire…"></textarea></details>`;
 }
 async function lookupToken(token){
   token=String(token||'').trim();if(!token||state.busy)return;
@@ -213,15 +311,16 @@ async function lookupToken(token){
 async function submitControl(result,button){
   if(state.busy)return;state.busy=true;button.disabled=true;
   const card=$('sealCard');const obs=(card.querySelector('#obs')?.value||'').trim();
+  card.querySelectorAll('[data-result]').forEach(b=>b.disabled=true);
   card.insertAdjacentHTML('beforeend','<div id="saving" class="status">Enregistrement du contrôle…</div>');
   try{
     const out=await apiCall('control',{scan:state.token,result,obs},12000);
     document.getElementById('saving')?.remove();
     if(!out?.ok)throw new Error(out?.message||'Contrôle refusé.');
     if(!out.already){state.sessionChecks++;updateSessionProgress();}beep();vibrate([60,40,60]);const p=out.progress||{};if(out.campaignTitle)campaignUI({title:out.campaignTitle,progress:p});
-    card.innerHTML=`<div class="saved"><div class="big">✅</div><b>${out.already?'Contrôle déjà enregistré':'Contrôle enregistré'}</b><div class="pill">${esc(out.result||result)}</div>${out.campaignTitle?`<div class="muted" style="margin-top:8px"><b>${esc(out.campaignTitle)}</b><br>${Number(p.done||0)}/${Number(p.total||0)} contrôlés • ${Number(p.remaining||0)} restant(s)</div>`:''}</div><button class="next" id="nextBtn" type="button">📷 Scanner le suivant</button>`;
+    card.innerHTML=`<div class="saved"><div class="big">✅</div><b>${out.already?'Résultat déjà enregistré':'Contrôle enregistré'}</b><div class="pill">${esc(out.result||result)}</div>${out.campaignTitle?`<div class="muted" style="margin-top:8px"><b>${esc(out.campaignTitle)}</b><br>${Number(p.done||0)}/${Number(p.total||0)} contrôlés • ${Number(p.remaining||0)} restant(s)</div>`:''}</div><button class="next" id="nextBtn" type="button">📷 Contrôler le scellé suivant</button>`;
     $('nextBtn').onclick=resumeScanner;state.busy=false;showResultCameraState();setStatus(state.seriesMode&&hasLiveCamera()?'Contrôle enregistré • suivant instantané disponible':'Contrôle enregistré • prêt pour le suivant','good');updateCameraControls();
-  }catch(e){state.busy=false;button.disabled=false;document.getElementById('saving')?.remove();card.insertAdjacentHTML('beforeend',`<div class="error" style="margin-top:9px"><b>Échec de l’enregistrement</b><div style="margin-top:4px">${esc(e.message)}</div><div style="margin-top:4px">Tu peux réessayer le contrôle ; aucun succès n’est affiché tant que le serveur ne l’a pas confirmé.</div></div>`);setStatus('Contrôle non confirmé • vérifie la connexion puis réessaie','bad');updateCameraControls();}
+  }catch(e){state.busy=false;button.disabled=false;card.querySelectorAll('[data-result]').forEach(b=>b.disabled=false);document.getElementById('saving')?.remove();card.insertAdjacentHTML('beforeend',`<div class="error" style="margin-top:9px"><b>Échec de l’enregistrement</b><div style="margin-top:4px">${esc(e.message)}</div><div style="margin-top:4px">Le résultat n’est pas confirmé. Vérifie la connexion puis relance l’enregistrement ; le serveur signalera si le contrôle était déjà enregistré.</div></div>`);setStatus('Contrôle non confirmé • vérifie la connexion puis réessaie','bad');updateCameraControls();}
 }
 function pauseReader(){
   state.readerGeneration++;
@@ -452,8 +551,8 @@ $('modeSeries').onclick=async()=>{
   updateCameraControls();
 };
 $('cameraStart').onclick=resumeScanner;
-window.addEventListener('online',()=>{if(!state.busy)setStatus('Connexion rétablie • scanner prêt','good');});
-window.addEventListener('offline',()=>setStatus('Connexion indisponible • la recherche serveur nécessite Internet.','bad'));
+window.addEventListener('online',()=>{if(!state.busy)setStatus(resultCardVisible()?'Connexion rétablie • résultat conservé':'Connexion rétablie • scanner prêt','good');});
+window.addEventListener('offline',()=>setStatus('Hors ligne • la lecture QR reste possible, mais le contrôle serveur nécessite Internet.','bad'));
 document.addEventListener('visibilitychange',async()=>{
   if(document.hidden){
     state.cameraResumeOnVisible=hasLiveCamera();state.resumeDecodeAfterVisibility=state.readerRunning;
@@ -468,22 +567,31 @@ async function setZoom(d){if(!state.track||!state.zoom)return;const z=state.zoom
 $('zoomMinus').onclick=()=>setZoom(-1);$('zoomPlus').onclick=()=>setZoom(1);
 $('activateBtn').onclick=activateScanner;
 $('pairCode').addEventListener('keydown',e=>{if(e.key==='Enter')activateScanner();});
-function loadScriptUrl(url){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=url;s.async=true;s.onload=()=>resolve();s.onerror=()=>{s.remove();reject(new Error('Chargement impossible : '+url));};document.head.appendChild(s);});}
+let zxingLoadPromise=null,jsQrLoadPromise=null;
+function loadScriptUrl(url){return new Promise((resolve,reject)=>{const existing=[...document.scripts].find(x=>x.src===url);if(existing&&existing.dataset.loaded==='true'){resolve();return;}const s=existing||document.createElement('script');s.src=url;s.async=true;s.dataset.loaded='false';s.onload=()=>{s.dataset.loaded='true';resolve();};s.onerror=()=>{s.remove();reject(new Error('Chargement impossible : '+url));};if(!existing)document.head.appendChild(s);});}
 async function loadZxing(){
   if(window.ZXingBrowser?.BrowserQRCodeReader)return true;
+  if(zxingLoadPromise)return zxingLoadPromise;
+  zxingLoadPromise=(async()=>{
   const urls=['https://unpkg.com/@zxing/browser@0.2.1/umd/index.min.js','https://cdn.jsdelivr.net/npm/@zxing/browser@0.2.1/umd/index.min.js'];
   for(const url of urls){try{await loadScriptUrl(url);if(window.ZXingBrowser?.BrowserQRCodeReader)return true;}catch(e){}}
-  throw new Error('Impossible de charger le lecteur QR. Vérifie le réseau puis recharge la page.');
+  throw new Error('Impossible de charger le lecteur QR. Vérifie la connexion Internet puis réessaie.');
+  })();
+  try{return await zxingLoadPromise;}finally{zxingLoadPromise=null;}
 }
 async function loadJsQR(){
   if(window.jsQR)return true;
+  if(jsQrLoadPromise)return jsQrLoadPromise;
+  jsQrLoadPromise=(async()=>{
   const urls=['https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js','https://unpkg.com/jsqr@1.4.0/dist/jsQR.js'];
   for(const url of urls){try{await loadScriptUrl(url);if(window.jsQR)return true;}catch(e){}}
-  throw new Error('Le lecteur QR par photo ne peut pas être chargé sans connexion.');
+  throw new Error('Le lecteur QR par photo ne peut pas être chargé. Vérifie la connexion puis réessaie.');
+  })();
+  try{return await jsQrLoadPromise;}finally{jsQrLoadPromise=null;}
 }
 $('qrPhoto').onchange=async()=>{
   const file=$('qrPhoto').files?.[0];$('qrPhoto').value='';if(!file||state.busy)return;stopCamera();state.busy=true;setStatus('Analyse de la photo…');
-  try{if(!window.jsQR)await loadJsQR();const bmp=await createImageBitmap(file),max=1600,scale=Math.min(1,max/Math.max(bmp.width,bmp.height)),canvas=document.createElement('canvas');canvas.width=Math.round(bmp.width*scale);canvas.height=Math.round(bmp.height*scale);const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(bmp,0,0,canvas.width,canvas.height);const image=ctx.getImageData(0,0,canvas.width,canvas.height);const code=jsQR(image.data,image.width,image.height,{inversionAttempts:'attemptBoth'});bmp.close();if(!code)throw new Error('Aucun QR trouvé sur la photo.');await lookupToken(tokenFrom(code.data));}catch(e){state.busy=false;$('sealCard').classList.remove('hidden');$('sealCard').innerHTML=`<div class="error"><b>QR non détecté</b><div style="margin-top:4px">${esc(e.message)}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Revenir au scanner</button>`;setStatus('Lecture impossible','bad');}
+  try{if(!window.jsQR)await loadJsQR();const bmp=await createImageBitmap(file);let code=null;try{const max=1600,scale=Math.min(1,max/Math.max(bmp.width,bmp.height)),canvas=document.createElement('canvas');canvas.width=Math.round(bmp.width*scale);canvas.height=Math.round(bmp.height*scale);const ctx=canvas.getContext('2d',{willReadFrequently:true});if(!ctx)throw new Error('Canvas indisponible pour analyser la photo.');ctx.drawImage(bmp,0,0,canvas.width,canvas.height);const image=ctx.getImageData(0,0,canvas.width,canvas.height);code=jsQR(image.data,image.width,image.height,{inversionAttempts:'attemptBoth'});}finally{try{bmp.close();}catch(e){}}if(!code)throw new Error('Aucun QR trouvé sur la photo.');await lookupToken(tokenFrom(code.data));}catch(e){state.busy=false;$('sealCard').classList.remove('hidden');$('sealCard').innerHTML=`<div class="error"><b>QR non détecté</b><div style="margin-top:4px">${esc(e.message)}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Revenir au scanner</button>`;setStatus('Lecture impossible','bad');}
 };
 async function boot(){
   updateModeButton();updateFeedbackControls();updateSessionProgress();
