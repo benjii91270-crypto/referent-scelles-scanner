@@ -1,0 +1,15 @@
+RÉFÉRENT SCELLÉS — V2.8.0 — RÉSULTATS
+
+PASS — Syntaxe JavaScript inline V2.7 et V2.8 : node --check
+PASS — Identifiants HTML uniques dans les deux versions (36 chacun)
+PASS — Tests Node/simulés : série rapide, lecteur QR, caméra, torche et préférences
+PASS — Interface simplifiée : emplacement en premier, informations secondaires repliables
+PASS — Données HTML échappées et valeurs API préservées
+PASS — Messages explicites hors ligne et erreur réseau
+PASS — Chargements concurrents ZXing/jsQR dédupliqués
+PASS — Endpoint API et clé du jeton appareil inchangés
+
+NON EXÉCUTÉ — Test Playwright : Chromium bloque la navigation locale (ERR_BLOCKED_BY_ADMINISTRATOR).
+NON EXÉCUTÉ — Essai physique Android/torche et écriture réelle dans la base.
+
+Conclusion : tests statiques et simulations réussis ; préproduction et essai physique requis.
