@@ -1,0 +1,22 @@
+RÉFÉRENT SCELLÉS — V2.8.1
+
+Tests statiques / simulés réussis :
+- JavaScript inline parse avec Node.
+- Identifiants DOM uniques.
+- Contrôle physique refusé dans l’interface si la session n’a pas isAdmin=true.
+- Session nominative : session-options, session-challenge, session-authenticate.
+- Mouvement : motif obligatoire côté interface, nom correspondant à la session, destination facultative.
+- Retour en stock affiché uniquement pour administrateur avec confirmation physique.
+- Endpoint Worker et clé locale du jeton d’appareil inchangés.
+
+À exécuter en préproduction avant fusion :
+1. Enquêteur + contrôle direct API : doit être refusé côté serveur.
+2. Enquêteur + motif de mouvement vide : doit être refusé côté serveur.
+3. Enquêteur + nom différent de la session : doit être refusé côté serveur.
+4. Enquêteur + motif + destination facultative : EN STOCK -> EN MOUVEMENT, identité et motif consignés dans l’historique.
+5. Administrateur + quatre résultats de contrôle : les résultats sont enregistrés nominativement.
+6. Enquêteur + retour en stock : refusé côté serveur.
+7. Administrateur + retour sans confirmation de présence physique : refusé ; avec confirmation : accepté.
+8. Essais QR réel, torche physique, caméra avant/arrière, mode série et réseau lent.
+
+Limite : tests réels de production et essai physique sur téléphone non exécutés ici. Installer le patch Apps Script + Worker avant de considérer la séparation des rôles effective côté serveur.
