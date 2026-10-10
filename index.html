@@ -296,7 +296,7 @@ async function authenticateScannerUser(){
   finally{if(button){button.disabled=false;button.textContent='Ouvrir ma session';}}
 }
 async function switchScannerUser(){
-  const auth=activeScannerSession();if(auth?.token)apiPost('session-logout',{authToken:auth.token},5000).catch(()=>{});
+  const auth=activeScannerSession();if(auth?.token){try{await apiPost('session-logout',{authToken:auth.token},5000);}catch(e){}}
   state.pendingToken=state.pendingToken||state.token||'';state.sealData=null;clearSavedScannerSession();await showSessionLogin('Choisis le compte nominatif qui doit utiliser le scanner.');
 }
 $('changeUser').addEventListener('click',switchScannerUser);
