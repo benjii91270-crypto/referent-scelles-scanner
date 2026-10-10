@@ -32,6 +32,9 @@ textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);
 .next{width:100%;margin-top:10px;background:var(--navy);color:#fff;border:0;border-radius:13px;padding:14px;font:inherit;font-weight:950;cursor:pointer}.small-note{text-align:center;color:#7a8594;font-size:10px;margin-top:9px;line-height:1.45}.error{background:#fff2f1;border:1px solid #efc7c5;color:#91332d;border-radius:13px;padding:11px;font-size:11px;line-height:1.45}
 .photoRow{display:none;margin-top:8px}.photoRow.show{display:block}.file{display:none}.photoBtn{width:100%;display:flex;justify-content:center;align-items:center}
  .activation-overlay{position:fixed;inset:0;background:rgba(11,18,29,.82);display:none;place-items:center;padding:16px;z-index:9999}.activation-overlay.show{display:grid}.activation-card{width:min(460px,100%);background:#fff;border-radius:20px;padding:22px;box-shadow:0 22px 70px rgba(0,0,0,.28)}.activation-kicker{font-size:10px;font-weight:950;letter-spacing:.08em;color:#6b7788}.activation-card h1{margin:6px 0;font-size:24px;color:var(--navy)}.activation-card p{margin:0 0 14px;font-size:12px;line-height:1.45;color:var(--muted)}.activation-input{width:100%;height:50px;border:1px solid #cad3de;border-radius:12px;padding:0 13px;font:inherit;font-size:17px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.activation-btn{width:100%;margin-top:9px;min-height:46px;border:0;border-radius:12px;background:var(--navy);color:#fff;font:inherit;font-weight:950}.activation-help{margin-top:9px;font-size:10px;line-height:1.45;color:#7a8695}
+
+.move-panel{margin-top:13px;padding:12px;border:1px solid #d9e1ea;border-radius:15px;background:#fbfcfe}.move-panel h3{font-size:14px;margin:0 0 4px;color:var(--navy)}.move-panel .hintline{font-size:10px;line-height:1.45;color:var(--muted);margin:0 0 9px}.move-user{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;border-bottom:1px solid #e3e8ef;padding-bottom:8px;margin-bottom:9px;font-size:11px}.move-user b{font-size:12px}.move-form{margin-top:9px;padding:11px;border:1px solid #dce3eb;background:#fff;border-radius:12px}.move-form label{display:block;font-size:11px;font-weight:850;margin:8px 0 4px}.move-form input,.move-form select,.move-form textarea{width:100%;border:1px solid #ccd5e0;border-radius:10px;padding:10px;font:inherit;font-size:13px;background:#fff;color:var(--ink);margin:0}.move-form textarea{min-height:76px;resize:vertical}.move-form .actions{margin-top:9px}.move-primary{width:100%;margin-top:8px;background:#173d5e;color:#fff;border-color:#173d5e}.move-secondary{min-height:38px;padding:7px 10px;font-size:11px}.move-auth-error{margin-top:8px;color:var(--red);font-size:11px;line-height:1.45}.move-current{border-radius:11px;padding:10px;background:#fff8e8;border:1px solid #ead7a9;color:#795d18;font-size:11px;line-height:1.45;margin-top:9px}
+
 @media(max-width:520px){.facts{grid-template-columns:1fr 1fr}video{height:55vh}.frame{width:74vw;height:74vw}}
 </style>
 </head>
@@ -41,7 +44,7 @@ textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);
   <header class="top">
     <div class="brand">RÉFÉRENT SCELLÉS</div>
     <div class="title">Scanner QR</div>
-    <div class="sub">Mode contrôle terrain • V2.10</div>
+    <div class="sub">Contrôles physiques et mouvements • V2.6.0</div>
     <div id="camp" class="camp"><div id="campTitle" class="camp-title"></div><div id="campMeta" class="camp-meta"></div><div class="bar"><i id="campBar" style="width:0%"></i></div></div>
   </header>
 
@@ -73,8 +76,10 @@ textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);
 'use strict';
 const SCANNER_API_ENDPOINT='https://referent-scelles-api.benjii91270.workers.dev/api';
 const DEVICE_TOKEN_KEY='referent_scelles_device_token_v2';
-const SCANNER_VERSION='2.5.0';
-const state={reader:null,controls:null,stream:null,track:null,devices:[],deviceIndex:0,deviceId:null,busy:false,token:'',lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null,photoMode:false};
+const SCANNER_VERSION='2.6.0';
+const APP_SESSION_STORAGE_KEY='referent_scelles_scanner_user_session_v1';
+const state={reader:null,controls:null,stream:null,track:null,devices:[],deviceIndex:0,deviceId:null,busy:false,token:'',lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null,photoMode:false,sealData:null,userAuth:null};
+try{const saved=sessionStorage.getItem(APP_SESSION_STORAGE_KEY);if(saved){const parsed=JSON.parse(saved);if(parsed&&parsed.token&&parsed.session)state.userAuth=parsed;}}catch(e){}
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
 function setStatus(t,k=''){const e=$('status');e.textContent=t;e.className='status'+(k?' '+k:'');}
@@ -91,6 +96,18 @@ async function apiCall(api,params={},timeout=9000){
     const res=await fetch(u.toString(),{method:'GET',headers:{Accept:'application/json',...(deviceToken?{Authorization:'Bearer '+deviceToken}:{})},cache:'no-store',signal:controller.signal});
     const data=await res.json().catch(()=>null);
     if(!res.ok || !data) throw new Error(data?.message||('HTTP '+res.status));
+    if(data.code==='DEVICE_INVALID'||data.code==='DEVICE_REQUIRED'){localStorage.removeItem(DEVICE_TOKEN_KEY);showActivation('Cette autorisation n’est plus valide.');throw new Error('SCANNER_NOT_ACTIVATED');}
+    return data;
+  }finally{clearTimeout(timer)}
+}
+async function apiPost(api,params={},timeout=12000){
+  const deviceToken=localStorage.getItem(DEVICE_TOKEN_KEY)||'';
+  if(!deviceToken)throw new Error('SCANNER_NOT_ACTIVATED');
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeout);
+  try{
+    const res=await fetch(SCANNER_API_ENDPOINT,{method:'POST',headers:{Accept:'application/json','Content-Type':'application/json',Authorization:'Bearer '+deviceToken},body:JSON.stringify(Object.assign({api},params||{})),cache:'no-store',signal:controller.signal});
+    const data=await res.json().catch(()=>null);
+    if(!res.ok||!data)throw new Error(data?.message||('HTTP '+res.status));
     if(data.code==='DEVICE_INVALID'||data.code==='DEVICE_REQUIRED'){localStorage.removeItem(DEVICE_TOKEN_KEY);showActivation('Cette autorisation n’est plus valide.');throw new Error('SCANNER_NOT_ACTIVATED');}
     return data;
   }finally{clearTimeout(timer)}
@@ -129,6 +146,7 @@ function showPhotoFallback(){
 }
 function renderSeal(data){
   state.busy=false;
+  state.sealData=data&&data.ok?data:null;
   const card=$('sealCard');card.classList.remove('hidden');hideReaderVisual();
   if(!data||!data.ok){
     card.innerHTML=`<div class="error"><b>QR non reconnu</b><div style="margin-top:4px">${esc(data?.message||'Aucun scellé correspondant.')}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Scanner un autre scellé</button>`;
@@ -138,7 +156,7 @@ function renderSeal(data){
   const c=data.campaign;let html=`<div class="entry">N° ${esc(data.entry)}</div><div class="sealname">${esc(data.scelle||'Scellé')}</div><div class="muted">Procédure : <b>${esc(data.procedure||'—')}</b></div>`;
   html+=`<div class="facts"><div class="fact"><span>CATÉGORIE</span><b>${esc(data.category||'—')}</b></div><div class="fact"><span>TAILLE</span><b>${esc(data.size||'—')}</b></div><div class="fact"><span>STATUT</span><b>${esc(data.status||'—')}</b></div><div class="fact"><span>ENQUÊTEUR</span><b>${esc(data.investigator||'—')}</b></div><div class="fact full"><span>EMPLACEMENT ATTENDU</span><b>${esc(data.locationDetail||data.location||'—')}</b></div></div>`;
   if(data.status && data.status!=='EN STOCK'){
-    html+=`<div class="notice.bad notice bad"><b>Scellé non disponible au contrôle physique</b><div style="margin-top:3px">Statut actuel : ${esc(data.status)}</div></div>`;
+    html+=`<div class="notice bad"><b>${String(data.status).toUpperCase()==='EN MOUVEMENT'?'Scellé actuellement en mouvement':'Scellé non disponible au contrôle physique'}</b><div style="margin-top:3px">Statut actuel : ${esc(data.status)}</div></div>`;
   } else if(!c){
     html+=`<div class="notice warn"><b>Aucune campagne active</b><div style="margin-top:3px">Le scellé est reconnu. Les choix ci-dessous enregistreront un contrôle hors campagne.</div></div>`;
     html+=controlChoices();
@@ -150,14 +168,118 @@ function renderSeal(data){
     html+=`<div class="notice info"><b>Campagne active : ${esc(c.title||'Contrôle physique')}</b><div style="margin-top:3px">Emplacement attendu : <b>${esc(data.locationDetail||data.location||'—')}</b></div></div>`;
     html+=controlChoices();
   }
+  html+=movementPanelHTML(data);
   html+=`<div class="actions"><button class="btn" id="cancelSeal" type="button">↩ Retour au scanner</button></div>`;
   card.innerHTML=html;
   card.querySelector('#cancelSeal').onclick=resumeScanner;
   card.querySelectorAll('[data-result]').forEach(b=>b.addEventListener('click',()=>submitControl(b.dataset.result,b)));
-  setStatus('Scellé reconnu • choisissez le contrôle','good');
+  setStatus('Scellé reconnu • choisissez une action','good');
+}
+function movementPanelHTML(data){
+  const status=String(data.status||'').trim().toUpperCase();
+  const auth=state.userAuth,session=auth&&auth.session;
+  const logged=!!(auth&&auth.token&&session&&session.id);
+  const who=logged?`${esc(session.name||'Session active')}${session.isAdmin?' • Administrateur':' • Enquêteur'}`:'Aucune session nominative ouverte';
+  let action='';
+  if(status==='EN STOCK') action=logged
+    ?'<button class="next move-primary" type="button" onclick="showMovementForm()">📦 Prendre en charge ce scellé</button>'
+    :'<button class="next move-primary" type="button" onclick="showScannerLogin()">🔐 Connexion pour prendre en charge</button>';
+  else if(status==='EN MOUVEMENT'){
+    action=`<div class="move-current"><b>Sortie enregistrée</b><br>Pris en charge par : ${esc(data.retrievedBy||'—')}<br>Destination : ${esc(data.destination||'—')}<br>Date de sortie : ${esc(data.dateSortie||'—')}</div>`;
+    action+=logged&&session.isAdmin
+      ?'<button class="next move-primary" type="button" onclick="showReturnForm()">↩ Confirmer le retour en stock</button>'
+      :'<button class="next move-primary" type="button" onclick="showScannerLogin()">🔐 Connexion administrateur pour le retour</button><div class="muted" style="margin-top:5px">Le retour en stock est réservé à un compte administrateur.</div>';
+  } else action='<div class="muted">Les actions de mouvement ne sont pas disponibles pour ce statut.</div>';
+  return `<section class="move-panel" id="movementPanel"><h3>Prise en charge / retour</h3><p class="hintline">Fonctionne indépendamment des campagnes de contrôle physique. Les actions sont enregistrées avec l’identité de la session connectée.</p><div class="move-user"><span>${who}</span>${logged?'<button class="btn move-secondary" type="button" onclick="switchScannerUser()">Changer de session</button>':''}</div><div id="scannerUserAuth"></div><div id="scannerActionForm"></div>${action}</section>`;
 }
 function controlChoices(){
   return `<div style="margin-top:11px"><button class="choice green" data-result="CONFORME"><span class="ico">✓</span><span class="txt"><b>Présent et conforme</b><small>Présence, emplacement et intégrité OK</small></span></button><button class="choice red" data-result="ABSENT"><span class="ico">!</span><span class="txt"><b>Scellé absent</b><small>Le scellé n’a pas été retrouvé</small></span></button><button class="choice amber" data-result="EMPLACEMENT NON CONFORME"><span class="ico">⌖</span><span class="txt"><b>Emplacement non conforme</b><small>Présent à un autre emplacement</small></span></button><button class="choice amber" data-result="SCELLÉ À VÉRIFIER"><span class="ico">⚠</span><span class="txt"><b>Intégrité à vérifier</b><small>Conditionnement ou scellement à examiner</small></span></button><label class="muted" style="display:block;font-weight:900;margin-top:10px">Observation facultative</label><textarea id="obs" placeholder="Constatation complémentaire…"></textarea></div>`;
+}
+function movementAuthError(message){const box=$('scannerUserAuth');if(box)box.innerHTML=`<div class="move-auth-error">${esc(message||'Opération impossible.')}</div>`;}
+function switchScannerUser(){state.userAuth=null;try{sessionStorage.removeItem(APP_SESSION_STORAGE_KEY);}catch(e){}showScannerLogin();}
+async function showScannerLogin(){
+  const panel=$('scannerUserAuth');if(!panel)return;
+  panel.innerHTML='<div class="move-form"><div class="status">Chargement des comptes autorisés…</div></div>';
+  try{
+    const result=await apiPost('session-options',{},12000);
+    if(!result?.ok)throw new Error(result?.message||'Impossible de charger les sessions.');
+    const sessions=(result.sessions||[]).filter(x=>x&&!x.disabled&&x.passwordEnabled&&x.id);
+    if(!sessions.length)throw new Error('Aucun compte avec mot de passe serveur. Un administrateur doit sécuriser les sessions dans Référent Scellés.');
+    panel.innerHTML=`<div class="move-form"><b>Connexion nominative</b><label for="scannerSessionId">Compte</label><select id="scannerSessionId">${sessions.map(x=>`<option value="${esc(x.id)}">${esc(x.name)}${x.grade?' • '+esc(x.grade):''}${x.isAdmin?' • Admin':''}</option>`).join('')}</select><label for="scannerSessionPassword">Mot de passe</label><input id="scannerSessionPassword" type="password" autocomplete="current-password" placeholder="Mot de passe du compte" maxlength="256"><div id="scannerLoginError" class="move-auth-error" hidden></div><div class="actions"><button class="btn primary" id="scannerLoginButton" type="button" onclick="authenticateScannerUser()">Se connecter</button><button class="btn move-secondary" type="button" onclick="cancelScannerLogin()">Annuler</button></div></div>`;
+    $('scannerSessionPassword')?.focus();
+    $('scannerSessionPassword')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();authenticateScannerUser();}});
+  }catch(e){movementAuthError(String(e.message||e||'Connexion impossible.'));}
+}
+function cancelScannerLogin(){const box=$('scannerUserAuth');if(box)box.innerHTML='';}
+async function scannerSha256(text){
+  if(!globalThis.crypto?.subtle||!globalThis.TextEncoder)throw new Error('Le navigateur doit être en HTTPS pour l’authentification sécurisée.');
+  const bits=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(String(text??'')));
+  return Array.from(new Uint8Array(bits),b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function scannerSha256Salt(value,salt){return scannerSha256(`${String(salt??'')}\0${String(value??'')}`);}
+async function authenticateScannerUser(){
+  const select=$('scannerSessionId'),input=$('scannerSessionPassword'),button=$('scannerLoginButton'),err=$('scannerLoginError');
+  if(!select||!input)return;
+  const sessionId=String(select.value||''),password=String(input.value||'');
+  const fail=message=>{if(err){err.hidden=false;err.textContent=String(message||'Connexion refusée.');}input.select();};
+  if(!sessionId||!password){fail('Choisis un compte et saisis son mot de passe.');return;}
+  if(button){button.disabled=true;button.textContent='Vérification…';}
+  try{
+    const challenge=await apiPost('session-challenge',{sessionId},12000);
+    if(!challenge?.ok)throw new Error(challenge?.message||'Connexion refusée.');
+    const candidates=[await scannerSha256Salt(password,String(challenge.salt||''))];
+    if(/^PBKDF2-SHA256(?:-120K)?$/i.test(String(challenge.passwordAlgorithm||''))&&globalThis.crypto?.subtle&&globalThis.TextEncoder){
+      const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveBits']);
+      const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:new TextEncoder().encode(String(challenge.salt||'')),iterations:120000,hash:'SHA-256'},key,256);
+      candidates.push(Array.from(new Uint8Array(bits),b=>b.toString(16).padStart(2,'0')).join(''));
+    }
+    const proofs=[];
+    for(const candidate of [...new Set(candidates)].slice(0,5))proofs.push(await scannerSha256Salt(candidate,String(challenge.nonce||'')));
+    const result=await apiPost('session-authenticate',{sessionId,nonce:String(challenge.nonce||''),response:JSON.stringify(proofs)},15000);
+    if(!result?.ok||!result.token||!result.session)throw new Error(result?.message||'Mot de passe incorrect.');
+    state.userAuth={token:String(result.token),session:result.session,savedAt:Date.now()};
+    try{sessionStorage.setItem(APP_SESSION_STORAGE_KEY,JSON.stringify(state.userAuth));}catch(e){}
+    if(state.sealData)renderSeal(state.sealData);
+    else{const box=$('scannerUserAuth');if(box)box.innerHTML=`<div class="notice good">Connecté : ${esc(result.session.name)}.</div>`;}
+  }catch(e){fail(String(e.message||e||'Connexion impossible.'));}
+  finally{if(button){button.disabled=false;button.textContent='Se connecter';}}
+}
+function showMovementForm(){
+  if(!state.userAuth?.token){showScannerLogin();return;}
+  const form=$('scannerActionForm');if(!form)return;
+  form.innerHTML='<div class="move-form"><b>Prise en charge</b><div class="muted" style="margin-top:3px">La session connectée sera automatiquement enregistrée comme enquêteur.</div><label for="scannerMovementDestination">Destination / motif</label><textarea id="scannerMovementDestination" maxlength="500" placeholder="Ex. transport au laboratoire, expertise, présentation au magistrat…"></textarea><div id="scannerMovementError" class="move-auth-error" hidden></div><div class="actions"><button class="btn primary" id="scannerMovementSubmit" type="button" onclick="submitScannerMovement()">Confirmer la prise en charge</button><button class="btn move-secondary" type="button" onclick="cancelScannerAction()">Annuler</button></div></div>';
+  $('scannerMovementDestination')?.focus();
+}
+function showReturnForm(){
+  if(!state.userAuth?.session?.isAdmin){showScannerLogin();return;}
+  const form=$('scannerActionForm');if(!form)return;
+  form.innerHTML='<div class="move-form"><b>Retour physique en stock</b><p class="hintline">Le retour en stock signifie que tu as vérifié le scellé et son emplacement, pas seulement qu’il est revenu au service.</p><label style="display:flex;align-items:flex-start;gap:8px;line-height:1.4;margin:8px 0 10px"><input id="scannerConfirmedInPlace" type="checkbox" style="width:18px;min-width:18px;margin-top:1px"><span>Je confirme que le scellé est physiquement présent à l’emplacement de stockage attendu.</span></label><label for="scannerReturnState">État du scellé</label><select id="scannerReturnState"><option value="CONFORME">Conforme</option><option value="DETERIORE">Détérioré</option><option value="INTEGRITE DOUTEUSE">Intégrité douteuse</option></select><label for="scannerReturnObs">Observation (facultative)</label><textarea id="scannerReturnObs" maxlength="1000" placeholder="Précision sur le retour…"></textarea><div id="scannerReturnError" class="move-auth-error" hidden></div><div class="actions"><button class="btn primary" id="scannerReturnSubmit" type="button" onclick="submitScannerReturn()">Confirmer le retour en stock</button><button class="btn move-secondary" type="button" onclick="cancelScannerAction()">Annuler</button></div></div>';
+}
+function cancelScannerAction(){const form=$('scannerActionForm');if(form)form.innerHTML='';}
+async function refreshScannedSeal(token){state.busy=false;await lookupToken(token);}
+async function submitScannerMovement(){
+  if(state.busy)return;
+  const token=String(state.token||''),destination=String($('scannerMovementDestination')?.value||'').trim(),button=$('scannerMovementSubmit'),err=$('scannerMovementError');
+  if(!destination){if(err){err.hidden=false;err.textContent='Destination obligatoire.';}return;}
+  if(!state.userAuth?.token){showScannerLogin();return;}
+  state.busy=true;if(button){button.disabled=true;button.textContent='Enregistrement…';}
+  try{
+    const out=await apiPost('movement-start',{scan:token,destination,authToken:state.userAuth.token},18000);
+    if(!out?.ok)throw Object.assign(new Error(out?.message||'La prise en charge a été refusée.'),{code:out?.code});
+    beep();vibrate([70,35,70]);state.busy=false;await refreshScannedSeal(token);
+  }catch(e){state.busy=false;if(e.code==='AUTH_REQUIRED'||e.code==='AUTH_EXPIRED'||e.code==='AUTH_REVOKED'||String(e.message||'').toLowerCase().includes('session')){switchScannerUser();return;}if(err){err.hidden=false;err.textContent=String(e.message||e||'Échec de la prise en charge.');}if(button){button.disabled=false;button.textContent='Confirmer la prise en charge';}}
+}
+async function submitScannerReturn(){
+  if(state.busy)return;
+  const token=String(state.token||''),returnState=String($('scannerReturnState')?.value||'CONFORME'),obs=String($('scannerReturnObs')?.value||'').trim(),confirmedInPlace=!!$('scannerConfirmedInPlace')?.checked,button=$('scannerReturnSubmit'),err=$('scannerReturnError');
+  if(!state.userAuth?.token||!state.userAuth?.session?.isAdmin){if(err){err.hidden=false;err.textContent='Connexion administrateur obligatoire.';}return;}
+  if(!confirmedInPlace){if(err){err.hidden=false;err.textContent='Confirme d’abord que le scellé est physiquement à son emplacement attendu.';}return;}
+  state.busy=true;if(button){button.disabled=true;button.textContent='Vérification et enregistrement…';}
+  try{
+    const out=await apiPost('movement-return',{scan:token,authToken:state.userAuth.token,returnState,confirmedInPlace,obs},18000);
+    if(!out?.ok)throw Object.assign(new Error(out?.message||'Le retour a été refusé.'),{code:out?.code});
+    beep();vibrate([70,35,70]);state.busy=false;await refreshScannedSeal(token);
+  }catch(e){state.busy=false;if(e.code==='ADMIN_REQUIRED'||e.code==='AUTH_REQUIRED'||e.code==='AUTH_EXPIRED'||e.code==='AUTH_REVOKED'){switchScannerUser();return;}if(err){err.hidden=false;err.textContent=String(e.message||e||'Échec du retour.');}if(button){button.disabled=false;button.textContent='Confirmer le retour en stock';}}
 }
 async function lookupToken(token){
   token=String(token||'').trim();if(!token||state.busy)return;
@@ -199,7 +321,7 @@ async function startCamera(){
   }catch(e){state.busy=false;setStatus('Caméra indisponible','bad');$('hint').textContent='Autorisez la caméra ou utilisez le scan par photo.';showPhotoFallback();}
 }
 async function resumeScanner(){
-  $('sealCard').classList.add('hidden');$('sealCard').innerHTML='';state.token='';state.lastToken='';state.busy=false;state.photoMode=false;updateUrlWithoutToken();$('cameraBox').classList.remove('hide');$('photoRow').classList.remove('show');$('frame').className='frame';$('hint').textContent='Préparation de la caméra…';setStatus('Préparation…');await startCamera();
+  $('sealCard').classList.add('hidden');$('sealCard').innerHTML='';state.token='';state.sealData=null;state.lastToken='';state.busy=false;state.photoMode=false;updateUrlWithoutToken();$('cameraBox').classList.remove('hide');$('photoRow').classList.remove('show');$('frame').className='frame';$('hint').textContent='Préparation de la caméra…';setStatus('Préparation…');await startCamera();
 }
 async function applyCameraCaps(){
   const caps=state.track?.getCapabilities?.();if(!caps)return;$('torch').disabled=!('torch'in caps);['zoomMinus','zoomPlus'].forEach(id=>$(id).disabled=!(caps.zoom));state.zoom=caps.zoom?{min:caps.zoom.min,max:caps.zoom.max,step:caps.zoom.step||0.1,value:state.track.getSettings?.().zoom||caps.zoom.min}:null;
@@ -224,7 +346,7 @@ async function boot(){
     else{await startCamera();}
   }catch(e){if(e.message==='SCANNER_NOT_ACTIVATED'){showActivation();return;}await startCamera();}
 }
-window.resumeScanner=resumeScanner;boot();
+window.resumeScanner=resumeScanner;window.showScannerLogin=showScannerLogin;window.switchScannerUser=switchScannerUser;window.authenticateScannerUser=authenticateScannerUser;window.showMovementForm=showMovementForm;window.showReturnForm=showReturnForm;window.cancelScannerAction=cancelScannerAction;window.submitScannerMovement=submitScannerMovement;window.submitScannerReturn=submitScannerReturn;boot();
 </script>
 </body>
 </html>
