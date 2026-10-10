@@ -103,7 +103,7 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
   <header class="top">
     <div class="brand">RÉFÉRENT SCELLÉS</div>
     <div class="title">Scanner QR</div>
-    <div class="sub">Contrôle terrain simplifié • V2.7.0</div>
+    <div class="sub">Contrôle terrain simplifié • V2.8.0</div>
     <div id="camp" class="camp"><div id="campTitle" class="camp-title"></div><div id="campMeta" class="camp-meta"></div><div class="bar"><i id="campBar" style="width:0%"></i></div></div>
   </header>
 
@@ -152,7 +152,7 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
 'use strict';
 const SCANNER_API_ENDPOINT='https://referent-scelles-api.benjii91270.workers.dev/api';
 const DEVICE_TOKEN_KEY='referent_scelles_device_token_v2';
-const SCANNER_VERSION='2.7.0';
+const SCANNER_VERSION='2.8.0';
 const SERIES_MODE_KEY='referent_scelles_series_mode_v1';
 const SOUND_PREF_KEY='referent_scelles_scanner_sound_v1';
 const VIBRATION_PREF_KEY='referent_scelles_scanner_vibration_v1';
@@ -172,14 +172,21 @@ function updateSessionProgress(){$('sessionProgress').textContent=`Contrôles en
 async function apiCall(api,params={},timeout=9000){
   const deviceToken=localStorage.getItem(DEVICE_TOKEN_KEY)||'';
   if(api!=='pair' && !deviceToken) throw new Error('SCANNER_NOT_ACTIVATED');
+  if(typeof navigator!=='undefined'&&navigator.onLine===false)throw new Error('Aucune connexion Internet. Rétablis le réseau avant de rechercher ou d’enregistrer un contrôle.');
   const u=new URL(SCANNER_API_ENDPOINT);
   u.searchParams.set('api',api);
   Object.entries(params||{}).forEach(([k,v])=>{if(v!==undefined&&v!==null)u.searchParams.set(k,String(v));});
   const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),timeout);
   try{
-    const res=await fetch(u.toString(),{method:'GET',headers:{Accept:'application/json',...(deviceToken?{Authorization:'Bearer '+deviceToken}:{})},cache:'no-store',signal:controller.signal});
+    let res;
+    try{res=await fetch(u.toString(),{method:'GET',headers:{Accept:'application/json',...(deviceToken?{Authorization:'Bearer '+deviceToken}:{})},cache:'no-store',signal:controller.signal});}
+    catch(e){
+      if(e?.name==='AbortError')throw new Error('Le serveur met trop de temps à répondre. Réessaie quand la connexion sera stable.');
+      if(e instanceof TypeError)throw new Error(typeof navigator!=='undefined'&&navigator.onLine===false?'Téléphone hors ligne. Vérifie la connexion Internet.':'Connexion au serveur impossible. Vérifie le réseau puis réessaie.');
+      throw e;
+    }
     const data=await res.json().catch(()=>null);
-    if(!res.ok || !data) throw new Error(data?.message||('HTTP '+res.status));
+    if(!res.ok || !data) throw new Error(data?.message||(!data?'Réponse serveur illisible. Réessaie.':'HTTP '+res.status));
     if(data.code==='DEVICE_INVALID'||data.code==='DEVICE_REQUIRED'){localStorage.removeItem(DEVICE_TOKEN_KEY);showActivation('Cette autorisation n’est plus valide.');throw new Error('SCANNER_NOT_ACTIVATED');}
     return data;
   }finally{clearTimeout(timer)}
@@ -544,8 +551,8 @@ $('modeSeries').onclick=async()=>{
   updateCameraControls();
 };
 $('cameraStart').onclick=resumeScanner;
-window.addEventListener('online',()=>{if(!state.busy)setStatus('Connexion rétablie • scanner prêt','good');});
-window.addEventListener('offline',()=>setStatus('Connexion indisponible • la recherche serveur nécessite Internet.','bad'));
+window.addEventListener('online',()=>{if(!state.busy)setStatus(resultCardVisible()?'Connexion rétablie • résultat conservé':'Connexion rétablie • scanner prêt','good');});
+window.addEventListener('offline',()=>setStatus('Hors ligne • la lecture QR reste possible, mais le contrôle serveur nécessite Internet.','bad'));
 document.addEventListener('visibilitychange',async()=>{
   if(document.hidden){
     state.cameraResumeOnVisible=hasLiveCamera();state.resumeDecodeAfterVisibility=state.readerRunning;
@@ -560,22 +567,31 @@ async function setZoom(d){if(!state.track||!state.zoom)return;const z=state.zoom
 $('zoomMinus').onclick=()=>setZoom(-1);$('zoomPlus').onclick=()=>setZoom(1);
 $('activateBtn').onclick=activateScanner;
 $('pairCode').addEventListener('keydown',e=>{if(e.key==='Enter')activateScanner();});
-function loadScriptUrl(url){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=url;s.async=true;s.onload=()=>resolve();s.onerror=()=>{s.remove();reject(new Error('Chargement impossible : '+url));};document.head.appendChild(s);});}
+let zxingLoadPromise=null,jsQrLoadPromise=null;
+function loadScriptUrl(url){return new Promise((resolve,reject)=>{const existing=[...document.scripts].find(x=>x.src===url);if(existing&&existing.dataset.loaded==='true'){resolve();return;}const s=existing||document.createElement('script');s.src=url;s.async=true;s.dataset.loaded='false';s.onload=()=>{s.dataset.loaded='true';resolve();};s.onerror=()=>{s.remove();reject(new Error('Chargement impossible : '+url));};if(!existing)document.head.appendChild(s);});}
 async function loadZxing(){
   if(window.ZXingBrowser?.BrowserQRCodeReader)return true;
+  if(zxingLoadPromise)return zxingLoadPromise;
+  zxingLoadPromise=(async()=>{
   const urls=['https://unpkg.com/@zxing/browser@0.2.1/umd/index.min.js','https://cdn.jsdelivr.net/npm/@zxing/browser@0.2.1/umd/index.min.js'];
   for(const url of urls){try{await loadScriptUrl(url);if(window.ZXingBrowser?.BrowserQRCodeReader)return true;}catch(e){}}
-  throw new Error('Impossible de charger le lecteur QR. Vérifie le réseau puis recharge la page.');
+  throw new Error('Impossible de charger le lecteur QR. Vérifie la connexion Internet puis réessaie.');
+  })();
+  try{return await zxingLoadPromise;}finally{zxingLoadPromise=null;}
 }
 async function loadJsQR(){
   if(window.jsQR)return true;
+  if(jsQrLoadPromise)return jsQrLoadPromise;
+  jsQrLoadPromise=(async()=>{
   const urls=['https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js','https://unpkg.com/jsqr@1.4.0/dist/jsQR.js'];
   for(const url of urls){try{await loadScriptUrl(url);if(window.jsQR)return true;}catch(e){}}
-  throw new Error('Le lecteur QR par photo ne peut pas être chargé sans connexion.');
+  throw new Error('Le lecteur QR par photo ne peut pas être chargé. Vérifie la connexion puis réessaie.');
+  })();
+  try{return await jsQrLoadPromise;}finally{jsQrLoadPromise=null;}
 }
 $('qrPhoto').onchange=async()=>{
   const file=$('qrPhoto').files?.[0];$('qrPhoto').value='';if(!file||state.busy)return;stopCamera();state.busy=true;setStatus('Analyse de la photo…');
-  try{if(!window.jsQR)await loadJsQR();const bmp=await createImageBitmap(file),max=1600,scale=Math.min(1,max/Math.max(bmp.width,bmp.height)),canvas=document.createElement('canvas');canvas.width=Math.round(bmp.width*scale);canvas.height=Math.round(bmp.height*scale);const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(bmp,0,0,canvas.width,canvas.height);const image=ctx.getImageData(0,0,canvas.width,canvas.height);const code=jsQR(image.data,image.width,image.height,{inversionAttempts:'attemptBoth'});bmp.close();if(!code)throw new Error('Aucun QR trouvé sur la photo.');await lookupToken(tokenFrom(code.data));}catch(e){state.busy=false;$('sealCard').classList.remove('hidden');$('sealCard').innerHTML=`<div class="error"><b>QR non détecté</b><div style="margin-top:4px">${esc(e.message)}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Revenir au scanner</button>`;setStatus('Lecture impossible','bad');}
+  try{if(!window.jsQR)await loadJsQR();const bmp=await createImageBitmap(file);let code=null;try{const max=1600,scale=Math.min(1,max/Math.max(bmp.width,bmp.height)),canvas=document.createElement('canvas');canvas.width=Math.round(bmp.width*scale);canvas.height=Math.round(bmp.height*scale);const ctx=canvas.getContext('2d',{willReadFrequently:true});if(!ctx)throw new Error('Canvas indisponible pour analyser la photo.');ctx.drawImage(bmp,0,0,canvas.width,canvas.height);const image=ctx.getImageData(0,0,canvas.width,canvas.height);code=jsQR(image.data,image.width,image.height,{inversionAttempts:'attemptBoth'});}finally{try{bmp.close();}catch(e){}}if(!code)throw new Error('Aucun QR trouvé sur la photo.');await lookupToken(tokenFrom(code.data));}catch(e){state.busy=false;$('sealCard').classList.remove('hidden');$('sealCard').innerHTML=`<div class="error"><b>QR non détecté</b><div style="margin-top:4px">${esc(e.message)}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Revenir au scanner</button>`;setStatus('Lecture impossible','bad');}
 };
 async function boot(){
   updateModeButton();updateFeedbackControls();updateSessionProgress();
