@@ -3,8 +3,8 @@
   "short_name":"Scanner QR",
   "start_url":"./",
   "display":"standalone",
-  "background_color":"#f3f5f7",
-  "theme_color":"#18212b",
+  "background_color":"#edf2f7",
+  "theme_color":"#16324b",
   "lang":"fr",
   "icons":[]
 }
