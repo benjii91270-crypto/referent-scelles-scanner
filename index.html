@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#172033">
+<meta name="theme-color" content="#16324b">
 <meta name="color-scheme" content="light">
 <meta name="description" content="Scanner QR terrain — Référent Scellés">
 <link rel="manifest" href="manifest.webmanifest">
@@ -36,39 +36,62 @@ textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);
 .move-panel{margin-top:13px;padding:12px;border:1px solid #d9e1ea;border-radius:15px;background:#fbfcfe}.move-panel h3{font-size:14px;margin:0 0 4px;color:var(--navy)}.move-panel .hintline{font-size:10px;line-height:1.45;color:var(--muted);margin:0 0 9px}.move-user{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;border-bottom:1px solid #e3e8ef;padding-bottom:8px;margin-bottom:9px;font-size:11px}.move-user b{font-size:12px}.move-form{margin-top:9px;padding:11px;border:1px solid #dce3eb;background:#fff;border-radius:12px}.move-form label{display:block;font-size:11px;font-weight:850;margin:8px 0 4px}.move-form input,.move-form select,.move-form textarea{width:100%;border:1px solid #ccd5e0;border-radius:10px;padding:10px;font:inherit;font-size:13px;background:#fff;color:var(--ink);margin:0}.move-form textarea{min-height:76px;resize:vertical}.move-form .actions{margin-top:9px}.move-primary{width:100%;margin-top:8px;background:#173d5e;color:#fff;border-color:#173d5e}.move-secondary{min-height:38px;padding:7px 10px;font-size:11px}.move-auth-error{margin-top:8px;color:var(--red);font-size:11px;line-height:1.45}.move-current{border-radius:11px;padding:10px;background:#fff8e8;border:1px solid #ead7a9;color:#795d18;font-size:11px;line-height:1.45;margin-top:9px}
 
 @media(max-width:520px){.facts{grid-template-columns:1fr 1fr}video{height:55vh}.frame{width:74vw;height:74vw}}
+
+/* Référent Scellés 2.0.8 — interface terrain simplifiée */
+:root{--bg:#edf2f7;--ink:#1c2a3a;--muted:#6b7a8d;--line:#dce4ed;--navy:#16324b;--green:#18794e;--red:#ae3c3b;--amber:#9a7012;--teal:#0b8175}
+html,body{background:radial-gradient(ellipse at top,#f8fafc 0,#edf2f7 47%,#e9eff5 100%);color:var(--ink)}
+body{padding:12px 12px max(30px,env(safe-area-inset-bottom));font-size:14px}.app{max-width:720px}
+.top{position:relative;overflow:hidden;background:linear-gradient(135deg,#18334d 0%,#173e56 60%,#155e63 130%);border-radius:24px;padding:19px 18px 17px;box-shadow:0 12px 32px rgba(22,50,75,.17)}
+.top:after{content:"";position:absolute;width:220px;height:220px;border:1px solid rgba(255,255,255,.08);border-radius:50%;right:-95px;top:-115px;box-shadow:0 0 0 24px rgba(255,255,255,.025),0 0 0 50px rgba(255,255,255,.018);pointer-events:none}
+.top-brand{display:flex;align-items:center;gap:10px;position:relative;z-index:1}.brand-mark{display:grid;place-items:center;width:39px;height:39px;border-radius:13px;background:#fff;color:#173a51;font-size:12px;font-weight:1000;letter-spacing:-.05em;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.brand{font-size:10px;font-weight:950;letter-spacing:.12em;opacity:1}.top .sub{font-size:11px;opacity:.75;margin-top:2px;line-height:1.45}.title{font-size:clamp(25px,5vw,32px);font-weight:950;letter-spacing:-.035em;line-height:1.05;margin-top:17px;position:relative;z-index:1}.top-summary{max-width:520px;font-size:12px!important;opacity:.83!important;margin-top:7px!important;position:relative;z-index:1}
+.camp{position:relative;z-index:1;margin-top:15px;background:rgba(255,255,255,.97);border:1px solid rgba(255,255,255,.5);border-radius:15px;padding:12px 13px}.camp-row{display:flex;align-items:flex-start;gap:9px}.camp-dot{margin-top:4px;width:9px;height:9px;background:#178253;border-radius:50%;box-shadow:0 0 0 4px #e7f5ed;flex:none}.camp-title{font-size:13px;font-weight:950;color:#24384d}.camp-meta{font-size:11px;color:#66778a;margin-top:3px}.bar{height:6px;background:#e7edf2;border-radius:99px;margin-top:10px}.bar i{background:linear-gradient(90deg,#137b6c,#36a37e);border-radius:99px}
+.panel,.card{margin-top:13px;background:#fff;border:1px solid #e1e7ee;border-radius:22px;padding:15px;box-shadow:0 6px 24px rgba(27,45,65,.055)}.scanner-stage{padding:15px}.section-heading{display:flex;align-items:center;gap:11px;margin:2px 2px 13px}.section-icon{width:43px;height:43px;border-radius:14px;display:grid;place-items:center;background:#e7f4f1;color:#116e66;font-size:27px;font-weight:800}.section-heading h2{margin:0;color:#20364a;font-size:17px;font-weight:950;letter-spacing:-.02em}.section-heading p{margin:3px 0 0;color:#748194;font-size:11px;line-height:1.45}
+.camera{min-height:300px;border-radius:18px;background:#091621;border:1px solid #132c3b;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}video{height:min(55vh,500px);min-height:300px}.frame{width:min(70vw,330px);height:min(70vw,330px);border:2px solid rgba(235,255,251,.92);border-radius:26px;box-shadow:0 0 0 9999px rgba(2,13,19,.46),0 0 0 8px rgba(22,165,132,.09)}.frame.ready{border-color:#7be0bd}.frame.ok{border-color:#5bdba4;box-shadow:0 0 0 9999px rgba(2,13,19,.33),0 0 0 8px rgba(91,219,164,.14)}.hint{bottom:13px;left:13px;right:13px;background:rgba(7,22,32,.88);padding:11px 12px;border:1px solid rgba(255,255,255,.1);border-radius:13px;font-size:12px;font-weight:850}
+.status{display:flex;justify-content:center;align-items:center;gap:7px;min-height:24px;margin:12px 0 10px;font-size:12px;color:#617286}.status-dot{width:7px;height:7px;border-radius:50%;background:#91a1b2;display:inline-block}.status.good .status-dot{background:#1d9860}.status.bad .status-dot{background:#c54646}.status.good{color:#19754c}.status.bad{color:#a33535}
+.scanner-tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.scanner-tools .btn{min-width:0;display:flex;align-items:center;justify-content:center;gap:6px;border-radius:12px;min-height:44px;padding:9px 7px;font-size:11px}.scanner-tools .scanner-start{grid-column:1/-1;min-height:49px;font-size:14px;box-shadow:0 4px 10px rgba(22,50,75,.12)}.scanner-tools .tool-btn{background:#f7f9fb;border-color:#e2e8ef;color:#4b6074}.scanner-tools .tool-btn:first-of-type{grid-column:auto}.scanner-tools button span[aria-hidden="true"]{font-size:16px}.photoRow{margin-top:8px}.photoBtn{display:flex;gap:8px;min-height:43px;background:#f7f9fb;border-color:#dfe7ee;color:#334b60;font-size:12px}.scanner-tip{display:flex;gap:8px;align-items:flex-start;margin-top:12px;padding:10px 11px;background:#f4f8fa;border:1px solid #e5edf1;border-radius:12px;color:#647689;font-size:10px;line-height:1.5}.tip-icon{flex:none;display:grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#deebe9;color:#276a67;font-size:10px;font-weight:950}.small-note{max-width:520px;margin:13px auto 0;color:#8793a2;font-size:10px;line-height:1.5}
+button,.btn{border-radius:13px;min-height:44px;font-size:12px;transition:background .12s ease,border-color .12s ease,transform .1s ease}.btn.primary,.next,.move-primary{background:linear-gradient(135deg,#183c57,#135d65);color:#fff;border-color:#173f57}.btn.primary:active,.next:active,.move-primary:active{filter:brightness(.96)}
+.card{padding:15px}.seal-head{padding:2px 1px 12px;border-bottom:1px solid #edf0f4}.seal-kicker{font-size:9px;font-weight:950;letter-spacing:.13em;color:#7b8a9b}.seal-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-top:6px}.sealname{font-size:clamp(23px,5vw,29px);font-weight:1000;letter-spacing:-.035em;color:#1e3448;line-height:1.08;margin:0}.seal-subline{font-size:12px;color:#65768a;margin-top:5px;line-height:1.4}.entry{background:#f1f5f8;border:1px solid #dfe7ed;border-radius:9px;padding:5px 8px;font-size:10px;color:#43596c}.status-pill{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border-radius:99px;padding:6px 9px;font-size:9px;font-weight:950;border:1px solid #d7e6de;background:#eff8f2;color:#24744c}.status-pill:before{content:"";width:6px;height:6px;background:currentColor;border-radius:50%}.status-pill.status-move{background:#fff5e4;color:#946812;border-color:#f0dfb7}.status-pill.status-other{background:#f0f3f6;color:#5e6e80;border-color:#dfe6ed}.procedure-band{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-top:10px;padding:10px 11px;border-radius:12px;background:#f5f8fa}.procedure-band span{font-size:9px;font-weight:950;letter-spacing:.07em;color:#7a8997;flex:none}.procedure-band b{font-size:12px;text-align:right;overflow-wrap:anywhere;color:#2b4257}
+.facts{gap:8px;margin-top:12px}.fact{border:1px solid #e4eaf0;background:#fbfcfd;border-radius:13px;padding:10px}.fact span{font-size:8px;letter-spacing:.09em;color:#8491a0}.fact b{font-size:13px;color:#2c4053;line-height:1.35}.fact.full{background:#f6f9fb}.notice{border-radius:13px;padding:11px 12px;font-size:12px}.notice.info{background:#f0f6fa;border-color:#dbe8f0;color:#38546b}.notice.warn{background:#fff8e9;border-color:#efdfb7;color:#806019}.notice.bad{background:#fff1f0;border-color:#f0d0ce;color:#963b35}.notice.good{background:#eff8f2;border-color:#cae5d3;color:#266844}
+.choice{gap:8px;padding:12px;margin-top:8px;border-radius:15px;border-color:#e2e8ee;box-shadow:0 2px 7px rgba(20,44,62,.025)}.choice .ico{width:41px;height:41px;border-radius:13px;font-weight:950}.choice .txt{margin-left:1px}.choice b{font-size:13px}.choice small{font-size:10px;line-height:1.4;margin-top:3px}.choice.green{background:#fcfefd}.choice.red{background:#fffdfd}.choice.amber{background:#fffefd}
+.move-panel{margin-top:14px;padding:14px;border:1px solid #dfe7ee;border-radius:17px;background:#f9fbfc}.move-panel h3{font-size:15px;letter-spacing:-.015em;margin:0 0 5px;color:#20384c}.move-panel .hintline{font-size:11px;color:#6d7c8d;line-height:1.5}.move-user{background:#fff;border:1px solid #e3e9ef;border-radius:11px;padding:9px 10px;margin:10px 0;font-size:11px}.move-form{padding:13px;border:1px solid #dfe7ed;border-radius:14px;box-shadow:0 2px 6px rgba(20,44,62,.025)}.move-form b{color:#273e52;font-size:13px}.move-form label{font-size:11px;color:#41556a;margin-top:11px}.move-form input,.move-form select,.move-form textarea{border-color:#d6e0e8;border-radius:11px;padding:12px;font-size:14px;min-height:45px}.move-form textarea{min-height:86px}.move-form input:focus,.move-form select:focus,.move-form textarea:focus,textarea:focus{outline:3px solid #b7e4d6;outline-offset:1px;border-color:#168a75}.move-current{padding:12px;border-radius:13px;border-color:#ecd9ab;background:#fff9ec;color:#785b17;font-size:12px;line-height:1.65}.move-primary{min-height:48px;font-size:13px;box-shadow:0 4px 9px rgba(20,60,82,.09)}.move-secondary{background:#f2f6f8;border-color:#dde6ec;color:#526678}.move-auth-error{font-size:12px;line-height:1.5}.saved{border-radius:16px;padding:19px}.saved b{font-size:16px}.saved .big{color:#238254}.pill{font-size:12px}.next{min-height:49px;font-size:13px}.error{border-radius:13px;font-size:12px}.activation-card{border-radius:23px}.activation-card h1{letter-spacing:-.03em}.activation-input{letter-spacing:.08em}
+@media(max-width:520px){body{padding:9px 9px max(22px,env(safe-area-inset-bottom))}.top{border-radius:21px;padding:16px 15px}.panel,.card{border-radius:19px;padding:12px}.camera{min-height:285px}.video{height:52vh}video{height:52vh;min-height:285px}.scanner-tools{gap:6px}.scanner-tools .btn{padding:8px 4px;font-size:10px}.scanner-tools .scanner-start{font-size:13px}.facts{grid-template-columns:1fr 1fr}.status-pill{padding:6px 7px;font-size:8px}.seal-title-row{gap:6px}.procedure-band{gap:7px}.procedure-band b{font-size:11px}}
+
 </style>
 </head>
 <body>
 <div id="activation" class="activation-overlay"><div class="activation-card"><div class="activation-kicker">RÉFÉRENT SCELLÉS</div><h1>Autoriser ce téléphone</h1><p id="activationMsg">Entrez le code d’activation fourni par l’administrateur.</p><input id="pairCode" class="activation-input" inputmode="text" autocomplete="one-time-code" maxlength="10" placeholder="CODE D’ACTIVATION"><button id="activateBtn" class="activation-btn" type="button">Activer le scanner</button><div class="activation-help">L’autorisation est mémorisée sur ce téléphone. Elle peut être révoquée à tout moment par un administrateur.</div></div></div>
 <div class="app">
   <header class="top">
-    <div class="brand">RÉFÉRENT SCELLÉS</div>
-    <div class="title">Scanner QR</div>
-    <div class="sub">Contrôles physiques et mouvements • V2.7.0</div>
-    <div id="camp" class="camp"><div id="campTitle" class="camp-title"></div><div id="campMeta" class="camp-meta"></div><div class="bar"><i id="campBar" style="width:0%"></i></div></div>
+    <div class="top-brand"><span class="brand-mark" aria-hidden="true">RS</span><div><div class="brand">RÉFÉRENT SCELLÉS</div><div class="sub">Outil terrain sécurisé</div></div></div>
+    <div class="title">Scanner de scellés</div>
+    <div class="sub top-summary">Scannez un QR pour consulter la fiche, réaliser un contrôle ou enregistrer un mouvement.</div>
+    <div id="camp" class="camp"><div class="camp-row"><span class="camp-dot"></span><div><div id="campTitle" class="camp-title"></div><div id="campMeta" class="camp-meta"></div></div></div><div class="bar"><i id="campBar" style="width:0%"></i></div></div>
   </header>
 
-  <section id="scannerPanel" class="panel">
+  <section id="scannerPanel" class="panel scanner-stage">
+    <div class="section-heading"><div class="section-icon">⌗</div><div><h2>Scanner un QR code</h2><p>Centrez le code dans le cadre pour afficher le scellé.</p></div></div>
     <div class="camera" id="cameraBox">
       <video id="video" autoplay muted playsinline></video>
       <div class="overlay"><div id="frame" class="frame"></div><div id="hint" class="hint">Préparation de la caméra…</div></div>
     </div>
-    <div id="status" class="status">Initialisation…</div>
-    <div class="actions">
-      <button id="torch" class="btn">🔦 Torche</button>
-      <button id="switch" class="btn">↻ Caméra</button>
-      <button id="zoomMinus" class="btn">− Zoom</button>
-      <button id="zoomPlus" class="btn">＋ Zoom</button>
-      <button id="cameraStart" class="btn primary">📷 Activer la caméra</button>
+    <div id="status" class="status"><span class="status-dot"></span><span class="status-text">Initialisation…</span></div>
+    <div class="scanner-tools">
+      <button id="cameraStart" class="btn primary scanner-start"><span aria-hidden="true">▣</span> Activer la caméra</button>
+      <button id="torch" class="btn tool-btn"><span aria-hidden="true">☼</span><span>Torche</span></button>
+      <button id="switch" class="btn tool-btn"><span aria-hidden="true">↻</span><span>Caméra</span></button>
+      <button id="zoomMinus" class="btn tool-btn"><span aria-hidden="true">－</span><span>Zoom −</span></button>
+      <button id="zoomPlus" class="btn tool-btn"><span aria-hidden="true">＋</span><span>Zoom +</span></button>
     </div>
     <div id="photoRow" class="photoRow">
-      <label class="btn photoBtn" for="qrPhoto">📷 Scanner avec une photo</label>
+      <label class="btn photoBtn" for="qrPhoto"><span aria-hidden="true">▧</span> Lire un QR depuis une photo</label>
       <input id="qrPhoto" class="file" type="file" accept="image/*" capture="environment">
     </div>
+    <div class="scanner-tip"><span class="tip-icon">i</span><span>La fiche s’ouvre après lecture. Choisissez ensuite l’action voulue. La session reste active jusqu’à son expiration ou votre déconnexion.</span></div>
   </section>
 
   <section id="sealCard" class="card hidden"></section>
-  <div class="small-note">Un QR est lu une seule fois. Le contrôle est validé séparément, puis le scanner reprend pour le scellé suivant.</div>
+  <div class="small-note">Référent Scellés • Les opérations sensibles sont vérifiées par le serveur.</div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
@@ -76,7 +99,7 @@ textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);
 'use strict';
 const SCANNER_API_ENDPOINT='https://referent-scelles-api.benjii91270.workers.dev/api';
 const DEVICE_TOKEN_KEY='referent_scelles_device_token_v2';
-const SCANNER_VERSION='2.7.0';
+const SCANNER_VERSION='2.8.0';
 const APP_SESSION_STORAGE_KEY='referent_scelles_scanner_user_session_v2';
 const LEGACY_APP_SESSION_STORAGE_KEY='referent_scelles_scanner_user_session_v1';
 const APP_SESSION_TTL_MS=6*60*60*1000; // aligné sur l'expiration du jeton serveur Apps Script
@@ -106,7 +129,16 @@ function activeScannerSession(){
 state.userAuth=loadSavedScannerSession();
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-function setStatus(t,k=''){const e=$('status');e.textContent=t;e.className='status'+(k?' '+k:'');}
+function formatMovementDate(value){
+  const s=String(value??'').trim();if(!s)return 'Non renseignée';
+  let m=s.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?/);
+  if(m)return `${m[1]}/${m[2]}/${m[3]}${m[4]!==undefined?' à '+m[4]+':'+m[5]:''}`;
+  m=s.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2})(?::(\d{2}))?)?/);
+  if(m)return `${m[3]}/${m[2]}/${m[1]}${m[4]!==undefined?' à '+m[4]+':'+m[5]:''}`;
+  const parsed=new Date(s);if(!Number.isNaN(parsed.getTime()))return parsed.toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'});
+  return s;
+}
+function setStatus(t,k=''){const e=$('status');e.className='status'+(k?' '+k:'');const text=e.querySelector('.status-text');if(text)text.textContent=t;else e.textContent=t;}
 function beep(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=880;g.gain.value=.045;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.09);}catch(e){}}
 function vibrate(x=70){try{navigator.vibrate&&navigator.vibrate(x)}catch(e){}}
 async function apiCall(api,params={},timeout=9000){
@@ -177,15 +209,20 @@ function renderSeal(data){
     setStatus('QR non reconnu','bad');return;
   }
   campaignUI(data.campaign);state.token=String(data.qrId||state.token||'');
-  const c=data.campaign;let html=`<div class="entry">N° ${esc(data.entry)}</div><div class="sealname">${esc(data.scelle||'Scellé')}</div><div class="muted">Procédure : <b>${esc(data.procedure||'—')}</b></div>`;
-  html+=`<div class="facts"><div class="fact"><span>CATÉGORIE</span><b>${esc(data.category||'—')}</b></div><div class="fact"><span>TAILLE</span><b>${esc(data.size||'—')}</b></div><div class="fact"><span>STATUT</span><b>${esc(data.status||'—')}</b></div><div class="fact"><span>ENQUÊTEUR</span><b>${esc(data.investigator||'—')}</b></div><div class="fact full"><span>EMPLACEMENT ATTENDU</span><b>${esc(data.locationDetail||data.location||'—')}</b></div></div>`;
-  if(data.status && data.status!=='EN STOCK'){
-    html+=`<div class="notice bad"><b>${String(data.status).toUpperCase()==='EN MOUVEMENT'?'Scellé actuellement en mouvement':'Scellé non disponible au contrôle physique'}</b><div style="margin-top:3px">Statut actuel : ${esc(data.status)}</div></div>`;
+  const c=data.campaign;const rawStatus=String(data.status||'').trim().toUpperCase();
+  const statusClass=rawStatus==='EN STOCK'?'status-stock':rawStatus==='EN MOUVEMENT'?'status-move':'status-other';
+  const statusLabel=String(data.status||'Statut inconnu');
+  let html=`<div class="seal-head"><div class="seal-kicker">FICHE DU SCELLÉ</div><div class="seal-title-row"><div><div class="sealname">${esc(data.scelle||'Scellé')}</div><div class="seal-subline">Numéro d’entrée <b>${esc(data.entry)}</b></div></div><span class="status-pill ${statusClass}">${esc(statusLabel)}</span></div><div class="procedure-band"><span>PROCÉDURE</span><b>${esc(data.procedure||'—')}</b></div></div>`;
+  html+=`<div class="facts"><div class="fact"><span>CATÉGORIE</span><b>${esc(data.category||'—')}</b></div><div class="fact"><span>TAILLE</span><b>${esc(data.size||'—')}</b></div><div class="fact"><span>ENQUÊTEUR RÉFÉRENT</span><b>${esc(data.investigator||'—')}</b></div><div class="fact full"><span>EMPLACEMENT ATTENDU</span><b>${esc(data.locationDetail||data.location||'—')}</b></div></div>`;
+  if(rawStatus==='EN MOUVEMENT'){
+    html+=`<div class="notice warn"><b>Scellé actuellement en mouvement</b><div style="margin-top:3px">La prise en charge est enregistrée. Consultez les détails de sortie ci-dessous.</div></div>`;
+  } else if(rawStatus!=='EN STOCK'){
+    html+=`<div class="notice bad"><b>Scellé non disponible en stock</b><div style="margin-top:3px">Statut actuel : ${esc(statusLabel)}</div></div>`;
   } else if(!c){
-    html+=`<div class="notice warn"><b>Aucune campagne active</b><div style="margin-top:3px">Le scellé est reconnu. Les choix ci-dessous enregistreront un contrôle hors campagne.</div></div>`;
+    html+=`<div class="notice info"><b>Aucune campagne active</b><div style="margin-top:3px">Le scellé est reconnu. Vous pouvez le contrôler hors campagne ou enregistrer un mouvement.</div></div>`;
     html+=controlChoices();
   } else if(!c.inCampaign){
-    html+=`<div class="notice warn"><b>Scellé hors périmètre</b><div style="margin-top:3px">Il n’appartient pas à la campagne « ${esc(c.title||'Campagne active')} ». Aucun contrôle ne sera envoyé.</div></div>`;
+    html+=`<div class="notice warn"><b>Scellé hors périmètre</b><div style="margin-top:3px">Il n’appartient pas à la campagne « ${esc(c.title||'Campagne active')} ». Aucun contrôle de campagne ne sera envoyé.</div></div>`;
   } else if(c.itemStatus!=='A_FAIRE'){
     html+=`<div class="notice good"><b>Contrôle déjà effectué</b><div style="margin-top:3px">Résultat : <b>${esc(c.itemResult||c.itemStatus||'Contrôlé')}</b></div></div>`;
   } else {
@@ -193,12 +230,13 @@ function renderSeal(data){
     html+=controlChoices();
   }
   html+=movementPanelHTML(data);
-  html+=`<div class="actions"><button class="btn" id="cancelSeal" type="button">↩ Retour au scanner</button></div>`;
+  html+=`<div class="actions"><button class="btn" id="cancelSeal" type="button">← Retour au scanner</button></div>`;
   card.innerHTML=html;
   card.querySelector('#cancelSeal').onclick=resumeScanner;
   card.querySelectorAll('[data-result]').forEach(b=>b.addEventListener('click',()=>submitControl(b.dataset.result,b)));
   setStatus('Scellé reconnu • choisissez une action','good');
 }
+
 function movementPanelHTML(data){
   const status=String(data.status||'').trim().toUpperCase();
   const auth=activeScannerSession(),session=auth&&auth.session;
@@ -209,12 +247,12 @@ function movementPanelHTML(data){
   let action='';
   if(status==='EN STOCK') action='<button class="next move-primary" type="button" onclick="showMovementForm()">📦 Prendre en charge ce scellé</button>';
   else if(status==='EN MOUVEMENT'){
-    action=`<div class="move-current"><b>Sortie enregistrée</b><br>Pris en charge par : ${esc(data.retrievedBy||'—')}<br>Destination : ${esc(data.destination||'—')}<br>Date de sortie : ${esc(data.dateSortie||'—')}</div>`;
+    action=`<div class="move-current"><b>Sortie enregistrée</b><br>Pris en charge par : ${esc(data.retrievedBy||'—')}<br>Destination : ${esc(data.destination||'—')}<br>Date et heure : <b>${esc(formatMovementDate(data.dateSortieHeure||data.dateSortie))}</b></div>`;
     action+=logged&&session.isAdmin
       ?'<button class="next move-primary" type="button" onclick="showReturnForm()">↩ Confirmer le retour en stock</button>'
       :'<button class="next move-primary" type="button" onclick="showScannerLogin()">🔐 Connexion administrateur pour le retour</button><div class="muted" style="margin-top:5px">Le retour en stock est réservé à un compte administrateur.</div>';
   } else action='<div class="muted">Les actions de mouvement ne sont pas disponibles pour ce statut.</div>';
-  return `<section class="move-panel" id="movementPanel"><h3>Prise en charge / retour</h3><p class="hintline">Le déplacement est possible sans session avec un nom d’enquêteur obligatoire. Pour enregistrer n’importe quel résultat de contrôle physique, une session nominative est obligatoire. La session reste mémorisée jusqu’à 6 heures, sauf déconnexion ou expiration serveur.</p><div class="move-user"><span>${who}</span>${logged?'<button class="btn move-secondary" type="button" onclick="switchScannerUser()">Fermer / changer de session</button>':''}</div><div id="scannerUserAuth"></div><div id="scannerActionForm"></div>${action}</section>`;
+  return `<section class="move-panel" id="movementPanel"><h3>Actions sur le scellé</h3><p class="hintline">Prise en charge : nom et destination obligatoires sans session. Retour en stock : administrateur connecté et vérification physique obligatoires.</p><div class="move-user"><span>${who}</span>${logged?'<button class="btn move-secondary" type="button" onclick="switchScannerUser()">Fermer / changer de session</button>':''}</div><div id="scannerUserAuth"></div><div id="scannerActionForm"></div>${action}</section>`;
 }
 function controlChoices(){
   return `<div style="margin-top:11px"><div class="notice info">Une session nominative est obligatoire pour enregistrer tout résultat de contrôle physique. La connexion reste mémorisée jusqu’à 6 heures pour enchaîner les scans.</div><button class="choice green" data-result="CONFORME"><span class="ico">✓</span><span class="txt"><b>Présent et conforme</b><small>Session nominative requise</small></span></button><button class="choice red" data-result="ABSENT"><span class="ico">!</span><span class="txt"><b>Scellé absent</b><small>Le scellé n’a pas été retrouvé</small></span></button><button class="choice amber" data-result="EMPLACEMENT NON CONFORME"><span class="ico">⌖</span><span class="txt"><b>Emplacement non conforme</b><small>Présent à un autre emplacement</small></span></button><button class="choice amber" data-result="SCELLÉ À VÉRIFIER"><span class="ico">⚠</span><span class="txt"><b>Intégrité à vérifier</b><small>Conditionnement ou scellement à examiner</small></span></button><label class="muted" style="display:block;font-weight:900;margin-top:10px">Observation facultative</label><textarea id="obs" placeholder="Constatation complémentaire…"></textarea></div>`;
