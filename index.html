@@ -8,7 +8,6 @@
 <meta name="description" content="Scanner QR terrain — Référent Scellés">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Scanner QR — Référent Scellés</title>
-<script src="https://unpkg.com/@zxing/browser@0.2.1"></script>
 <style>
 *{box-sizing:border-box}:root{--bg:#eef2f6;--ink:#182333;--muted:#6f7b8b;--line:#d8dee6;--navy:#172033;--green:#24724b;--red:#a33732;--amber:#986f12;--white:#fff}
 html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -17,11 +16,11 @@ body{padding:10px 10px 28px}.app{max-width:680px;margin:auto}
 .brand{font-size:10px;font-weight:900;letter-spacing:.06em;opacity:.92}.title{font-size:25px;font-weight:950;line-height:1.04;margin-top:5px}.sub{font-size:11px;opacity:.8;margin-top:4px}
 .camp{margin-top:10px;background:#f8fafc;color:var(--ink);border:1px solid #e0e6ee;border-radius:13px;padding:10px 11px;display:none}.camp.show{display:block}.camp-title{font-size:12px;font-weight:900}.camp-meta{font-size:10px;color:var(--muted);margin-top:2px}.bar{height:7px;background:#e4e8ee;border-radius:99px;overflow:hidden;margin-top:7px}.bar i{display:block;height:100%;background:#66758b;transition:width .25s ease}
 .panel{margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:12px;box-shadow:0 4px 16px rgba(26,37,54,.05)}
-.camera{position:relative;background:#0d1420;border-radius:16px;overflow:hidden;min-height:340px;display:grid;place-items:center}.camera.hide{display:none}
+.camera{position:relative;background:#0d1420;border-radius:16px;overflow:hidden;min-height:340px;display:grid;place-items:center}.camera.hide{display:none}.camera.compact{min-height:110px;height:110px;place-items:stretch}.camera.compact video{height:110px;min-height:110px;object-fit:cover;opacity:.92}.camera.compact .overlay{display:none}.camera-note{display:none;margin-top:7px;border-radius:10px;background:#f2f5f8;border:1px solid #dce3ea;padding:8px 10px;color:#536176;font-size:11px;font-weight:800;line-height:1.4}.camera-note.show{display:block}.camera-note.live{background:#eff8f2;border-color:#c6e0cf;color:#266340}.camera-note.paused{background:#fff8e8;border-color:#ead7a9;color:#795d18}
 video{width:100%;height:min(58vh,520px);object-fit:cover;background:#0d1420;display:block}.overlay{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}.frame{width:min(76vw,360px);height:min(76vw,360px);max-height:50vh;border:3px solid rgba(255,255,255,.86);border-radius:24px;box-shadow:0 0 0 9999px rgba(5,9,15,.36),0 0 0 2px rgba(0,0,0,.08);transition:border-color .15s ease,box-shadow .15s ease}.frame.ready{border-color:#8ac9a6}.frame.ok{border-color:#5bd28e;box-shadow:0 0 0 9999px rgba(5,9,15,.28),0 0 0 2px rgba(91,210,142,.16)}
 .hint{position:absolute;bottom:12px;left:12px;right:12px;text-align:center;background:rgba(8,14,24,.76);color:#fff;border-radius:12px;padding:9px 10px;font-size:11px;font-weight:850;backdrop-filter:blur(5px)}
 .status{min-height:22px;text-align:center;font-size:12px;font-weight:850;color:var(--muted);margin-top:9px}.status.good{color:var(--green)}.status.bad{color:var(--red)}
-.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}button,.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit;font-weight:900;border-radius:12px;min-height:44px;padding:10px 12px;cursor:pointer}button:active{transform:translateY(1px)}button:disabled{opacity:.45;cursor:not-allowed}.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}.btn.good{border-color:#bcdcc8;background:#eef8f2;color:var(--green)}.btn.warn{border-color:#ead7a9;background:#fff8e8;color:#795d18}.btn.danger{border-color:#ecc9c6;background:#fff1f0;color:var(--red)}
+.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:9px}button,.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit;font-weight:900;border-radius:12px;min-height:48px;padding:10px 12px;cursor:pointer;touch-action:manipulation}button:active{transform:translateY(1px)}button:disabled{opacity:.45;cursor:not-allowed}.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}.btn.good{border-color:#bcdcc8;background:#eef8f2;color:var(--green)}.btn.warn{border-color:#ead7a9;background:#fff8e8;color:#795d18}.btn.danger{border-color:#ecc9c6;background:#fff1f0;color:var(--red)}
 .card{margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}.hidden{display:none!important}
 .entry{display:inline-block;background:#f0f3f7;border:1px solid #e0e5eb;border-radius:9px;padding:5px 8px;font-size:11px;font-weight:950}.sealname{font-size:24px;font-weight:950;line-height:1.1;margin-top:8px;word-break:break-word}.muted{color:var(--muted);font-size:11px;line-height:1.48}
 .facts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.fact{background:#f8fafb;border:1px solid #e4e8ed;border-radius:11px;padding:9px}.fact.full{grid-column:1/-1}.fact span{display:block;font-size:8px;color:#788494;font-weight:950;letter-spacing:.06em}.fact b{display:block;font-size:13px;margin-top:3px;word-break:break-word}
@@ -30,9 +29,9 @@ video{width:100%;height:min(58vh,520px);object-fit:cover;background:#0d1420;disp
 textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);border-radius:11px;padding:10px;font:inherit;resize:vertical}label{user-select:none}
 .saved{text-align:center;background:#eff8f2;border:1px solid #c6e0cf;border-radius:14px;padding:15px}.saved .big{font-size:34px}.pill{display:inline-block;margin-top:7px;padding:6px 9px;border-radius:10px;background:#fff;border:1px solid #cfe1d5;font-size:11px;font-weight:900;color:var(--green)}
 .next{width:100%;margin-top:10px;background:var(--navy);color:#fff;border:0;border-radius:13px;padding:14px;font:inherit;font-weight:950;cursor:pointer}.small-note{text-align:center;color:#7a8594;font-size:10px;margin-top:9px;line-height:1.45}.error{background:#fff2f1;border:1px solid #efc7c5;color:#91332d;border-radius:13px;padding:11px;font-size:11px;line-height:1.45}
-.photoRow{display:none;margin-top:8px}.photoRow.show{display:block}.file{display:none}.photoBtn{width:100%;display:flex;justify-content:center;align-items:center}
+.photoRow{display:none;margin-top:8px}.photoRow.show{display:block}.file{display:none}.photoBtn{width:100%;display:flex;justify-content:center;align-items:center}.preferences-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px}.preferences-row button{min-height:42px;font-size:11px;padding:8px}.session-progress{margin-top:7px;text-align:center;color:#667386;font-size:10px;font-weight:800}
  .activation-overlay{position:fixed;inset:0;background:rgba(11,18,29,.82);display:none;place-items:center;padding:16px;z-index:9999}.activation-overlay.show{display:grid}.activation-card{width:min(460px,100%);background:#fff;border-radius:20px;padding:22px;box-shadow:0 22px 70px rgba(0,0,0,.28)}.activation-kicker{font-size:10px;font-weight:950;letter-spacing:.08em;color:#6b7788}.activation-card h1{margin:6px 0;font-size:24px;color:var(--navy)}.activation-card p{margin:0 0 14px;font-size:12px;line-height:1.45;color:var(--muted)}.activation-input{width:100%;height:50px;border:1px solid #cad3de;border-radius:12px;padding:0 13px;font:inherit;font-size:17px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.activation-btn{width:100%;margin-top:9px;min-height:46px;border:0;border-radius:12px;background:var(--navy);color:#fff;font:inherit;font-weight:950}.activation-help{margin-top:9px;font-size:10px;line-height:1.45;color:#7a8695}
-@media(max-width:520px){.facts{grid-template-columns:1fr 1fr}video{height:55vh}.frame{width:74vw;height:74vw}}
+@media(max-width:520px){body{padding:7px 7px 22px}.facts{grid-template-columns:1fr 1fr}video{height:55vh}.frame{width:74vw;height:74vw}.actions{grid-template-columns:repeat(2,minmax(0,1fr))}.actions button{font-size:12px;padding:10px 8px}.camera.compact video{height:110px}.camera.compact{min-height:110px}}@media(min-width:521px){.actions{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -41,7 +40,7 @@ textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);
   <header class="top">
     <div class="brand">RÉFÉRENT SCELLÉS</div>
     <div class="title">Scanner QR</div>
-    <div class="sub">Mode contrôle terrain • V2.10</div>
+    <div class="sub">Mode contrôle terrain • V2.6.0 — série rapide</div>
     <div id="camp" class="camp"><div id="campTitle" class="camp-title"></div><div id="campMeta" class="camp-meta"></div><div class="bar"><i id="campBar" style="width:0%"></i></div></div>
   </header>
 
@@ -50,14 +49,22 @@ textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);
       <video id="video" autoplay muted playsinline></video>
       <div class="overlay"><div id="frame" class="frame"></div><div id="hint" class="hint">Préparation de la caméra…</div></div>
     </div>
-    <div id="status" class="status">Initialisation…</div>
+    <div id="cameraNote" class="camera-note" aria-live="polite">La caméra est inactive.</div>
+    <div id="status" class="status" role="status" aria-live="polite" aria-atomic="true">Initialisation…</div>
     <div class="actions">
-      <button id="torch" class="btn">🔦 Torche</button>
-      <button id="switch" class="btn">↻ Caméra</button>
-      <button id="zoomMinus" class="btn">− Zoom</button>
-      <button id="zoomPlus" class="btn">＋ Zoom</button>
-      <button id="cameraStart" class="btn primary">📷 Activer la caméra</button>
+      <button id="modeSeries" class="btn good" type="button" aria-pressed="true" title="Garde la caméra ouverte entre deux contrôles pour accélérer les scans.">⚡ Série rapide : ON</button>
+      <button id="torch" class="btn" type="button" disabled>🔦 Torche</button>
+      <button id="switch" class="btn" type="button">↻ Changer de caméra</button>
+      <button id="zoomMinus" class="btn" type="button" disabled>− Zoom</button>
+      <button id="zoomPlus" class="btn" type="button" disabled>＋ Zoom</button>
+      <button id="cameraStart" class="btn primary" type="button">📷 Activer la caméra</button>
+      <button id="cameraStop" class="btn warn" type="button" disabled>⏸ Pause caméra</button>
     </div>
+    <div class="preferences-row" aria-label="Préférences de retour">
+      <button id="soundToggle" class="btn" type="button" aria-pressed="true">🔊 Son : ON</button>
+      <button id="vibrationToggle" class="btn" type="button" aria-pressed="true">📳 Vibration : ON</button>
+    </div>
+    <div id="sessionProgress" class="session-progress" aria-live="polite">Contrôles enregistrés pendant cette session : 0</div>
     <div id="photoRow" class="photoRow">
       <label class="btn photoBtn" for="qrPhoto">📷 Scanner avec une photo</label>
       <input id="qrPhoto" class="file" type="file" accept="image/*" capture="environment">
@@ -65,21 +72,30 @@ textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);
   </section>
 
   <section id="sealCard" class="card hidden"></section>
-  <div class="small-note">Un QR est lu une seule fois. Le contrôle est validé séparément, puis le scanner reprend pour le scellé suivant.</div>
+  <div class="small-note">Mode série rapide conserve la caméra active mais met la lecture en pause pendant la fiche. Tu peux couper la caméra à tout moment. Le mode classique coupe le flux après chaque lecture.</div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 <script>
 'use strict';
 const SCANNER_API_ENDPOINT='https://referent-scelles-api.benjii91270.workers.dev/api';
 const DEVICE_TOKEN_KEY='referent_scelles_device_token_v2';
-const SCANNER_VERSION='2.5.0';
-const state={reader:null,controls:null,stream:null,track:null,devices:[],deviceIndex:0,deviceId:null,busy:false,cameraSwitching:false,token:'',lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null,photoMode:false};
+const SCANNER_VERSION='2.6.0';
+const SERIES_MODE_KEY='referent_scelles_series_mode_v1';
+const SOUND_PREF_KEY='referent_scelles_scanner_sound_v1';
+const VIBRATION_PREF_KEY='referent_scelles_scanner_vibration_v1';
+const CAMERA_DEVICE_KEY='referent_scelles_camera_device_v1';
+function readSeriesMode(){try{const saved=localStorage.getItem(SERIES_MODE_KEY);return saved===null?true:saved==='1';}catch(e){return true;}}
+function readBoolPreference(key,fallback=true){try{const saved=localStorage.getItem(key);return saved===null?fallback:saved==='1';}catch(e){return fallback;}}
+function readPreferredCamera(){try{return localStorage.getItem(CAMERA_DEVICE_KEY)||null;}catch(e){return null;}}
+function savePreferredCamera(id){try{if(id)localStorage.setItem(CAMERA_DEVICE_KEY,id);}catch(e){}}
+const state={reader:null,controls:null,readerMode:'none',readerRunning:false,readerGeneration:0,decodeLoopTimer:null,nativeDetector:null,nativeDecodeErrors:0,stream:null,track:null,devices:[],deviceIndex:0,deviceId:readPreferredCamera(),busy:false,cameraOpening:false,cameraSwitching:false,cameraResumeOnVisible:false,resumeDecodeAfterVisibility:false,seriesMode:readSeriesMode(),soundEnabled:readBoolPreference(SOUND_PREF_KEY,true),vibrationEnabled:readBoolPreference(VIBRATION_PREF_KEY,true),sessionChecks:0,token:'',lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null,photoMode:false};
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
 function setStatus(t,k=''){const e=$('status');e.textContent=t;e.className='status'+(k?' '+k:'');}
-function beep(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=880;g.gain.value=.045;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.09);}catch(e){}}
-function vibrate(x=70){try{navigator.vibrate&&navigator.vibrate(x)}catch(e){}}
+function beep(){if(!state.soundEnabled)return;try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=880;g.gain.value=.045;o.connect(g);g.connect(c.destination);o.onended=()=>{try{c.close();}catch(e){}};o.start();o.stop(c.currentTime+.09);}catch(e){}}
+function vibrate(x=70){if(!state.vibrationEnabled)return;try{navigator.vibrate&&navigator.vibrate(x)}catch(e){}}
+function updateFeedbackControls(){const s=$('soundToggle'),v=$('vibrationToggle');s.textContent=state.soundEnabled?'🔊 Son : ON':'🔇 Son : OFF';v.textContent=state.vibrationEnabled?'📳 Vibration : ON':'📳 Vibration : OFF';s.setAttribute('aria-pressed',String(state.soundEnabled));v.setAttribute('aria-pressed',String(state.vibrationEnabled));s.className='btn'+(state.soundEnabled?' good':'');v.className='btn'+(state.vibrationEnabled?' good':'');}
+function updateSessionProgress(){$('sessionProgress').textContent=`Contrôles enregistrés pendant cette session : ${state.sessionChecks}`;}
 async function apiCall(api,params={},timeout=9000){
   const deviceToken=localStorage.getItem(DEVICE_TOKEN_KEY)||'';
   if(api!=='pair' && !deviceToken) throw new Error('SCANNER_NOT_ACTIVATED');
@@ -118,14 +134,39 @@ function campaignUI(c){
   if(!c){$('camp').classList.remove('show');state.campaign=null;return;}
   state.campaign=c;const p=c.progress||{};$('campTitle').textContent=c.title||'Campagne active';$('campMeta').textContent=`${Number(p.done||0)}/${Number(p.total||0)} contrôlés • ${Number(p.remaining||0)} restant(s)`;$('campBar').style.width=(Number(p.pct)||0)+'%';$('camp').classList.add('show');
 }
+function hasLiveCamera(){return !!state.track&&state.track.readyState==='live'&&!!state.stream;}
+function resultCardVisible(){return !$('sealCard').classList.contains('hidden');}
+function updateModeButton(){
+  const b=$('modeSeries');b.textContent=state.seriesMode?'⚡ Série rapide : ON':'🛡 Mode classique : ON';
+  b.className='btn '+(state.seriesMode?'good':'');b.setAttribute('aria-pressed',String(state.seriesMode));
+  b.title=state.seriesMode?'Caméra maintenue active entre les fiches. La lecture s’arrête pendant le contrôle.':'Le flux caméra est coupé dès qu’un QR est lu.';
+}
+function updateCameraControls(){
+  const live=hasLiveCamera();$('cameraStart').disabled=state.cameraOpening||state.busy&&!resultCardVisible();
+  $('cameraStart').textContent=live?(state.readerRunning?'↺ Nouveau scan':'▶ Reprendre le scan'):'📷 Activer la caméra';
+  $('cameraStop').disabled=!live||state.cameraOpening;$('switch').disabled=state.cameraOpening||state.cameraSwitching||state.busy;
+  if($('modeSeries'))updateModeButton();
+}
+function setCameraNote(text,kind=''){
+  const n=$('cameraNote');n.textContent=text;n.className='camera-note'+(text?' show':'')+(kind?' '+kind:'');
+}
 function resetReaderVisual(){
-  $('cameraBox').classList.remove('hide');$('video').classList.remove('hidden');$('frame').className='frame ready';$('hint').textContent='Présentez le QR au centre';
+  $('cameraBox').classList.remove('hide','compact');$('video').classList.remove('hidden');$('frame').className='frame ready';$('hint').textContent='Présentez le QR au centre';
+  setCameraNote(hasLiveCamera()?(state.seriesMode?'Caméra active • mode série rapide':'Caméra active • mode classique'):'La caméra est inactive.',hasLiveCamera()?'live':'');
 }
-function hideReaderVisual(){
-  $('cameraBox').classList.add('hide');$('photoRow').classList.remove('show');
+function showResultCameraState(){
+  $('photoRow').classList.remove('show');
+  if(state.seriesMode&&hasLiveCamera()){
+    $('cameraBox').classList.remove('hide');$('cameraBox').classList.add('compact');$('hint').textContent='Caméra active — lecture en pause';
+    setCameraNote('⚡ Caméra active • lecture en pause pendant la fiche. « Scanner le suivant » reprendra sans redémarrer la caméra.','live');
+  }else{
+    $('cameraBox').classList.add('hide');$('cameraBox').classList.remove('compact');
+    setCameraNote('Caméra arrêtée pendant le contrôle.', 'paused');
+  }
 }
+function hideReaderVisual(){showResultCameraState();}
 function showPhotoFallback(){
-  $('photoRow').classList.add('show');setStatus('Mode photo disponible','');$('hint').textContent='La caméra directe n’est pas disponible sur cet appareil.';
+  $('photoRow').classList.add('show');if(!$('status').classList.contains('bad'))setStatus('Mode photo disponible','');$('hint').textContent='La caméra directe n’est pas disponible sur cet appareil.';
 }
 function renderSeal(data){
   state.busy=false;
@@ -161,8 +202,13 @@ function controlChoices(){
 }
 async function lookupToken(token){
   token=String(token||'').trim();if(!token||state.busy)return;
-  state.token=token;state.busy=true;stopCamera();updateUrlWithoutToken();$('sealCard').classList.remove('hidden');$('sealCard').innerHTML='<div class="status"><span>QR reconnu • recherche du scellé…</span></div>';setStatus('QR reconnu • lecture…','good');$('frame').classList.add('ok');beep();vibrate(70);
-  try{const data=await apiCall('lookup',{scan:token},10000);renderSeal(data);}catch(e){state.busy=false;$('sealCard').innerHTML=`<div class="error"><b>Base temporairement indisponible</b><div style="margin-top:4px">${esc(e.message)}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Revenir au scanner</button>`;setStatus('Erreur de communication','bad');}
+  state.token=token;state.busy=true;pauseReader();
+  if(!state.seriesMode)stopCamera();
+  updateUrlWithoutToken();$('sealCard').classList.remove('hidden');$('sealCard').innerHTML='<div class="status"><span>QR reconnu • recherche du scellé…</span></div>';
+  showResultCameraState();setStatus('QR reconnu • recherche du scellé…','good');$('frame').classList.add('ok');beep();vibrate(70);updateCameraControls();
+  try{const data=await apiCall('lookup',{scan:token},10000);renderSeal(data);}
+  catch(e){state.busy=false;$('sealCard').innerHTML=`<div class="error"><b>Base temporairement indisponible</b><div style="margin-top:4px">${esc(e.message||'Erreur de communication.')}</div></div><button class="next" id="retryLookup" type="button">↻ Réessayer la recherche</button><button class="next" id="backToScan" type="button">📷 Revenir au scanner</button>`;
+    $('retryLookup').onclick=()=>lookupToken(state.token);$('backToScan').onclick=resumeScanner;showResultCameraState();setStatus('Erreur de communication • nouvelle tentative possible','bad');updateCameraControls();}
 }
 async function submitControl(result,button){
   if(state.busy)return;state.busy=true;button.disabled=true;
@@ -172,206 +218,284 @@ async function submitControl(result,button){
     const out=await apiCall('control',{scan:state.token,result,obs},12000);
     document.getElementById('saving')?.remove();
     if(!out?.ok)throw new Error(out?.message||'Contrôle refusé.');
-    beep();vibrate([60,40,60]);const p=out.progress||{};if(out.campaignTitle)campaignUI({title:out.campaignTitle,progress:p});
+    if(!out.already){state.sessionChecks++;updateSessionProgress();}beep();vibrate([60,40,60]);const p=out.progress||{};if(out.campaignTitle)campaignUI({title:out.campaignTitle,progress:p});
     card.innerHTML=`<div class="saved"><div class="big">✅</div><b>${out.already?'Contrôle déjà enregistré':'Contrôle enregistré'}</b><div class="pill">${esc(out.result||result)}</div>${out.campaignTitle?`<div class="muted" style="margin-top:8px"><b>${esc(out.campaignTitle)}</b><br>${Number(p.done||0)}/${Number(p.total||0)} contrôlés • ${Number(p.remaining||0)} restant(s)</div>`:''}</div><button class="next" id="nextBtn" type="button">📷 Scanner le suivant</button>`;
-    $('nextBtn').onclick=resumeScanner;state.busy=false;setStatus('Contrôle enregistré • prêt pour le suivant','good');
-  }catch(e){state.busy=false;button.disabled=false;document.getElementById('saving')?.remove();card.insertAdjacentHTML('beforeend',`<div class="error" style="margin-top:9px"><b>Échec de l’enregistrement</b><div style="margin-top:4px">${esc(e.message)}</div></div>`);setStatus('Contrôle non enregistré','bad');}
+    $('nextBtn').onclick=resumeScanner;state.busy=false;showResultCameraState();setStatus(state.seriesMode&&hasLiveCamera()?'Contrôle enregistré • suivant instantané disponible':'Contrôle enregistré • prêt pour le suivant','good');updateCameraControls();
+  }catch(e){state.busy=false;button.disabled=false;document.getElementById('saving')?.remove();card.insertAdjacentHTML('beforeend',`<div class="error" style="margin-top:9px"><b>Échec de l’enregistrement</b><div style="margin-top:4px">${esc(e.message)}</div><div style="margin-top:4px">Tu peux réessayer le contrôle ; aucun succès n’est affiché tant que le serveur ne l’a pas confirmé.</div></div>`);setStatus('Contrôle non confirmé • vérifie la connexion puis réessaie','bad');updateCameraControls();}
+}
+function pauseReader(){
+  state.readerGeneration++;
+  state.readerRunning=false;
+  if(state.decodeLoopTimer){clearTimeout(state.decodeLoopTimer);state.decodeLoopTimer=null;}
+  const controls=state.controls;state.controls=null;
+  try{controls?.stop?.();}catch(e){}
+  state.nativeDetector=null;state.readerMode='none';state.nativeDecodeErrors=0;
 }
 function stopCamera(){
-  try{state.controls?.stop?.();}catch(e){}state.controls=null;
-  try{state.stream?.getTracks()?.forEach(t=>t.stop());}catch(e){}
-  state.stream=null;state.track=null;state.torch=false;$('video').srcObject=null;
-  if($('torch')){$('torch').disabled=true;$('torch').textContent='🔦 Torche';$('torch').title='Active la caméra pour vérifier la disponibilité de la torche.';}
+  pauseReader();
+  const stream=state.stream||$('video').srcObject;
+  try{stream?.getTracks?.().forEach(t=>t.stop());}catch(e){}
+  state.stream=null;state.track=null;state.torch=false;$('video').pause?.();$('video').srcObject=null;
+  $('torch').disabled=true;$('torch').textContent='🔦 Torche';$('torch').title='Active la caméra pour vérifier la disponibilité de la torche.';
   ['zoomMinus','zoomPlus'].forEach(id=>{if($(id))$(id).disabled=true;});
-}
-async function chooseDevice(){
-  try{state.devices=await ZXingBrowser.BrowserCodeReader.listVideoInputDevices();}catch(e){state.devices=[];}
-  if(!state.devices.length){state.deviceId=undefined;state.deviceIndex=0;return;}
-  // Garder la caméra explicitement choisie par l'utilisateur lorsque la caméra redémarre.
-  const selectedIndex=state.devices.findIndex(d=>d.deviceId===state.deviceId);
-  if(selectedIndex>=0){state.deviceIndex=selectedIndex;return;}
-  // Au premier lancement, privilégier une caméra arrière si son libellé est exposé.
-  const preferredIndex=state.devices.findIndex(d=>/back|rear|environment|arrière|dos|trasera|trás/i.test(String(d.label||'')));
-  state.deviceIndex=preferredIndex>=0?preferredIndex:0;
-  state.deviceId=state.devices[state.deviceIndex]?.deviceId;
-}
-async function waitForCameraTrack(timeoutMs=4000){
-  const deadline=Date.now()+timeoutMs;
-  while(Date.now()<deadline){
-    const stream=$('video').srcObject;
-    const track=stream?.getVideoTracks?.().find(t=>t.readyState==='live');
-    if(track){state.stream=stream;state.track=track;return track;}
-    await new Promise(resolve=>setTimeout(resolve,100));
-  }
-  return null;
-}
-async function startCamera(){
-  if(state.busy)return;stopCamera();resetReaderVisual();state.busy=true;setStatus('Activation de la caméra…');$('hint').textContent='Autorisation caméra en cours…';
-  try{
-    if(!window.ZXingBrowser?.BrowserQRCodeReader)throw new Error('Moteur QR indisponible.');
-    await chooseDevice();state.reader=new ZXingBrowser.BrowserQRCodeReader();
-    state.controls=await state.reader.decodeFromVideoDevice(state.deviceId,$('video'),(result,error)=>{
-      // Ne pas traiter de QR pendant qu'un changement d'objectif est en cours.
-      if(!result||state.busy||state.cameraSwitching)return;const raw=String(result.getText?.()||result.text||'').trim(),token=tokenFrom(raw);if(!token)return;
-      const now=Date.now();if(token===state.lastToken&&now-state.lastAt<2000)return;state.lastToken=token;state.lastAt=now;lookupToken(token);
-    });
-    const track=await waitForCameraTrack();
-    if(!track)throw new Error('Le flux vidéo n’est pas prêt. Réessaie ou autorise la caméra.');
-    state.busy=false;await applyCameraCaps();
-    const cameraCount=state.devices.length;
-    const cameraLabel=String(state.devices[state.deviceIndex]?.label||'').trim();
-    setStatus(cameraCount>1?`Scanner prêt • caméra ${state.deviceIndex+1}/${cameraCount}`:'Scanner prêt','good');
-    $('hint').textContent=cameraLabel?`Caméra ${state.deviceIndex+1}${cameraCount>1?'/'+cameraCount:''} — ${cameraLabel}. Présentez le QR au centre`:'Présentez le QR au centre';
-    $('frame').className='frame ready';
-  }catch(e){state.busy=false;stopCamera();setStatus('Caméra indisponible : '+String(e?.message||e||'erreur inconnue'),'bad');$('hint').textContent='Vérifie l’autorisation caméra, puis réessaie.';showPhotoFallback();}
-}
-async function resumeScanner(){
-  if(state.cameraSwitching)return;
-  $('sealCard').classList.add('hidden');$('sealCard').innerHTML='';state.token='';state.lastToken='';state.busy=false;state.photoMode=false;updateUrlWithoutToken();$('cameraBox').classList.remove('hide');$('photoRow').classList.remove('show');$('frame').className='frame';$('hint').textContent='Préparation de la caméra…';setStatus('Préparation…');await startCamera();
+  if($('cameraStop'))$('cameraStop').disabled=true;
+  updateCameraControls();
 }
 function getTrackCapabilities(track){try{return track?.getCapabilities?.()||null;}catch(e){return null;}}
+function getCameraFacing(device,track){
+  const label=String(device?.label||'');
+  if(/back|rear|environment|arrière|\bdos\b|trasera|trás|facing back|camera arrière|caméra arrière/i.test(label))return 'rear';
+  if(/front|user|avant|frontal|facetime|facing front|caméra avant/i.test(label))return 'front';
+  const facing=String(track?.getSettings?.().facingMode||'').toLowerCase();
+  if(facing==='environment')return 'rear';if(facing==='user')return 'front';return 'unknown';
+}
+function preferredRearCamera(devices,currentId){
+  const rear=devices.filter(d=>getCameraFacing(d,null)==='rear');if(!rear.length)return null;
+  const score=d=>{const l=String(d.label||'').toLowerCase();let n=0;if(/ultra.?wide|wide|macro|telephoto|depth|0[,.]5x|3x|5x/.test(l))n+=10;if(/main|primary|back camera|rear camera|camera2 0|camera 0|principale/.test(l))n-=2;return n;};
+  rear.sort((a,b)=>score(a)-score(b));return rear.find(d=>d.deviceId!==currentId)||rear[0];
+}
+async function enumerateCameras(){
+  try{const all=await navigator.mediaDevices.enumerateDevices();state.devices=all.filter(d=>d.kind==='videoinput'&&d.deviceId);}catch(e){state.devices=[];}
+  const activeId=state.track?.getSettings?.().deviceId||state.deviceId;
+  if(activeId){const idx=state.devices.findIndex(d=>d.deviceId===activeId);if(idx>=0){state.deviceIndex=idx;state.deviceId=activeId;return;}}
+  if(state.deviceId){const idx=state.devices.findIndex(d=>d.deviceId===state.deviceId);if(idx>=0){state.deviceIndex=idx;return;}}
+  if(state.devices.length&&(state.deviceId||state.devices.some(d=>String(d.label||'').trim()))){const rear=preferredRearCamera(state.devices,null);const pick=rear||state.devices[0];state.deviceIndex=state.devices.findIndex(d=>d.deviceId===pick.deviceId);state.deviceId=pick.deviceId;}
+}
+async function chooseDevice(){await enumerateCameras();}
+function cameraConstraints(deviceId){
+  const video={width:{ideal:1280},height:{ideal:720},frameRate:{ideal:24,max:30}};
+  if(deviceId)video.deviceId={exact:deviceId};else video.facingMode={ideal:'environment'};
+  return {audio:false,video};
+}
+async function startCamera(options={}){
+  const decode=options.decode!==false,forceRestart=options.force===true;
+  if(state.cameraOpening||state.busy)return;
+  state.cameraOpening=true;updateCameraControls();pauseReader();
+  // Do not stop a camera that is already live merely to resume scanning.
+  if(!forceRestart&&hasLiveCamera()){
+    $('cameraBox').classList.remove('hide');
+    if(resultCardVisible()){$('cameraBox').classList.add('compact');}
+    else{$('cameraBox').classList.remove('compact');}
+    state.cameraOpening=false;await applyCameraCaps();
+    if(decode&&!resultCardVisible())await startReader();
+    else setStatus('Caméra active • lecture en pause','good');
+    updateCameraControls();return;
+  }
+  stopCamera();$('cameraBox').classList.remove('hide');$('cameraBox').classList.remove('compact');$('frame').className='frame';
+  $('hint').textContent='Autorisation caméra en cours…';setCameraNote('Demande d’accès à la caméra…');setStatus('Activation de la caméra…');
+  try{
+    if(!navigator.mediaDevices?.getUserMedia)throw new Error('Caméra indisponible. Ouvre le scanner depuis une adresse HTTPS et autorise la caméra.');
+    await enumerateCameras();
+    let stream;
+    if(state.deviceId){
+      try{stream=await navigator.mediaDevices.getUserMedia(cameraConstraints(state.deviceId));}
+      catch(firstError){stream=await navigator.mediaDevices.getUserMedia(cameraConstraints(null));}
+    }else stream=await navigator.mediaDevices.getUserMedia(cameraConstraints(null));
+    state.stream=stream;state.track=stream.getVideoTracks().find(t=>t.readyState==='live')||null;
+    if(!state.track)throw new Error('La caméra ne fournit aucun flux vidéo actif.');
+    $('video').srcObject=stream;
+    try{await $('video').play();}catch(e){if($('video').readyState<2)throw new Error('La vidéo ne démarre pas. Vérifie l’autorisation caméra et réessaie.');}
+    await enumerateCameras();
+    const activeId=state.track.getSettings?.().deviceId;
+    if(activeId){state.deviceId=activeId;savePreferredCamera(activeId);const idx=state.devices.findIndex(d=>d.deviceId===activeId);if(idx>=0)state.deviceIndex=idx;}
+    $('cameraBox').classList.remove('hide');$('cameraBox').classList.toggle('compact',resultCardVisible());
+    await applyCameraCaps();state.cameraOpening=false;
+    if(decode&&!resultCardVisible())await startReader();
+    else{pauseReader();setStatus(state.seriesMode?'Caméra active • lecture en pause':'Caméra prête','good');}
+    const device=state.devices.find(d=>d.deviceId===state.deviceId);const facing=getCameraFacing(device,state.track);
+    $('hint').textContent=decode&&!resultCardVisible()?'Présente le QR dans le cadre': 'Caméra active — lecture en pause';
+    setCameraNote(`Caméra ${facing==='rear'?'arrière':facing==='front'?'avant':'active'}${device?.label?' • '+device.label:''}${state.seriesMode?' • série rapide':' • mode classique'}`, 'live');
+    updateCameraControls();
+  }catch(e){
+    state.cameraOpening=false;stopCamera();$('cameraBox').classList.remove('compact');$('cameraBox').classList.remove('hide');
+    const msg=String(e?.message||e||'Erreur inconnue');setStatus('Caméra indisponible : '+msg,'bad');$('hint').textContent='Autorise la caméra puis réessaie, ou utilise le scan par photo.';setCameraNote('Caméra inactive • le scan par photo reste disponible.','paused');showPhotoFallback();updateCameraControls();
+  }
+}
 async function applyCameraCaps(){
-  const stream=$('video').srcObject;
-  const track=stream?.getVideoTracks?.().find(t=>t.readyState==='live')||state.track;
+  const stream=$('video').srcObject;const track=stream?.getVideoTracks?.().find(t=>t.readyState==='live')||state.track;
   state.stream=stream||state.stream;state.track=track||null;
   const caps=getTrackCapabilities(track),hasTorchFlag=!!caps&&Object.prototype.hasOwnProperty.call(caps,'torch');
   const canAttemptTorch=!!track&&typeof track.applyConstraints==='function';
   $('torch').disabled=!canAttemptTorch||(hasTorchFlag&&caps.torch!==true);
-  $('torch').title=hasTorchFlag&&caps.torch!==true
-    ?'Cette caméra ne propose pas de torche. Appuie sur « Caméra » pour essayer un autre objectif.'
-    :'Activer ou désactiver la torche si la caméra et le navigateur le permettent.';
-  const settings=track?.getSettings?.()||{};
-  state.torch=typeof settings.torch==='boolean'?settings.torch:false;
+  $('torch').title=hasTorchFlag&&caps.torch!==true?'Cette caméra ne propose pas de torche. Utilise « Changer de caméra » pour choisir l’objectif arrière.':'Active ou désactive la torche si le téléphone et le navigateur le permettent.';
+  const settings=track?.getSettings?.()||{};state.torch=typeof settings.torch==='boolean'?settings.torch:false;
   $('torch').textContent=state.torch?'🔦 Torche ON':'🔦 Torche';
   ['zoomMinus','zoomPlus'].forEach(id=>$(id).disabled=!(caps?.zoom));
   state.zoom=caps?.zoom?{min:caps.zoom.min,max:caps.zoom.max,step:caps.zoom.step||0.1,value:settings.zoom||caps.zoom.min}:null;
+  updateCameraControls();
 }
 async function toggleTorch(){
-  const stream=$('video').srcObject;
-  const track=stream?.getVideoTracks?.().find(t=>t.readyState==='live')||state.track;
-  if(!track){setStatus('La caméra n’est pas prête. Réactive-la avant la torche.','bad');return;}
+  const track=($('video').srcObject?.getVideoTracks?.()||[]).find(t=>t.readyState==='live')||state.track;
+  if(!track){setStatus('La caméra n’est pas active. Réactive-la avant la torche.','bad');return;}
   const caps=getTrackCapabilities(track),hasTorchFlag=!!caps&&Object.prototype.hasOwnProperty.call(caps,'torch');
-  if(hasTorchFlag&&caps.torch!==true){
-    setStatus('Torche non disponible sur cette caméra. Appuie sur « Caméra » pour essayer l’objectif arrière.','bad');return;
-  }
-  if(typeof track.applyConstraints!=='function'){
-    setStatus('Ce navigateur ne permet pas de commander la torche. Essaie Chrome sur Android.','bad');return;
-  }
-  const next=!state.torch,previous=state.torch;
-  $('torch').disabled=true;
+  if(hasTorchFlag&&caps.torch!==true){setStatus('Torche non disponible sur cet objectif. Choisis la caméra arrière principale.','bad');return;}
+  if(typeof track.applyConstraints!=='function'){setStatus('Ce navigateur ne permet pas de commander la torche. Essaie Chrome sur Android.','bad');return;}
+  const next=!state.torch,previous=state.torch;$('torch').disabled=true;
   try{
-    await track.applyConstraints({advanced:[{torch:next}]});
-    const settings=track.getSettings?.()||{};
+    await track.applyConstraints({advanced:[{torch:next}]});const settings=track.getSettings?.()||{};
     if(typeof settings.torch==='boolean'&&settings.torch!==next)throw new Error('Le navigateur n’a pas appliqué la demande.');
     state.torch=next;$('torch').textContent=state.torch?'🔦 Torche ON':'🔦 Torche';
     if(caps?.torch===true||typeof settings.torch==='boolean')setStatus(state.torch?'Torche activée':'Torche éteinte','good');
-    else setStatus('Commande envoyée, mais le navigateur ne confirme pas l’état de la torche.','');
-  }catch(e){
-    state.torch=previous;$('torch').textContent=state.torch?'🔦 Torche ON':'🔦 Torche';
-    setStatus('Torche impossible à commander. Essaie la caméra arrière et vérifie que le téléphone possède un flash.','bad');
-  }finally{await applyCameraCaps();}
+    else setStatus('Commande envoyée ; le navigateur ne confirme pas visuellement l’état de la torche.','');
+  }catch(e){state.torch=previous;$('torch').textContent=state.torch?'🔦 Torche ON':'🔦 Torche';setStatus('Torche impossible à commander. Vérifie l’objectif arrière et le flash du téléphone.','bad');}
+  finally{await applyCameraCaps();}
 }
 $('torch').onclick=toggleTorch;
-function getCameraFacing(device,track){
-  const label=String(device?.label||'');
-  if(/back|rear|environment|arrière|\bdos\b|trasera|trás|facing back/i.test(label))return 'rear';
-  if(/front|user|avant|frontal|facetime|facing front/i.test(label))return 'front';
-  const facing=String(track?.getSettings?.().facingMode||'').toLowerCase();
-  if(facing==='environment')return 'rear';
-  if(facing==='user')return 'front';
-  return 'unknown';
+async function nativeBarcodeDetectorAvailable(){
+  try{if(!('BarcodeDetector'in window)||typeof window.BarcodeDetector!=='function')return false;if(typeof window.BarcodeDetector.getSupportedFormats==='function'){const f=await window.BarcodeDetector.getSupportedFormats();return f.includes('qr_code');}return true;}catch(e){return false;}
 }
-function preferredRearCamera(devices,currentId){
-  const rear=devices.filter(d=>getCameraFacing(d,null)==='rear');
-  if(!rear.length)return null;
-  // Prefer the main rear camera over specialist ultra-wide/telephoto lenses when labels allow it.
-  const score=d=>{
-    const l=String(d.label||'').toLowerCase();let n=0;
-    if(/ultra.?wide|wide|macro|telephoto|depth|0[,.]5x|3x|5x/.test(l))n+=10;
-    if(/main|primary|back camera|rear camera|camera2 0|camera 0/.test(l))n-=2;
-    return n;
-  };
-  rear.sort((a,b)=>score(a)-score(b));
-  return rear.find(d=>d.deviceId!==currentId)||rear[0];
+function acceptDecodedValue(raw,generation){
+  if(!raw||generation!==state.readerGeneration||!state.readerRunning||state.busy||state.cameraSwitching)return;
+  const token=tokenFrom(raw);if(!token)return;const now=Date.now();
+  if(token===state.lastToken&&now-state.lastAt<1800)return;state.lastToken=token;state.lastAt=now;
+  void lookupToken(token);
+}
+async function startZXingReader(){
+  pauseReader();state.readerRunning=true;const generation=state.readerGeneration;
+  try{
+    if(!window.ZXingBrowser?.BrowserQRCodeReader){await loadZxing();}
+    if(generation!==state.readerGeneration||!state.readerRunning)return;
+    state.reader=new window.ZXingBrowser.BrowserQRCodeReader(undefined,{delayBetweenScanAttempts:220,delayBetweenScanSuccess:160,tryPlayVideoTimeout:5000});
+    const controls=await state.reader.decodeFromVideoElement($('video'),(result,error,returnedControls)=>{
+      if(generation!==state.readerGeneration||!state.readerRunning)return;
+      if(returnedControls)state.controls=returnedControls;
+      if(result){const raw=String(result.getText?.()||result.text||'').trim();if(raw){try{returnedControls?.stop?.();}catch(e){}acceptDecodedValue(raw,generation);}}
+      // NotFound/format errors are expected while aiming at a QR and are intentionally silent.
+    });
+    if(generation===state.readerGeneration&&state.readerRunning)state.controls=controls;else try{controls?.stop?.();}catch(e){}
+    if(generation===state.readerGeneration&&state.readerRunning){state.readerMode='zxing';setStatus('Scanner prêt • lecteur compatible'+(state.devices.length>1?` • caméra ${state.deviceIndex+1}/${state.devices.length}`:''),'good');}
+  }catch(e){if(generation===state.readerGeneration){state.readerRunning=false;state.readerMode='none';setStatus('Lecteur QR indisponible : '+String(e?.message||e),'bad');showPhotoFallback();updateCameraControls();}}
+}
+async function startReader(){
+  if(!hasLiveCamera())throw new Error('La caméra n’est pas active.');
+  pauseReader();state.readerRunning=true;const generation=state.readerGeneration;state.nativeDecodeErrors=0;
+  if(await nativeBarcodeDetectorAvailable()){
+    try{
+      state.nativeDetector=new window.BarcodeDetector({formats:['qr_code']});state.readerMode='native';
+      const detectLoop=async()=>{
+        if(generation!==state.readerGeneration||!state.readerRunning)return;
+        try{
+          if(state.busy||state.cameraSwitching||document.hidden||$('video').readyState<2){state.decodeLoopTimer=setTimeout(detectLoop,180);return;}
+          const found=await state.nativeDetector.detect($('video'));state.nativeDecodeErrors=0;
+          if(found?.length){const raw=String(found[0].rawValue||'').trim();if(raw){acceptDecodedValue(raw,generation);if(generation!==state.readerGeneration||!state.readerRunning)return;}}
+        }catch(e){state.nativeDecodeErrors++;if(state.nativeDecodeErrors>=3&&generation===state.readerGeneration&&state.readerRunning){setStatus('Passage au lecteur compatible…','');void startZXingReader();return;}}
+        if(generation===state.readerGeneration&&state.readerRunning)state.decodeLoopTimer=setTimeout(detectLoop,140);
+      };
+      state.decodeLoopTimer=setTimeout(detectLoop,0);setStatus('Scanner prêt • détection optimisée'+(state.devices.length>1?` • caméra ${state.deviceIndex+1}/${state.devices.length}`:''),'good');updateCameraControls();return;
+    }catch(e){state.nativeDetector=null;}
+  }
+  await startZXingReader();
+}
+async function resumeScanner(){
+  if(state.cameraSwitching||state.cameraOpening)return;
+  $('sealCard').classList.add('hidden');$('sealCard').innerHTML='';state.token='';state.lastToken='';state.busy=false;state.photoMode=false;updateUrlWithoutToken();$('photoRow').classList.remove('show');$('frame').className='frame';
+  $('cameraBox').classList.remove('hide','compact');$('hint').textContent='Préparation de la caméra…';
+  if(state.seriesMode&&hasLiveCamera()){
+    setCameraNote('⚡ Série rapide • reprise du lecteur sans redémarrer la caméra.','live');await startReader();setCameraNote('Caméra active • lecture en cours • mode série rapide','live');updateCameraControls();return;
+  }
+  await startCamera({decode:true});
 }
 $('switch').onclick=async()=>{
-  // Verrou immédiat : les clics rapides ne désynchronisent plus l'index.
-  if(state.cameraSwitching)return;
-  if(state.busy){setStatus('Patiente jusqu’à ce que le scanner soit prêt avant de changer de caméra.','');return;}
-  const button=$('switch');
-  const restartButton=$('cameraStart');
-  state.cameraSwitching=true;
-  button.disabled=true;
-  restartButton.disabled=true;
-  button.textContent='⏳ Changement…';
+  if(state.cameraSwitching||state.cameraOpening||state.busy){setStatus('Patiente jusqu’à la fin de l’opération en cours.','');return;}
+  const button=$('switch');state.cameraSwitching=true;button.disabled=true;button.textContent='⏳ Changement…';$('cameraStart').disabled=true;
   try{
-    if(!window.ZXingBrowser?.BrowserCodeReader?.listVideoInputDevices){
-      throw new Error('La détection des caméras est indisponible dans ce navigateur.');
+    await enumerateCameras();
+    // Au premier démarrage, une seule pression ouvre directement l’objectif arrière privilégié.
+    if(!hasLiveCamera()&&!state.deviceId){
+      const rear=preferredRearCamera(state.devices,null);
+      if(rear)state.deviceId=rear.deviceId;
+      await startCamera({decode:!resultCardVisible()});return;
     }
-    const listed=await ZXingBrowser.BrowserCodeReader.listVideoInputDevices();
-    if(Array.isArray(listed)&&listed.length)state.devices=listed.filter(d=>d&&d.deviceId);
-    if(!state.devices.length){setStatus('Aucune caméra détectée.','bad');return;}
-    if(state.devices.length===1){
-      state.deviceIndex=0;state.deviceId=state.devices[0].deviceId;
-      setStatus('Une seule caméra est accessible au navigateur. Autorise l’accès caméra puis recharge la page si ton téléphone possède plusieurs objectifs.','bad');
-      return;
+    if(!state.devices.length)throw new Error('Aucune caméra détectée.');
+    if(state.devices.length===1&&!hasLiveCamera()){
+      await startCamera({decode:!resultCardVisible()});
+      if(!hasLiveCamera())return;
     }
+    if(state.devices.length===1){setStatus('Une seule caméra est accessible. Autorise la caméra puis recharge la page si le téléphone a plusieurs objectifs.','bad');return;}
     const activeId=state.track?.getSettings?.().deviceId||state.deviceId;
-    const currentDevice=state.devices.find(d=>d.deviceId===activeId)||state.devices[state.deviceIndex];
-    const currentFacing=getCameraFacing(currentDevice,state.track);
-    const rearDevices=state.devices.filter(d=>getCameraFacing(d,null)==='rear');
-    const frontDevices=state.devices.filter(d=>getCameraFacing(d,null)==='front');
-    let nextDevice=null;
-    if(currentFacing==='front'){
-      // Un clic depuis la caméra avant va directement à l'objectif arrière.
-      nextDevice=preferredRearCamera(state.devices,activeId);
-    }else if(currentFacing==='rear'){
-      const caps=getTrackCapabilities(state.track);
-      if(caps?.torch===true&&frontDevices.length){
-        // Si la caméra arrière a un flash utilisable, l'action suivante revient à l'avant.
-        nextDevice=frontDevices.find(d=>d.deviceId!==activeId)||frontDevices[0];
-      }else{
-        // Si le flash est absent, essaie d'abord un autre objectif arrière avant l'avant.
-        nextDevice=rearDevices.find(d=>d.deviceId!==activeId)||frontDevices.find(d=>d.deviceId!==activeId)||null;
-      }
+    const current=state.devices.find(d=>d.deviceId===activeId)||state.devices[state.deviceIndex];
+    const facing=getCameraFacing(current,state.track),rear=preferredRearCamera(state.devices,null),front=state.devices.find(d=>getCameraFacing(d,null)==='front');let next=null;
+    if(facing==='front')next=rear&&rear.deviceId!==activeId?rear:null;
+    else if(facing==='rear'){
+      // If we're on a secondary rear lens, prefer the primary rear lens first (usually the one with flash).
+      if(rear&&rear.deviceId!==activeId)next=rear;
+      else if(front&&front.deviceId!==activeId)next=front;
+    }else{
+      if(rear&&rear.deviceId!==activeId)next=rear;
+      else if(front&&front.deviceId!==activeId)next=front;
     }
-    if(!nextDevice){
-      let currentIndex=state.devices.findIndex(d=>d.deviceId===activeId);
-      if(currentIndex<0)currentIndex=Number.isInteger(state.deviceIndex)?state.deviceIndex:0;
-      nextDevice=state.devices[(currentIndex+1)%state.devices.length];
-    }
-    if(!nextDevice?.deviceId)throw new Error('Impossible d’identifier la caméra suivante.');
-    state.deviceIndex=state.devices.findIndex(d=>d.deviceId===nextDevice.deviceId);
-    state.deviceId=nextDevice.deviceId;
-    setStatus(`Changement vers ${nextDevice.label||`la caméra ${state.deviceIndex+1}/${state.devices.length}`}…`,'');
-    await startCamera();
-  }catch(e){
-    state.busy=false;
-    setStatus('Impossible de changer de caméra : '+String(e?.message||e||'erreur inconnue'),'bad');
-  }finally{
-    state.cameraSwitching=false;
-    button.disabled=false;
-    restartButton.disabled=false;
-    button.textContent='↻ Caméra';
-  }
+    if(!next){const idx=state.devices.findIndex(d=>d.deviceId===activeId);next=state.devices[(Math.max(0,idx)+1)%state.devices.length];}
+    if(!next?.deviceId||next.deviceId===activeId)throw new Error('Impossible de choisir un objectif différent.');
+    state.deviceId=next.deviceId;state.deviceIndex=state.devices.findIndex(d=>d.deviceId===next.deviceId);
+    setStatus(`Changement vers ${next.label||`la caméra ${state.deviceIndex+1}/${state.devices.length}`}…`,'');
+    await startCamera({decode:!resultCardVisible(),force:true});
+  }catch(e){setStatus('Impossible de changer de caméra : '+String(e?.message||e),'bad');}
+  finally{state.cameraSwitching=false;button.disabled=false;button.textContent='↻ Changer de caméra';updateCameraControls();}
 };
-async function setZoom(d){if(!state.track||!state.zoom)return;const z=state.zoom;z.value=Math.max(z.min,Math.min(z.max,z.value+d*z.step));try{await state.track.applyConstraints({advanced:[{zoom:z.value}]})}catch(e){setStatus('Le zoom n’est pas disponible sur cette caméra.','bad');}}
-$('zoomMinus').onclick=()=>setZoom(-1);$('zoomPlus').onclick=()=>setZoom(1);$('cameraStart').onclick=resumeScanner;
+$('cameraStop').onclick=()=>{
+  stopCamera();$('cameraBox').classList.add('hide');$('cameraBox').classList.remove('compact');setCameraNote('Caméra arrêtée à la demande.','paused');setStatus('Caméra arrêtée • réactive-la lorsque tu es prêt.','');updateCameraControls();
+};
+$('soundToggle').onclick=()=>{state.soundEnabled=!state.soundEnabled;try{localStorage.setItem(SOUND_PREF_KEY,state.soundEnabled?'1':'0')}catch(e){}updateFeedbackControls();setStatus(state.soundEnabled?'Retour sonore activé':'Retour sonore désactivé','good');};
+$('vibrationToggle').onclick=()=>{state.vibrationEnabled=!state.vibrationEnabled;try{localStorage.setItem(VIBRATION_PREF_KEY,state.vibrationEnabled?'1':'0')}catch(e){}updateFeedbackControls();setStatus(state.vibrationEnabled?'Retour vibratoire activé':'Retour vibratoire désactivé','good');};
+$('modeSeries').onclick=async()=>{
+  if(state.busy||state.cameraOpening||state.cameraSwitching){setStatus('Attends que l’opération en cours soit terminée avant de changer de mode.','');return;}
+  state.seriesMode=!state.seriesMode;try{localStorage.setItem(SERIES_MODE_KEY,state.seriesMode?'1':'0');}catch(e){}
+  updateModeButton();
+  if(!state.seriesMode&&resultCardVisible()){
+    stopCamera();$('cameraBox').classList.add('hide');$('cameraBox').classList.remove('compact');setCameraNote('Mode classique • caméra arrêtée pendant le contrôle.','paused');setStatus('Mode classique activé','good');
+  }else if(state.seriesMode&&resultCardVisible()){
+    await startCamera({decode:false});$('cameraBox').classList.add('compact');setCameraNote('⚡ Mode série rapide • caméra active, lecture en pause.','live');
+  }else{
+    setCameraNote(hasLiveCamera()?(state.seriesMode?'Caméra active • lecture continue • mode série rapide':'Caméra active • la caméra s’arrêtera après la lecture'):'Caméra inactive • active-la pour commencer.',hasLiveCamera()?'live':'paused');
+    setStatus(state.seriesMode?'Mode série rapide activé':'Mode classique activé','good');
+  }
+  updateCameraControls();
+};
+$('cameraStart').onclick=resumeScanner;
+window.addEventListener('online',()=>{if(!state.busy)setStatus('Connexion rétablie • scanner prêt','good');});
+window.addEventListener('offline',()=>setStatus('Connexion indisponible • la recherche serveur nécessite Internet.','bad'));
+document.addEventListener('visibilitychange',async()=>{
+  if(document.hidden){
+    state.cameraResumeOnVisible=hasLiveCamera();state.resumeDecodeAfterVisibility=state.readerRunning;
+    if(state.cameraResumeOnVisible){stopCamera();$('cameraBox').classList.add('hide');setCameraNote('Caméra mise en pause en arrière-plan pour économiser la batterie.','paused');}
+  }else if(state.cameraResumeOnVisible&&localStorage.getItem(DEVICE_TOKEN_KEY)){
+    const decode=state.resumeDecodeAfterVisibility&&!resultCardVisible();state.cameraResumeOnVisible=false;state.resumeDecodeAfterVisibility=false;
+    await startCamera({decode});if(resultCardVisible())showResultCameraState();
+  }
+});
+window.addEventListener('pagehide',()=>stopCamera());
+async function setZoom(d){if(!state.track||!state.zoom)return;const z=state.zoom;z.value=Math.max(z.min,Math.min(z.max,z.value+d*z.step));try{await state.track.applyConstraints({advanced:[{zoom:z.value}]});setStatus(`Zoom ${Number(z.value).toFixed(1)}×`,'good');}catch(e){setStatus('Le zoom n’est pas disponible sur cette caméra.','bad');}}
+$('zoomMinus').onclick=()=>setZoom(-1);$('zoomPlus').onclick=()=>setZoom(1);
 $('activateBtn').onclick=activateScanner;
 $('pairCode').addEventListener('keydown',e=>{if(e.key==='Enter')activateScanner();});
+function loadScriptUrl(url){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=url;s.async=true;s.onload=()=>resolve();s.onerror=()=>{s.remove();reject(new Error('Chargement impossible : '+url));};document.head.appendChild(s);});}
+async function loadZxing(){
+  if(window.ZXingBrowser?.BrowserQRCodeReader)return true;
+  const urls=['https://unpkg.com/@zxing/browser@0.2.1/umd/index.min.js','https://cdn.jsdelivr.net/npm/@zxing/browser@0.2.1/umd/index.min.js'];
+  for(const url of urls){try{await loadScriptUrl(url);if(window.ZXingBrowser?.BrowserQRCodeReader)return true;}catch(e){}}
+  throw new Error('Impossible de charger le lecteur QR. Vérifie le réseau puis recharge la page.');
+}
+async function loadJsQR(){
+  if(window.jsQR)return true;
+  const urls=['https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js','https://unpkg.com/jsqr@1.4.0/dist/jsQR.js'];
+  for(const url of urls){try{await loadScriptUrl(url);if(window.jsQR)return true;}catch(e){}}
+  throw new Error('Le lecteur QR par photo ne peut pas être chargé sans connexion.');
+}
 $('qrPhoto').onchange=async()=>{
   const file=$('qrPhoto').files?.[0];$('qrPhoto').value='';if(!file||state.busy)return;stopCamera();state.busy=true;setStatus('Analyse de la photo…');
-  try{if(!window.jsQR)throw new Error('Lecteur photo indisponible.');const bmp=await createImageBitmap(file),max=1600,scale=Math.min(1,max/Math.max(bmp.width,bmp.height)),canvas=document.createElement('canvas');canvas.width=Math.round(bmp.width*scale);canvas.height=Math.round(bmp.height*scale);const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(bmp,0,0,canvas.width,canvas.height);const image=ctx.getImageData(0,0,canvas.width,canvas.height);const code=jsQR(image.data,image.width,image.height,{inversionAttempts:'attemptBoth'});bmp.close();if(!code)throw new Error('Aucun QR trouvé sur la photo.');await lookupToken(tokenFrom(code.data));}catch(e){state.busy=false;$('sealCard').classList.remove('hidden');$('sealCard').innerHTML=`<div class="error"><b>QR non détecté</b><div style="margin-top:4px">${esc(e.message)}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Revenir au scanner</button>`;setStatus('Lecture impossible','bad');}
+  try{if(!window.jsQR)await loadJsQR();const bmp=await createImageBitmap(file),max=1600,scale=Math.min(1,max/Math.max(bmp.width,bmp.height)),canvas=document.createElement('canvas');canvas.width=Math.round(bmp.width*scale);canvas.height=Math.round(bmp.height*scale);const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(bmp,0,0,canvas.width,canvas.height);const image=ctx.getImageData(0,0,canvas.width,canvas.height);const code=jsQR(image.data,image.width,image.height,{inversionAttempts:'attemptBoth'});bmp.close();if(!code)throw new Error('Aucun QR trouvé sur la photo.');await lookupToken(tokenFrom(code.data));}catch(e){state.busy=false;$('sealCard').classList.remove('hidden');$('sealCard').innerHTML=`<div class="error"><b>QR non détecté</b><div style="margin-top:4px">${esc(e.message)}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Revenir au scanner</button>`;setStatus('Lecture impossible','bad');}
 };
 async function boot(){
+  updateModeButton();updateFeedbackControls();updateSessionProgress();
   try{
     const deviceToken=localStorage.getItem(DEVICE_TOKEN_KEY)||'';
     if(!deviceToken){showActivation();return;}
     hideActivation();
     const u=new URL(location.href),token=u.searchParams.get('s')||u.searchParams.get('scan')||u.searchParams.get('qr');
     if(token){updateUrlWithoutToken();await lookupToken(token);}
-    else{await startCamera();}
-  }catch(e){if(e.message==='SCANNER_NOT_ACTIVATED'){showActivation();return;}await startCamera();}
+    else{await startCamera({decode:true});}
+  }catch(e){if(e.message==='SCANNER_NOT_ACTIVATED'){showActivation();return;}setStatus(String(e?.message||e),'bad');await startCamera({decode:true});}
+  updateCameraControls();
 }
 window.resumeScanner=resumeScanner;boot();
 </script>
