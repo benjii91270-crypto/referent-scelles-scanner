@@ -96,7 +96,7 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
 @media(max-width:390px){.control-grid{grid-template-columns:1fr}.control-grid .choice{min-height:72px}.seal-meta{grid-template-columns:1fr 1fr}}
 
 
-/* V2.8.1 — comptes et droits terrain */
+/* V2.8.4 — comptes, droits terrain et sélection multi-scannés */
 .user-bar{display:none;align-items:center;justify-content:space-between;gap:8px;margin-top:9px;padding:8px 10px;border:1px solid rgba(255,255,255,.18);border-radius:11px;background:rgba(255,255,255,.08);color:#fff}
 .user-bar.show{display:flex}.user-label{font-size:11px;font-weight:850;line-height:1.35;overflow-wrap:anywhere}
 .user-role{display:inline-block;margin-left:5px;padding:3px 6px;background:rgba(255,255,255,.16);border-radius:6px;font-size:9px;font-weight:950}
@@ -119,6 +119,13 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
 @media(max-width:390px){.user-bar{align-items:flex-start}.user-change{min-height:34px}.move-panel .actions{grid-template-columns:1fr}}
 
 </style>
+<style id="rs284MultiScanQueueStyles">
+.multi-queue-panel{margin-top:10px;background:#fff;border:1px solid #b9cada;border-radius:17px;padding:12px;box-shadow:0 5px 18px #1328430d}
+.multi-queue-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.multi-queue-head h2{margin:0;color:#183957;font-size:17px;font-weight:950}.multi-queue-head p{margin:4px 0 0;color:#5c7086;font-size:11px;line-height:1.45}.multi-queue-count{flex:none;background:#eaf2f9;color:#1d527a;border:1px solid #cbddec;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:950}
+.multi-queue-list{display:grid;gap:7px;margin-top:11px}.multi-queue-item{display:grid;grid-template-columns:23px minmax(0,1fr) auto;gap:9px;align-items:center;border:1px solid #dce5ed;background:#f9fbfd;border-radius:12px;padding:9px}.multi-queue-item input{width:18px;height:18px;min-height:0;accent-color:#214f73}.multi-queue-item .mq-name{font-size:12px;font-weight:900;color:#183957;overflow-wrap:anywhere}.multi-queue-item .mq-meta{font-size:10px;line-height:1.45;color:#65778b;margin-top:3px;overflow-wrap:anywhere}.multi-queue-item .mq-status{font-size:9px;font-weight:950;border-radius:6px;background:#edf2f7;color:#465b70;padding:3px 6px;display:inline-block;margin-top:4px}.multi-queue-item .mq-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.multi-queue-item .mq-actions button{min-height:34px;padding:6px 8px;font-size:10px;border-radius:9px}.multi-queue-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.multi-queue-toolbar button{min-height:42px;font-size:11px;padding:8px}.multi-queue-moveform{margin-top:10px;padding:12px;border:1px solid #cad9e7;border-radius:12px;background:#f4f8fb}.multi-queue-moveform h3{font-size:13px;color:#183957;margin:0 0 8px}.multi-queue-moveform label{display:block;font-size:11px;font-weight:850;color:#304d68;margin:9px 0 4px}.multi-queue-moveform input,.multi-queue-moveform textarea{width:100%;min-height:42px;border:1px solid #bfcedd;border-radius:9px;padding:9px;background:#fff;color:#183957;font:inherit;font-size:12px}.multi-queue-moveform textarea{min-height:70px}.multi-queue-result{margin-top:10px;border:1px solid #d9e3ec;border-radius:10px;padding:10px;background:#fff;font-size:11px;line-height:1.5}.multi-queue-result .ok{color:#236847}.multi-queue-result .bad{color:#a43135}.queue-add-button{width:100%;margin-top:10px!important;min-height:47px!important;background:#e9f3fb!important;border:1px solid #a9c6dd!important;color:#17496e!important}.queue-add-button:disabled{opacity:.7!important}
+@media(min-width:760px){.multi-queue-panel{padding:16px}.multi-queue-toolbar{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+
 </head>
 <body>
 <div id="activation" class="activation-overlay"><div class="activation-card"><div class="activation-kicker">RÉFÉRENT SCELLÉS</div><h1>Autoriser ce téléphone</h1><p id="activationMsg">Entrez le code d’activation fourni par l’administrateur.</p><input id="pairCode" class="activation-input" inputmode="text" autocomplete="one-time-code" maxlength="10" placeholder="CODE D’ACTIVATION"><button id="activateBtn" class="activation-btn" type="button">Activer le scanner</button><div class="activation-help">L’autorisation du téléphone est distincte de la connexion nominative. Elle peut être révoquée par un administrateur.</div></div></div>
@@ -127,7 +134,7 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
   <header class="top">
     <div class="brand">RÉFÉRENT SCELLÉS</div>
     <div class="title">Scanner QR</div>
-    <div class="sub">Contrôle terrain simplifié • V2.8.1 — connexion nominative</div>
+    <div class="sub">Contrôle terrain • V2.8.4 — scan multiple et actions groupées</div>
     <div id="userBar" class="user-bar" aria-live="polite"><div id="userLabel" class="user-label">Connexion requise</div><button id="changeUser" class="user-change" type="button">Changer de session</button></div>
     <div id="camp" class="camp"><div id="campTitle" class="camp-title"></div><div id="campMeta" class="camp-meta"></div><div class="bar"><i id="campBar" style="width:0%"></i></div></div>
   </header>
@@ -169,7 +176,15 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
     </div>
   </section>
 
-  <section id="sealCard" class="card hidden" aria-live="polite" aria-atomic="false" aria-label="Informations et contrôle du scellé"></section>
+  <section id="multiQueuePanel" class="multi-queue-panel hidden" aria-label="Sélection de scellés scannés">
+  <div class="multi-queue-head"><div><h2>Scellés scannés</h2><p>Ajoute chaque scellé après l’avoir scanné. Tu peux agir individuellement ou sélectionner plusieurs scellés pour une mise en mouvement groupée.</p></div><span class="multi-queue-count" id="multiQueueCount">0 scellé</span></div>
+  <div id="multiQueueList" class="multi-queue-list"></div>
+  <div id="multiQueueToolbar" class="multi-queue-toolbar hidden"><button class="btn" type="button" id="queueSelectAll">☑ Tout sélectionner</button><button class="btn primary" type="button" id="queueOpenBulkMove">📦 Mettre en mouvement</button><button class="btn danger" type="button" id="queueClear">Vider la sélection</button></div>
+  <div id="multiQueueMoveForm" class="multi-queue-moveform hidden"></div>
+  <div id="multiQueueResult" class="multi-queue-result hidden" aria-live="polite"></div>
+</section>
+
+<section id="sealCard" class="card hidden" aria-live="polite" aria-atomic="false" aria-label="Informations et contrôle du scellé"></section>
   <div class="small-note">Interface terrain simplifiée • Les réglages complémentaires restent accessibles dans le volet « Réglages ». Le mode série rapide maintient la caméra entre deux fiches ; tu peux l’arrêter à tout moment.</div>
 </div>
 
@@ -177,7 +192,7 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
 'use strict';
 const SCANNER_API_ENDPOINT='https://referent-scelles-api.benjii91270.workers.dev/api';
 const DEVICE_TOKEN_KEY='referent_scelles_device_token_v2';
-const SCANNER_VERSION='2.8.3';
+const SCANNER_VERSION='2.8.4';
 const SERIES_MODE_KEY='referent_scelles_series_mode_v1';
 const SOUND_PREF_KEY='referent_scelles_scanner_sound_v1';
 const VIBRATION_PREF_KEY='referent_scelles_scanner_vibration_v1';
@@ -188,7 +203,7 @@ function readSeriesMode(){try{const saved=localStorage.getItem(SERIES_MODE_KEY);
 function readBoolPreference(key,fallback=true){try{const saved=localStorage.getItem(key);return saved===null?fallback:saved==='1';}catch(e){return fallback;}}
 function readPreferredCamera(){try{return localStorage.getItem(CAMERA_DEVICE_KEY)||null;}catch(e){return null;}}
 function savePreferredCamera(id){try{if(id)localStorage.setItem(CAMERA_DEVICE_KEY,id);}catch(e){}}
-const state={reader:null,controls:null,readerMode:'none',readerRunning:false,readerGeneration:0,decodeLoopTimer:null,nativeDetector:null,nativeDecodeErrors:0,stream:null,track:null,devices:[],deviceIndex:0,deviceId:readPreferredCamera(),busy:false,cameraOpening:false,cameraSwitching:false,cameraResumeOnVisible:false,resumeDecodeAfterVisibility:false,seriesMode:readSeriesMode(),soundEnabled:readBoolPreference(SOUND_PREF_KEY,true),vibrationEnabled:readBoolPreference(VIBRATION_PREF_KEY,true),sessionChecks:0,token:'',lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null,photoMode:false,userAuth:null,pendingToken:'',sealData:null,sessionOptionsLoading:false};
+const state={reader:null,controls:null,readerMode:'none',readerRunning:false,readerGeneration:0,decodeLoopTimer:null,nativeDetector:null,nativeDecodeErrors:0,stream:null,track:null,devices:[],deviceIndex:0,deviceId:readPreferredCamera(),busy:false,cameraOpening:false,cameraSwitching:false,cameraResumeOnVisible:false,resumeDecodeAfterVisibility:false,seriesMode:readSeriesMode(),soundEnabled:readBoolPreference(SOUND_PREF_KEY,true),vibrationEnabled:readBoolPreference(VIBRATION_PREF_KEY,true),sessionChecks:0,token:'',lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null,photoMode:false,userAuth:null,pendingToken:'',sealData:null,sessionOptionsLoading:false,multiQueue:[],queueMoveBusy:false};
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
 function loadSavedScannerSession(){
@@ -354,6 +369,48 @@ function hideReaderVisual(){showResultCameraState();}
 function showPhotoFallback(){
   $('photoRow').classList.add('show');if(!$('status').classList.contains('bad'))setStatus('Mode photo disponible','');$('hint').textContent='La caméra directe n’est pas disponible sur cet appareil.';
 }
+function renderMultiQueue(){
+  const panel=$('multiQueuePanel'),list=$('multiQueueList'),count=$('multiQueueCount'),toolbar=$('multiQueueToolbar');if(!panel||!list||!count||!toolbar)return;
+  const q=state.multiQueue||[];panel.classList.toggle('hidden',q.length===0);count.textContent=`${q.length} scellé${q.length>1?'s':''}`;
+  if(!q.length){list.innerHTML='';toolbar.classList.add('hidden');return;}
+  list.innerHTML=q.map(item=>{const d=item.data||{},status=String(d.status||'Non renseigné');return `<div class="multi-queue-item"><input type="checkbox" aria-label="Sélectionner le scellé ${esc(d.entry)}" ${item.selected?'checked':''} onchange="toggleMultiQueueSelection(${Number(item.entry)},this.checked)"><div><div class="mq-name">N° ${esc(d.entry||'—')} — ${esc(d.scelle||'Scellé sans numéro')}</div><div class="mq-meta">Procédure ${esc(d.procedure||'non renseignée')} · ${esc(d.nature||d.description||'sans désignation')}</div><span class="mq-status">${esc(status)}</span></div><div class="mq-actions"><button class="btn" type="button" onclick="openMultiQueueItem(${Number(item.entry)})">Voir / agir</button><button class="btn danger" type="button" aria-label="Retirer le scellé ${esc(d.entry)}" onclick="removeMultiQueueItem(${Number(item.entry)})">Retirer</button></div></div>`;}).join('');
+  toolbar.classList.remove('hidden');const selected=q.filter(x=>x.selected);const all=$('queueSelectAll');if(all)all.textContent=selected.length===q.length?'☑ Tout désélectionner':'☑ Tout sélectionner';const bulk=$('queueOpenBulkMove');if(bulk){bulk.disabled=!selected.length||state.queueMoveBusy;bulk.textContent=`📦 Mettre en mouvement (${selected.length})`;}
+}
+function addCurrentToMultiQueue(){
+  const d=state.sealData;if(!d?.ok){setStatus('Impossible d’ajouter un scellé non reconnu à la sélection.','bad');return false;}
+  const entry=Number(d.entry),token=String(state.token||d.qrId||'').trim();if(!Number.isFinite(entry)||entry<1||!token){setStatus('Le numéro d’entrée ou le QR de ce scellé est manquant.','bad');return false;}
+  const existing=state.multiQueue.find(x=>Number(x.entry)===entry);if(existing){existing.data=Object.assign({},d);existing.token=token;existing.selected=true;setStatus(`Le scellé N° ${entry} est déjà dans la sélection.`,'good');}else{if(state.multiQueue.length>=100){setStatus('Limite de 100 scellés par session atteinte. Termine cette sélection avant d’en commencer une autre.','bad');return false;}state.multiQueue.push({entry,token,data:Object.assign({},d),selected:true});setStatus(`Scellé N° ${entry} ajouté • ${state.multiQueue.length} dans la sélection`,'good');}
+  renderMultiQueue();resumeScanner();return true;
+}
+function toggleMultiQueueSelection(entry,checked){const item=state.multiQueue.find(x=>Number(x.entry)===Number(entry));if(item)item.selected=!!checked;renderMultiQueue();}
+function removeMultiQueueItem(entry){state.multiQueue=state.multiQueue.filter(x=>Number(x.entry)!==Number(entry));renderMultiQueue();}
+function openMultiQueueItem(entry){const item=state.multiQueue.find(x=>Number(x.entry)===Number(entry));if(!item)return;void lookupToken(item.token);}
+function clearMultiQueue(){if(state.queueMoveBusy)return;if(!state.multiQueue.length)return;if(!confirm('Vider la liste des scellés scannés ? Cela ne modifie pas les scellés enregistrés.'))return;state.multiQueue=[];$('multiQueueMoveForm').classList.add('hidden');$('multiQueueMoveForm').innerHTML='';$('multiQueueResult').classList.add('hidden');renderMultiQueue();}
+function showMultiQueueMoveForm(){
+  const auth=activeScannerSession(),selected=(state.multiQueue||[]).filter(x=>x.selected),eligible=selected.filter(x=>String(x.data?.status||'').toUpperCase()==='EN STOCK'),form=$('multiQueueMoveForm');if(!form)return;
+  if(!selected.length){setStatus('Sélectionne au moins un scellé.','bad');return;}if(!eligible.length){setStatus('Aucun scellé sélectionné n’est actuellement en stock.','bad');return;}
+  const name=String(auth?.session?.name||'');form.innerHTML=`<h3>Mise en mouvement groupée</h3><p class="muted">${eligible.length} scellé(s) en stock seront traités un par un. Les scellés non sélectionnés ou déjà en mouvement ne seront pas modifiés.</p><label for="queueMoveInvestigator">Enquêteur responsable *</label><input id="queueMoveInvestigator" maxlength="120" required value="${esc(name)}" ${auth?'readonly':''} placeholder="Nom et prénom"><label for="queueMoveMotif">Motif commun du déplacement *</label><textarea id="queueMoveMotif" maxlength="500" required placeholder="Ex. transfert au laboratoire dans le cadre de la procédure…"></textarea><label for="queueMoveDestination">Destination (facultative)</label><input id="queueMoveDestination" maxlength="500" placeholder="Ex. laboratoire, tribunal, autre service…"><div id="queueMoveError" class="session-login-error" role="alert"></div><div class="actions"><button id="queueMoveSubmit" class="btn primary" type="button">Confirmer pour ${eligible.length} scellé(s)</button><button class="btn" id="queueMoveCancel" type="button">Annuler</button></div><p class="muted">Le serveur enregistre chaque scellé indépendamment. En cas d’échec pour l’un d’eux, les autres continueront et le résultat détaillera les succès et échecs.</p>`;
+  form.classList.remove('hidden');$('queueMoveSubmit').onclick=submitMultiQueueMovement;$('queueMoveCancel').onclick=()=>{form.classList.add('hidden');form.innerHTML='';};
+}
+async function submitMultiQueueMovement(){
+  if(state.queueMoveBusy)return;const auth=activeScannerSession(),name=String($('queueMoveInvestigator')?.value||'').trim(),motif=String($('queueMoveMotif')?.value||'').trim(),destination=String($('queueMoveDestination')?.value||'').trim(),err=$('queueMoveError'),button=$('queueMoveSubmit');const fail=m=>{if(err){err.textContent=m;err.classList.add('show');}};
+  if(!name){fail('Le nom de l’enquêteur est obligatoire.');return;}if(auth?.session?.name&&name.toLocaleLowerCase()!==String(auth.session.name).trim().toLocaleLowerCase()){fail('Le nom doit correspondre à la session connectée.');return;}if(!motif){fail('Le motif du déplacement est obligatoire.');return;}
+  const selected=state.multiQueue.filter(x=>x.selected),eligible=selected.filter(x=>String(x.data?.status||'').toUpperCase()==='EN STOCK');if(!eligible.length){fail('Aucun scellé sélectionné n’est en stock.');return;}
+  if(!confirm(`Confirmer la mise en mouvement de ${eligible.length} scellé(s) ?\n\nMotif : ${motif}\nEnquêteur déclaré : ${name}${destination?'\nDestination : '+destination:''}\n\nChaque scellé sera enregistré séparément.`))return;
+  state.queueMoveBusy=true;if(button){button.disabled=true;button.textContent='Enregistrement…';}renderMultiQueue();const results=[];
+  const resultHost=$('multiQueueResult');if(resultHost){resultHost.classList.remove('hidden');resultHost.innerHTML=`<b>Traitement en cours…</b><div>0 / ${eligible.length} scellé(s) traités.</div>`;}
+  for(let i=0;i<eligible.length;i++){
+    const item=eligible[i];if(resultHost)resultHost.innerHTML=`<b>Traitement en cours…</b><div>${i+1} / ${eligible.length} — N° ${esc(item.entry)}</div>`;
+    try{const out=await apiPost('movement-start',{scan:item.token,destination,motif,investigatorName:name,authToken:auth?.token||''},18000);if(!out?.ok)throw Object.assign(new Error(out?.message||'Mouvement refusé.'),{code:out?.code||'MOVEMENT_REFUSED'});item.data=Object.assign({},item.data,{status:out.status||'EN MOUVEMENT',dateSortie:out.dateSortie,dateSortieHeure:out.dateSortieHeure,destination:out.destination,motif:out.motif,retrievedBy:out.retrievedBy});results.push({entry:item.entry,scelle:item.data.scelle,ok:true,message:'Mouvement enregistré'});}
+    catch(e){results.push({entry:item.entry,scelle:item.data.scelle,ok:false,message:String(e.message||e).slice(0,220)});}
+  }
+  state.queueMoveBusy=false;renderMultiQueue();if(resultHost){resultHost.classList.remove('hidden');const good=results.filter(x=>x.ok).length,bad=results.length-good;resultHost.innerHTML=`<b>${good}/${results.length} mise(s) en mouvement enregistrée(s)${bad?` • ${bad} échec(s)`:''}</b><div>${results.map(r=>`<div class="${r.ok?'ok':'bad'}">${r.ok?'✓':'✕'} N° ${esc(r.entry)} — ${esc(r.scelle||'')} : ${esc(r.message)}</div>`).join('')}</div>`;}
+  const errEl=$('queueMoveError');if(errEl)errEl.textContent='';if(button){button.disabled=false;button.textContent='Confirmer';}if(results.some(x=>x.ok)){beep();vibrate([70,35,70]);}setStatus(`Mise en mouvement groupée terminée : ${results.filter(x=>x.ok).length}/${results.length} réussi(s)` ,results.every(x=>x.ok)?'good':'bad');
+}
+window.toggleMultiQueueSelection=toggleMultiQueueSelection;window.removeMultiQueueItem=removeMultiQueueItem;window.openMultiQueueItem=openMultiQueueItem;
+$('queueSelectAll')?.addEventListener('click',()=>{const allSelected=state.multiQueue.length&&state.multiQueue.every(x=>x.selected);state.multiQueue.forEach(x=>x.selected=!allSelected);renderMultiQueue();});
+$('queueClear')?.addEventListener('click',clearMultiQueue);$('queueOpenBulkMove')?.addEventListener('click',showMultiQueueMoveForm);
+
 function renderSeal(data){
   state.busy=false;state.sealData=data;
   const card=$('sealCard');card.classList.remove('hidden');hideReaderVisual();
@@ -363,6 +420,7 @@ function renderSeal(data){
   }
   const auth=activeScannerSession(),session=auth?.session,isAdmin=!!session?.isAdmin;
   updateSessionBadge();campaignUI(data.campaign);state.token=String(data.qrId||state.token||'');
+  const queuedItem=(state.multiQueue||[]).find(x=>Number(x.entry)===Number(data.entry));if(queuedItem){queuedItem.data=Object.assign({},data);queuedItem.token=state.token;renderMultiQueue();}
   const c=data.campaign,status=String(data.status||'').trim(),statusUpper=status.toUpperCase(),inStock=statusUpper==='EN STOCK';
   const location=String(data.locationDetail||data.location||'—');
   let html=`<div class="result-kicker"><span><i class="dot"></i>Scellé identifié</span><span class="entry">Entrée ${esc(data.entry||'—')}</span></div>
@@ -390,9 +448,12 @@ function renderSeal(data){
     html+=`<section class="move-panel"><h3>📦 Prise en charge du scellé</h3><p class="hintline">Aucune session obligatoire. Le nom de l’enquêteur et le motif sont obligatoires ; la destination est facultative.</p><div id="movementForm"></div><button class="next" id="openMovementForm" type="button">📦 Prendre en charge et passer en déplacement</button></section>`;
   }
   if(isAdmin && statusUpper!=='EN STOCK') html+=`<section class="move-panel"><h3>🛠 Panneau administrateur — actions disponibles</h3><p class="hintline">Actions autorisées : corriger les informations descriptives ; valider le retour en stock lorsque le scellé est en mouvement ; effectuer le contrôle physique lorsqu’il est en stock. Les historiques de mouvement ne sont pas réécrits.</p><div class="actions"><button class="btn primary" id="openAdminEdit" type="button">✏️ Modifier les informations</button></div><div id="adminEditForm"></div></section>`;
+  const queued=state.multiQueue.some(x=>Number(x.entry)===Number(data.entry));
+  html+=`<button class="next queue-add-button" id="addToMultiQueue" type="button" ${queued?'disabled':''}>${queued?'✓ Déjà dans la sélection':'➕ Ajouter à la sélection et scanner le suivant'}</button>`;
   html+=`<button class="next secondary-next" id="cancelSeal" type="button">↩ Retour au scanner</button>`;
   card.innerHTML=html;
   card.querySelector('#cancelSeal').onclick=resumeScanner;
+  card.querySelector('#addToMultiQueue')?.addEventListener('click',addCurrentToMultiQueue);
   card.querySelectorAll('[data-result]').forEach(b=>b.addEventListener('click',()=>submitControl(b.dataset.result,b)));
   card.querySelector('#openMovementForm')?.addEventListener('click',showMovementForm);
   card.querySelector('#openReturnForm')?.addEventListener('click',showReturnForm);
@@ -769,7 +830,7 @@ $('qrPhoto').onchange=async()=>{
   try{if(!window.jsQR)await loadJsQR();const bmp=await createImageBitmap(file);let code=null;try{const max=1600,scale=Math.min(1,max/Math.max(bmp.width,bmp.height)),canvas=document.createElement('canvas');canvas.width=Math.round(bmp.width*scale);canvas.height=Math.round(bmp.height*scale);const ctx=canvas.getContext('2d',{willReadFrequently:true});if(!ctx)throw new Error('Canvas indisponible pour analyser la photo.');ctx.drawImage(bmp,0,0,canvas.width,canvas.height);const image=ctx.getImageData(0,0,canvas.width,canvas.height);code=jsQR(image.data,image.width,image.height,{inversionAttempts:'attemptBoth'});}finally{try{bmp.close();}catch(e){}}if(!code)throw new Error('Aucun QR trouvé sur la photo.');await lookupToken(tokenFrom(code.data));}catch(e){state.busy=false;$('sealCard').classList.remove('hidden');$('sealCard').innerHTML=`<div class="error"><b>QR non détecté</b><div style="margin-top:4px">${esc(e.message)}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Revenir au scanner</button>`;setStatus('Lecture impossible','bad');}
 };
 async function boot(){
-  updateModeButton();updateFeedbackControls();updateSessionProgress();state.userAuth=loadSavedScannerSession();updateSessionBadge();
+  updateModeButton();updateFeedbackControls();updateSessionProgress();renderMultiQueue();renderMultiQueue();state.userAuth=loadSavedScannerSession();updateSessionBadge();
   try{
     const deviceToken=localStorage.getItem(DEVICE_TOKEN_KEY)||'';if(!deviceToken){showActivation();return;}
     hideActivation();const u=new URL(location.href),token=u.searchParams.get('s')||u.searchParams.get('scan')||u.searchParams.get('qr');if(token)state.pendingToken=token;
