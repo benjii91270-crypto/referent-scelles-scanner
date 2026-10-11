@@ -96,7 +96,7 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
 @media(max-width:390px){.control-grid{grid-template-columns:1fr}.control-grid .choice{min-height:72px}.seal-meta{grid-template-columns:1fr 1fr}}
 
 
-/* V2.8.4 — comptes, droits terrain et sélection multi-scannés */
+/* V2.8.7 — comptes, droits terrain, sélection multiple et référentiel de personnes */
 .user-bar{display:none;align-items:center;justify-content:space-between;gap:8px;margin-top:9px;padding:8px 10px;border:1px solid rgba(255,255,255,.18);border-radius:11px;background:rgba(255,255,255,.08);color:#fff}
 .user-bar.show{display:flex}.user-label{font-size:11px;font-weight:850;line-height:1.35;overflow-wrap:anywhere}
 .user-role{display:inline-block;margin-left:5px;padding:3px 6px;background:rgba(255,255,255,.16);border-radius:6px;font-size:9px;font-weight:950}
@@ -122,7 +122,7 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
 <style id="rs284MultiScanQueueStyles">
 .multi-queue-panel{margin-top:10px;background:#fff;border:1px solid #b9cada;border-radius:17px;padding:12px;box-shadow:0 5px 18px #1328430d}
 .multi-queue-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.multi-queue-head h2{margin:0;color:#183957;font-size:17px;font-weight:950}.multi-queue-head p{margin:4px 0 0;color:#5c7086;font-size:11px;line-height:1.45}.multi-queue-count{flex:none;background:#eaf2f9;color:#1d527a;border:1px solid #cbddec;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:950}
-.multi-queue-list{display:grid;gap:7px;margin-top:11px}.multi-queue-item{display:grid;grid-template-columns:23px minmax(0,1fr) auto;gap:9px;align-items:center;border:1px solid #dce5ed;background:#f9fbfd;border-radius:12px;padding:9px}.multi-queue-item input{width:18px;height:18px;min-height:0;accent-color:#214f73}.multi-queue-item .mq-name{font-size:12px;font-weight:900;color:#183957;overflow-wrap:anywhere}.multi-queue-item .mq-meta{font-size:10px;line-height:1.45;color:#65778b;margin-top:3px;overflow-wrap:anywhere}.multi-queue-item .mq-status{font-size:9px;font-weight:950;border-radius:6px;background:#edf2f7;color:#465b70;padding:3px 6px;display:inline-block;margin-top:4px}.multi-queue-item .mq-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.multi-queue-item .mq-actions button{min-height:34px;padding:6px 8px;font-size:10px;border-radius:9px}.multi-queue-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.multi-queue-toolbar button{min-height:42px;font-size:11px;padding:8px}.multi-queue-moveform{margin-top:10px;padding:12px;border:1px solid #cad9e7;border-radius:12px;background:#f4f8fb}.multi-queue-moveform h3{font-size:13px;color:#183957;margin:0 0 8px}.multi-queue-moveform label{display:block;font-size:11px;font-weight:850;color:#304d68;margin:9px 0 4px}.multi-queue-moveform input,.multi-queue-moveform textarea{width:100%;min-height:42px;border:1px solid #bfcedd;border-radius:9px;padding:9px;background:#fff;color:#183957;font:inherit;font-size:12px}.multi-queue-moveform textarea{min-height:70px}.multi-queue-result{margin-top:10px;border:1px solid #d9e3ec;border-radius:10px;padding:10px;background:#fff;font-size:11px;line-height:1.5}.multi-queue-result .ok{color:#236847}.multi-queue-result .bad{color:#a43135}.queue-add-button{width:100%;margin-top:10px!important;min-height:47px!important;background:#e9f3fb!important;border:1px solid #a9c6dd!important;color:#17496e!important}.queue-add-button:disabled{opacity:.7!important}
+.multi-queue-list{display:grid;gap:7px;margin-top:11px}.multi-queue-item{display:grid;grid-template-columns:23px minmax(0,1fr) auto;gap:9px;align-items:center;border:1px solid #dce5ed;background:#f9fbfd;border-radius:12px;padding:9px}.multi-queue-item input{width:18px;height:18px;min-height:0;accent-color:#214f73}.multi-queue-item .mq-name{font-size:12px;font-weight:900;color:#183957;overflow-wrap:anywhere}.multi-queue-item .mq-meta{font-size:10px;line-height:1.45;color:#65778b;margin-top:3px;overflow-wrap:anywhere}.multi-queue-item .mq-status{font-size:9px;font-weight:950;border-radius:6px;background:#edf2f7;color:#465b70;padding:3px 6px;display:inline-block;margin-top:4px}.multi-queue-item .mq-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.multi-queue-item .mq-actions button{min-height:34px;padding:6px 8px;font-size:10px;border-radius:9px}.multi-queue-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.multi-queue-toolbar button{min-height:42px;font-size:11px;padding:8px}.multi-queue-moveform{margin-top:10px;padding:12px;border:1px solid #cad9e7;border-radius:12px;background:#f4f8fb}.multi-queue-moveform h3{font-size:13px;color:#183957;margin:0 0 8px}.multi-queue-moveform label{display:block;font-size:11px;font-weight:850;color:#304d68;margin:9px 0 4px}.multi-queue-moveform input,.multi-queue-moveform select,.multi-queue-moveform textarea{width:100%;min-height:42px;border:1px solid #bfcedd;border-radius:9px;padding:9px;background:#fff;color:#183957;font:inherit;font-size:12px}.multi-queue-moveform textarea{min-height:70px}.multi-queue-result{margin-top:10px;border:1px solid #d9e3ec;border-radius:10px;padding:10px;background:#fff;font-size:11px;line-height:1.5}.multi-queue-result .ok{color:#236847}.multi-queue-result .bad{color:#a43135}.queue-add-button{width:100%;margin-top:10px!important;min-height:47px!important;background:#e9f3fb!important;border:1px solid #a9c6dd!important;color:#17496e!important}.queue-add-button:disabled{opacity:.7!important}
 @media(min-width:760px){.multi-queue-panel{padding:16px}.multi-queue-toolbar{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 
@@ -134,7 +134,7 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
   <header class="top">
     <div class="brand">RÉFÉRENT SCELLÉS</div>
     <div class="title">Scanner QR</div>
-    <div class="sub">Contrôle terrain • V2.8.4 — scan multiple et actions groupées</div>
+    <div class="sub">Contrôle terrain • V2.8.7 — liste des enquêteurs synchronisée</div>
     <div id="userBar" class="user-bar" aria-live="polite"><div id="userLabel" class="user-label">Connexion requise</div><button id="changeUser" class="user-change" type="button">Changer de session</button></div>
     <div id="camp" class="camp"><div id="campTitle" class="camp-title"></div><div id="campMeta" class="camp-meta"></div><div class="bar"><i id="campBar" style="width:0%"></i></div></div>
   </header>
@@ -192,7 +192,7 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
 'use strict';
 const SCANNER_API_ENDPOINT='https://referent-scelles-api.benjii91270.workers.dev/api';
 const DEVICE_TOKEN_KEY='referent_scelles_device_token_v2';
-const SCANNER_VERSION='2.8.6';
+const SCANNER_VERSION='2.8.7';
 const SERIES_MODE_KEY='referent_scelles_series_mode_v1';
 const SOUND_PREF_KEY='referent_scelles_scanner_sound_v1';
 const VIBRATION_PREF_KEY='referent_scelles_scanner_vibration_v1';
@@ -203,7 +203,7 @@ function readSeriesMode(){try{const saved=localStorage.getItem(SERIES_MODE_KEY);
 function readBoolPreference(key,fallback=true){try{const saved=localStorage.getItem(key);return saved===null?fallback:saved==='1';}catch(e){return fallback;}}
 function readPreferredCamera(){try{return localStorage.getItem(CAMERA_DEVICE_KEY)||null;}catch(e){return null;}}
 function savePreferredCamera(id){try{if(id)localStorage.setItem(CAMERA_DEVICE_KEY,id);}catch(e){}}
-const state={reader:null,controls:null,readerMode:'none',readerRunning:false,readerGeneration:0,decodeLoopTimer:null,nativeDetector:null,nativeDecodeErrors:0,stream:null,track:null,devices:[],deviceIndex:0,deviceId:readPreferredCamera(),busy:false,cameraOpening:false,cameraSwitching:false,cameraResumeOnVisible:false,resumeDecodeAfterVisibility:false,seriesMode:readSeriesMode(),soundEnabled:readBoolPreference(SOUND_PREF_KEY,true),vibrationEnabled:readBoolPreference(VIBRATION_PREF_KEY,true),sessionChecks:0,token:'',lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null,photoMode:false,userAuth:null,pendingToken:'',sealData:null,sessionOptionsLoading:false,multiQueue:[],queueMoveBusy:false};
+const state={reader:null,controls:null,readerMode:'none',readerRunning:false,readerGeneration:0,decodeLoopTimer:null,nativeDetector:null,nativeDecodeErrors:0,stream:null,track:null,devices:[],deviceIndex:0,deviceId:readPreferredCamera(),busy:false,cameraOpening:false,cameraSwitching:false,cameraResumeOnVisible:false,resumeDecodeAfterVisibility:false,seriesMode:readSeriesMode(),soundEnabled:readBoolPreference(SOUND_PREF_KEY,true),vibrationEnabled:readBoolPreference(VIBRATION_PREF_KEY,true),sessionChecks:0,token:'',lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null,photoMode:false,userAuth:null,pendingToken:'',sealData:null,sessionOptionsLoading:false,multiQueue:[],queueMoveBusy:false,investigatorOptions:[],recipientOptions:[],peopleOptionsRevision:0};
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
 function loadSavedScannerSession(){
@@ -369,6 +369,41 @@ function hideReaderVisual(){showResultCameraState();}
 function showPhotoFallback(){
   $('photoRow').classList.add('show');if(!$('status').classList.contains('bad'))setStatus('Mode photo disponible','');$('hint').textContent='La caméra directe n’est pas disponible sur cet appareil.';
 }
+async function populateScannerPersonSelect(selectId,manualWrapId,manualInputId,sessionName=''){
+  const select=$(selectId),manualWrap=$(manualWrapId),manualInput=$(manualInputId);if(!select)return;
+  const lockedName=String(sessionName||'').trim();
+  const escOpt=esc;
+  const option=(name)=>`<option value="${escOpt(name)}">${escOpt(name)}</option>`;
+  const refreshManual=()=>{const manual=select.value==='__manual__';if(manualWrap)manualWrap.classList.toggle('hidden',!manual);if(manual&&manualInput)manualInput.focus();};
+  select.onchange=refreshManual;
+  select.innerHTML='<option value="">Chargement des enquêteurs…</option>';
+  try{
+    const data=await apiCall('people-options',{},12000);
+    if(!data?.ok)throw new Error(data?.message||'La liste des enquêteurs est indisponible.');
+    const cleanList=v=>[...new Set((Array.isArray(v)?v:[]).map(x=>String(x||'').trim().replace(/\s+/g,' ')).filter(Boolean))];
+    const investigators=cleanList(data.investigators),recipients=cleanList(data.recipients);
+    state.investigatorOptions=investigators;state.recipientOptions=recipients;state.peopleOptionsRevision=Number(data.revision)||0;
+    const allNames=new Set([...investigators,...recipients].map(x=>x.toLocaleLowerCase('fr-FR')));
+    let html='<option value="">— Choisir une personne —</option>';
+    if(investigators.length)html+='<optgroup label="Enquêteurs enregistrés">'+investigators.map(option).join('')+'</optgroup>';
+    if(recipients.length)html+='<optgroup label="Réceptionnaires enregistrés">'+recipients.filter(n=>!investigators.some(i=>i.toLocaleLowerCase('fr-FR')===n.toLocaleLowerCase('fr-FR'))).map(option).join('')+'</optgroup>';
+    if(lockedName&&!allNames.has(lockedName.toLocaleLowerCase('fr-FR')))html+='<optgroup label="Session connectée">'+option(lockedName)+'</optgroup>';
+    if(!lockedName)html+='<option value="__manual__">Autre personne — saisir manuellement</option>';
+    select.innerHTML=html;
+    if(lockedName){select.value=[...investigators,...recipients,lockedName].find(n=>n.toLocaleLowerCase('fr-FR')===lockedName.toLocaleLowerCase('fr-FR'))||lockedName;select.disabled=true;}
+    else {select.disabled=false;select.value='';}
+    if(manualWrap)manualWrap.classList.add('hidden');
+    if(manualInput)manualInput.value='';
+    const note=$(selectId+'Help');if(note)note.textContent=`Liste synchronisée depuis le logiciel (${investigators.length} enquêteur(s)${recipients.length?`, ${recipients.length} réceptionnaire(s)`:''}).`;
+    if(!lockedName&&!investigators.length&&!recipients.length){select.value='__manual__';refreshManual();if(note)note.textContent='Aucun nom enregistré : saisie manuelle temporaire possible. Ajoute les enquêteurs dans Administration → Personnes.';}
+  }catch(e){
+    state.investigatorOptions=[];state.recipientOptions=[];
+    if(lockedName){select.innerHTML=option(lockedName);select.value=lockedName;select.disabled=true;if(manualWrap)manualWrap.classList.add('hidden');}
+    else{select.innerHTML='<option value="__manual__">Liste indisponible — saisir manuellement</option>';select.value='__manual__';select.disabled=false;refreshManual();}
+    const note=$(selectId+'Help');if(note)note.textContent='Impossible de charger la liste du logiciel. Vérifie la connexion ; la saisie manuelle reste disponible.';
+  }
+}
+function scannerSelectedPerson(selectId,manualInputId){const select=$(selectId);if(!select)return '';if(select.value==='__manual__')return String($(manualInputId)?.value||'').trim();return String(select.value||'').trim();}
 function renderMultiQueue(){
   const panel=$('multiQueuePanel'),list=$('multiQueueList'),count=$('multiQueueCount'),toolbar=$('multiQueueToolbar');if(!panel||!list||!count||!toolbar)return;
   const q=state.multiQueue||[],auth=activeScannerSession(),isAdmin=!!auth?.session?.isAdmin;panel.classList.toggle('hidden',q.length===0);count.textContent=`${q.length} scellé${q.length>1?'s':''}`;
@@ -389,11 +424,11 @@ function clearMultiQueue(){if(state.queueMoveBusy)return;if(!state.multiQueue.le
 function showMultiQueueMoveForm(){
   const auth=activeScannerSession(),selected=(state.multiQueue||[]).filter(x=>x.selected),eligible=selected.filter(x=>String(x.data?.status||'').toUpperCase()==='EN STOCK'),form=$('multiQueueMoveForm');if(!form)return;
   if(!selected.length){setStatus('Sélectionne au moins un scellé.','bad');return;}if(!eligible.length){setStatus('Aucun scellé sélectionné n’est actuellement en stock.','bad');return;}
-  $('multiQueueCloseForm')?.classList.add('hidden');form.innerHTML=`<h3>Mise en mouvement groupée</h3><p class="muted">${eligible.length} scellé(s) en stock. Indique la destination commune à tous les scellés sélectionnés.</p><label for="queueMoveInvestigator">Enquêteur responsable *</label><input id="queueMoveInvestigator" maxlength="120" required value="${esc(String(auth?.session?.name||''))}" ${auth?'readonly':''} placeholder="Nom et prénom"><label for="queueMoveDestination">Destination (obligatoire) *</label><input id="queueMoveDestination" maxlength="500" required placeholder="Ex. laboratoire, tribunal, autre service…"><div id="queueMoveError" class="session-login-error" role="alert"></div><div class="actions"><button id="queueMoveSubmit" class="btn primary" type="button">Confirmer pour ${eligible.length} scellé(s)</button><button class="btn" id="queueMoveCancel" type="button">Annuler</button></div><p class="muted">Chaque scellé est enregistré séparément. En cas d’échec, les autres continuent et le bilan détaille les résultats.</p>`;
-  form.classList.remove('hidden');$('queueMoveSubmit').onclick=submitMultiQueueMovement;$('queueMoveCancel').onclick=()=>{form.classList.add('hidden');form.innerHTML='';};
+  $('multiQueueCloseForm')?.classList.add('hidden');form.innerHTML=`<h3>Mise en mouvement groupée</h3><p class="muted">${eligible.length} scellé(s) en stock. Indique la personne qui prend en charge les scellés et leur destination commune.</p><label for="queueMoveInvestigator">Enquêteur / personne prenant en charge *</label><select id="queueMoveInvestigator" required><option value="">Chargement du référentiel…</option></select><div id="queueMoveInvestigatorManualWrap" class="hidden"><label for="queueMoveInvestigatorManual">Nom hors liste *</label><input id="queueMoveInvestigatorManual" maxlength="180" placeholder="Nom et prénom"></div><div id="queueMoveInvestigatorHelp" class="muted" style="margin-top:5px">Chargement de la liste depuis Administration → Personnes…</div><label for="queueMoveDestination">Destination (obligatoire) *</label><input id="queueMoveDestination" maxlength="500" required placeholder="Ex. laboratoire, tribunal, autre service…"><div id="queueMoveError" class="session-login-error" role="alert"></div><div class="actions"><button id="queueMoveSubmit" class="btn primary" type="button">Confirmer pour ${eligible.length} scellé(s)</button><button class="btn" id="queueMoveCancel" type="button">Annuler</button></div><p class="muted">Chaque scellé est enregistré séparément. En cas d’échec, les autres continuent et le bilan détaille les résultats.</p>`;
+  form.classList.remove('hidden');void populateScannerPersonSelect('queueMoveInvestigator','queueMoveInvestigatorManualWrap','queueMoveInvestigatorManual',String(auth?.session?.name||''));$('queueMoveSubmit').onclick=submitMultiQueueMovement;$('queueMoveCancel').onclick=()=>{form.classList.add('hidden');form.innerHTML='';};
 }
 async function submitMultiQueueMovement(){
-  if(state.queueMoveBusy)return;const auth=activeScannerSession(),name=String($('queueMoveInvestigator')?.value||'').trim(),destination=String($('queueMoveDestination')?.value||'').trim(),err=$('queueMoveError'),button=$('queueMoveSubmit');const fail=m=>{if(err){err.textContent=m;err.classList.add('show');}};
+  if(state.queueMoveBusy)return;const auth=activeScannerSession(),name=scannerSelectedPerson('queueMoveInvestigator','queueMoveInvestigatorManual'),destination=String($('queueMoveDestination')?.value||'').trim(),err=$('queueMoveError'),button=$('queueMoveSubmit');const fail=m=>{if(err){err.textContent=m;err.classList.add('show');}};
   if(!name){fail('Le nom de l’enquêteur est obligatoire.');return;}if(auth?.session?.name&&name.toLocaleLowerCase()!==String(auth.session.name).trim().toLocaleLowerCase()){fail('Le nom doit correspondre à la session connectée.');return;}if(!destination){fail('La destination est obligatoire.');return;}
   const selected=state.multiQueue.filter(x=>x.selected),eligible=selected.filter(x=>String(x.data?.status||'').toUpperCase()==='EN STOCK');if(!eligible.length){fail('Aucun scellé sélectionné n’est en stock.');return;}
   if(!confirm(`Confirmer la mise en mouvement de ${eligible.length} scellé(s) ?\n\nDestination : ${destination}\nEnquêteur : ${name}\n\nChaque scellé sera enregistré séparément.`))return;
@@ -493,12 +528,12 @@ function formatMovementDate(value){
 }
 function showMovementForm(){
   const auth=activeScannerSession(),session=auth?.session,form=$('movementForm');if(!form)return;
-  const name=String(session?.name||'');
-  form.innerHTML=`<div class="move-form"><label for="movementInvestigator">Enquêteur (obligatoire)</label><input id="movementInvestigator" value="${esc(name)}" ${auth?'readonly':''} maxlength="120" required placeholder="Nom et prénom de l’enquêteur"><label for="movementDestination">Destination (obligatoire) *</label><input id="movementDestination" maxlength="500" required placeholder="Ex. laboratoire, tribunal, autre service…"><div id="movementError" class="session-login-error"></div><div class="actions"><button id="submitMovementButton" class="btn primary" type="button">Confirmer la prise en charge</button><button id="cancelMovementButton" class="btn" type="button">Annuler</button></div><p class="move-note">Sans session, le nom est consigné comme déclaré et n’est pas vérifié par authentification. Avec une session valide, le nom est vérifié côté serveur.</p></div>`;
+  form.innerHTML=`<div class="move-form"><label for="movementInvestigator">Enquêteur / personne prenant en charge *</label><select id="movementInvestigator" required><option value="">Chargement du référentiel…</option></select><div id="movementInvestigatorManualWrap" class="hidden"><label for="movementInvestigatorManual">Nom hors liste *</label><input id="movementInvestigatorManual" maxlength="180" placeholder="Nom et prénom"></div><div id="movementInvestigatorHelp" class="move-note">Chargement de la liste depuis Administration → Personnes…</div><label for="movementDestination">Destination (obligatoire) *</label><input id="movementDestination" maxlength="500" required placeholder="Ex. laboratoire, tribunal, autre service…"><div id="movementError" class="session-login-error"></div><div class="actions"><button id="submitMovementButton" class="btn primary" type="button">Confirmer la prise en charge</button><button id="cancelMovementButton" class="btn" type="button">Annuler</button></div><p class="move-note">Sans session, choisis une personne dans la liste enregistrée. Avec une session active, le nom est fixé à celui du compte connecté.</p></div>`;
+  void populateScannerPersonSelect('movementInvestigator','movementInvestigatorManualWrap','movementInvestigatorManual',String(session?.name||''));
   $('submitMovementButton').onclick=submitScannerMovement;$('cancelMovementButton').onclick=()=>{form.innerHTML='';};$('movementDestination')?.focus();
 }
 async function submitScannerMovement(){
-  if(state.busy)return;const auth=activeScannerSession(),session=auth?.session,token=String(state.token||''),investigatorName=String($('movementInvestigator')?.value||'').trim(),destination=String($('movementDestination')?.value||'').trim(),button=$('submitMovementButton'),err=$('movementError');
+  if(state.busy)return;const auth=activeScannerSession(),session=auth?.session,token=String(state.token||''),investigatorName=scannerSelectedPerson('movementInvestigator','movementInvestigatorManual'),destination=String($('movementDestination')?.value||'').trim(),button=$('submitMovementButton'),err=$('movementError');
   const fail=message=>{if(err){err.textContent=String(message||'Opération refusée.');err.classList.add('show');}};
   if(!investigatorName){fail('Le nom de l’enquêteur est obligatoire.');return;}
   if(auth&&session?.name&&investigatorName.toLocaleLowerCase()!==String(session.name).trim().toLocaleLowerCase()){fail('Le nom doit correspondre à la session connectée.');return;}
