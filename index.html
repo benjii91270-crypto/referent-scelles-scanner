@@ -96,7 +96,7 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
 @media(max-width:390px){.control-grid{grid-template-columns:1fr}.control-grid .choice{min-height:72px}.seal-meta{grid-template-columns:1fr 1fr}}
 
 
-/* V2.8.8 — contrôle guidé par emplacement, comptes, droits terrain et sélection multiple */
+/* V2.8.9 — contrôle guidé et résultats groupés */
 .user-bar{display:none;align-items:center;justify-content:space-between;gap:8px;margin-top:9px;padding:8px 10px;border:1px solid rgba(255,255,255,.18);border-radius:11px;background:rgba(255,255,255,.08);color:#fff}
 .user-bar.show{display:flex}.user-label{font-size:11px;font-weight:850;line-height:1.35;overflow-wrap:anywhere}
 .user-role{display:inline-block;margin-left:5px;padding:3px 6px;background:rgba(255,255,255,.16);border-radius:6px;font-size:9px;font-weight:950}
@@ -123,6 +123,7 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
 .multi-queue-panel{margin-top:10px;background:#fff;border:1px solid #b9cada;border-radius:17px;padding:12px;box-shadow:0 5px 18px #1328430d}
 .multi-queue-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.multi-queue-head h2{margin:0;color:#183957;font-size:17px;font-weight:950}.multi-queue-head p{margin:4px 0 0;color:#5c7086;font-size:11px;line-height:1.45}.multi-queue-count{flex:none;background:#eaf2f9;color:#1d527a;border:1px solid #cbddec;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:950}
 .multi-queue-list{display:grid;gap:7px;margin-top:11px}.multi-queue-item{display:grid;grid-template-columns:23px minmax(0,1fr) auto;gap:9px;align-items:center;border:1px solid #dce5ed;background:#f9fbfd;border-radius:12px;padding:9px}.multi-queue-item input{width:18px;height:18px;min-height:0;accent-color:#214f73}.multi-queue-item .mq-name{font-size:12px;font-weight:900;color:#183957;overflow-wrap:anywhere}.multi-queue-item .mq-meta{font-size:10px;line-height:1.45;color:#65778b;margin-top:3px;overflow-wrap:anywhere}.multi-queue-item .mq-status{font-size:9px;font-weight:950;border-radius:6px;background:#edf2f7;color:#465b70;padding:3px 6px;display:inline-block;margin-top:4px}.multi-queue-item .mq-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.multi-queue-item .mq-actions button{min-height:34px;padding:6px 8px;font-size:10px;border-radius:9px}.multi-queue-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.multi-queue-toolbar button{min-height:42px;font-size:11px;padding:8px}.multi-queue-moveform{margin-top:10px;padding:12px;border:1px solid #cad9e7;border-radius:12px;background:#f4f8fb}.multi-queue-moveform h3{font-size:13px;color:#183957;margin:0 0 8px}.multi-queue-moveform label{display:block;font-size:11px;font-weight:850;color:#304d68;margin:9px 0 4px}.multi-queue-moveform input,.multi-queue-moveform select,.multi-queue-moveform textarea{width:100%;min-height:42px;border:1px solid #bfcedd;border-radius:9px;padding:9px;background:#fff;color:#183957;font:inherit;font-size:12px}.multi-queue-moveform textarea{min-height:70px}.multi-queue-result{margin-top:10px;border:1px solid #d9e3ec;border-radius:10px;padding:10px;background:#fff;font-size:11px;line-height:1.5}.multi-queue-result .ok{color:#236847}.multi-queue-result .bad{color:#a43135}.queue-add-button{width:100%;margin-top:10px!important;min-height:47px!important;background:#e9f3fb!important;border:1px solid #a9c6dd!important;color:#17496e!important}.queue-add-button:disabled{opacity:.7!important}
+.multi-queue-control-tools{margin-top:10px;padding:12px;border:1px solid #bdd8c7;border-radius:13px;background:#f1f8f3;color:#244633}.multi-queue-control-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.multi-queue-control-head h3{margin:0;font-size:13px;font-weight:950;color:#205b3a}.multi-queue-control-head p{margin:4px 0 0;font-size:10px;line-height:1.45;color:#597263}.multi-queue-control-count{flex:none;border-radius:99px;background:#fff;border:1px solid #cddfd2;padding:5px 8px;font-size:10px;font-weight:950;color:#235b3a}.multi-queue-control-actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px;margin-top:10px}.multi-queue-control-actions label{grid-column:1/-1;font-size:10px;font-weight:900;color:#365b43}.multi-queue-control-actions select{grid-column:1/-1;width:100%;min-height:42px;border:1px solid #bfd4c5;border-radius:9px;background:#fff;color:#234b34;padding:8px;font:inherit;font-size:11px}.multi-queue-control-actions button{min-height:42px;padding:8px;font-size:10px}.multi-queue-control-actions button.primary{background:#21633e;color:#fff;border-color:#21633e}.multi-queue-control-help{margin-top:8px;font-size:10px;line-height:1.45;color:#617566}.multi-queue-item .mq-control-wrap{margin-top:7px}.multi-queue-item .mq-control-wrap label{display:block;font-size:9px;font-weight:900;color:#43624e;margin-bottom:3px}.multi-queue-item .mq-control-wrap select{width:100%;min-height:35px;border:1px solid #c6d8cb;border-radius:8px;background:#fff;color:#234b34;padding:6px;font:inherit;font-size:10px}.multi-queue-item .mq-control-saved{display:inline-block;margin-top:6px;padding:4px 6px;border-radius:6px;background:#e6f5e9;color:#256840;font-size:9px;font-weight:950}
 @media(min-width:760px){.multi-queue-panel{padding:16px}.multi-queue-toolbar{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 <style id="rs288GuidedControlStyles">
@@ -139,7 +140,7 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
   <header class="top">
     <div class="brand">RÉFÉRENT SCELLÉS</div>
     <div class="title">Scanner QR</div>
-    <div class="sub">Contrôle terrain • V2.8.8 — contrôle guidé par lieu</div>
+    <div class="sub">Contrôle terrain • V2.8.9 — contrôle groupé et guidé</div>
     <div id="userBar" class="user-bar" aria-live="polite"><div id="userLabel" class="user-label">Connexion requise</div><button id="changeUser" class="user-change" type="button">Changer de session</button></div>
     <div id="camp" class="camp"><div id="campTitle" class="camp-title"></div><div id="campMeta" class="camp-meta"></div><div class="bar"><i id="campBar" style="width:0%"></i></div></div>
   </header>
@@ -189,9 +190,19 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
   </section>
 
   <section id="multiQueuePanel" class="multi-queue-panel hidden" aria-label="Sélection de scellés scannés">
-  <div class="multi-queue-head"><div><h2>Scellés scannés</h2><p>Ajoute chaque scellé après l’avoir scanné. Tu peux agir individuellement ou sélectionner plusieurs scellés pour une mise en mouvement groupée.</p></div><span class="multi-queue-count" id="multiQueueCount">0 scellé</span></div>
+  <div class="multi-queue-head"><div><h2>Scellés scannés</h2><p>Ajoute les scellés un par un après chaque scan. Depuis cette liste, tu peux les mettre en mouvement, les clôturer ou enregistrer plusieurs contrôles physiques avec un résultat commun ou différent pour chaque scellé.</p></div><span class="multi-queue-count" id="multiQueueCount">0 scellé</span></div>
   <div id="multiQueueList" class="multi-queue-list"></div>
   <div id="multiQueueToolbar" class="multi-queue-toolbar hidden"><button class="btn" type="button" id="queueSelectAll">☑ Tout sélectionner</button><button class="btn primary" type="button" id="queueOpenBulkMove">📦 Mettre en mouvement</button><button class="btn danger hidden" type="button" id="queueOpenBulkClose">✅ Clôturer / archiver</button><button class="btn danger" type="button" id="queueClear">Vider la sélection</button></div>
+  <div id="multiQueueControlTools" class="multi-queue-control-tools hidden" aria-label="Contrôle physique groupé">
+    <div class="multi-queue-control-head"><div><h3>✓ Contrôle physique groupé</h3><p>Choisis un résultat commun pour les scellés sélectionnés, ou règle un résultat différent sur chaque ligne. Chaque contrôle sera enregistré séparément dans la campagne ouverte.</p></div><span id="queueControlCount" class="multi-queue-control-count">0 sélectionné</span></div>
+    <div class="multi-queue-control-actions">
+      <label for="queueBulkControlResult">Résultat commun</label>
+      <select id="queueBulkControlResult"><option value="">Choisir un résultat…</option><option value="CONFORME">✓ Conforme</option><option value="ABSENT">! Absent</option><option value="EMPLACEMENT NON CONFORME">⌖ Mauvais emplacement</option><option value="SCELLÉ À VÉRIFIER">⚠ À vérifier</option></select>
+      <button type="button" class="btn" id="queueApplyControlResult">Appliquer à la sélection</button>
+      <button type="button" class="btn primary" id="queueSubmitControls">Enregistrer les contrôles sélectionnés</button>
+    </div>
+    <div id="queueControlHelp" class="multi-queue-control-help">Réservé à l’administrateur connecté. Charge une campagne ouverte dans le panneau de contrôle guidé avant d’enregistrer.</div>
+  </div>
   <div id="multiQueueMoveForm" class="multi-queue-moveform hidden"></div><div id="multiQueueCloseForm" class="multi-queue-moveform hidden"></div>
   <div id="multiQueueResult" class="multi-queue-result hidden" aria-live="polite"></div>
 </section>
@@ -345,7 +356,7 @@ function guidedIsDone(item){const s=String(item?.campaignStatus||'A_FAIRE').trim
 function guidedSelectedLocation(){return String($('guidedLocationSelect')?.value||state.guidedLocationKey||'');}
 function guidedRowsForLocation(){const key=guidedSelectedLocation();return (state.guidedPlan?.items||[]).filter(x=>String(x.locationKey||'')===key).sort((a,b)=>Number(a.entry)-Number(b.entry));}
 function guidedPendingRows(){return guidedRowsForLocation().filter(x=>!guidedIsDone(x)&&String(x.physicalStatus||'EN STOCK').toUpperCase()==='EN STOCK');}
-function guidedNextItem(){return state.guidedActive?guidedPendingRows()[0]||null:null;}
+function guidedNextItem(){if(!state.guidedActive)return null;const queued=new Set((state.multiQueue||[]).filter(x=>x.controlQueue&&!x.controlSaved).map(x=>Number(x.entry)));return guidedPendingRows().find(x=>!queued.has(Number(x.entry)))||null;}
 function renderGuidedPlan(){
   const panel=$('guidedControlPanel'),select=$('guidedLocationSelect'),status=$('guidedPlanStatus'),next=$('guidedNextCard'),queue=$('guidedQueue'),start=$('guidedStart'),stop=$('guidedStop');if(!panel||!select||!status||!next||!queue||!start||!stop)return;
   const auth=activeScannerSession();panel.classList.toggle('hidden',!auth?.session?.isAdmin);if(!auth?.session?.isAdmin){state.guidedActive=false;return;}
@@ -373,12 +384,12 @@ async function loadGuidedControlPlan(silent=false){
     state.guidedActive=!!state.guidedActive&&!!location;renderGuidedPlan();if(status&&!plan.locations?.length){status.className='guided-status warn';status.textContent='La campagne ne contient aucun scellé exploitable. Vérifie son périmètre dans le logiciel de gestion.';}
     if(!silent)setStatus(`Plan guidé chargé • ${plan.items?.length||0} scellé(s)`, 'good');return true;
   }catch(e){if(status){status.className='guided-status warn';status.textContent=String(e?.message||e||'Erreur de chargement.');}if(!silent)setStatus(String(e?.message||'Impossible de charger le plan guidé.'),'bad');if(['AUTH_REQUIRED','AUTH_EXPIRED','AUTH_REVOKED','ADMIN_REQUIRED','SESSION_MISMATCH'].includes(String(e?.code||''))){clearSavedScannerSession();await showSessionLogin('La session administrateur a expiré. Reconnecte-toi pour charger le contrôle guidé.');}return false;}
-  finally{state.guidedLoading=false;if(button){button.disabled=false;button.textContent='↻ Actualiser le plan';}renderGuidedPlan();}
+  finally{state.guidedLoading=false;if(button){button.disabled=false;button.textContent='↻ Actualiser le plan';}renderGuidedPlan();renderMultiQueue();}
 }
 function startGuidedControl(){if(!state.guidedPlan){void loadGuidedControlPlan().then(ok=>{if(ok)startGuidedControl();});return;}if(!guidedSelectedLocation()){setStatus('Choisis un lieu avant de commencer.','bad');return;}if(!guidedPendingRows().length){setStatus('Aucun scellé restant dans ce lieu. Choisis un autre emplacement.','bad');renderGuidedPlan();return;}state.guidedActive=true;renderGuidedPlan();setStatus('Guidage actif • suis le prochain scellé affiché dans le panneau.','good');resumeScanner();}
 function stopGuidedControl(){state.guidedActive=false;renderGuidedPlan();setStatus('Guidage arrêté. Le scanner reste utilisable normalement.');}
 function checkGuidedScanAgainstPlan(entry){
-  if(!state.guidedActive)return null;const expected=guidedPendingRows()[0]||null;if(!expected)return {ok:false,expected:null,scanned:Number(entry)};return {ok:Number(expected.entry)===Number(entry),expected,scanned:Number(entry)};
+  if(!state.guidedActive)return null;const expected=guidedNextItem();if(!expected)return {ok:false,expected:null,scanned:Number(entry)};return {ok:Number(expected.entry)===Number(entry),expected,scanned:Number(entry)};
 }
 function renderGuidedScanNotice(data){
   if(!state.guidedActive||!data?.entry)return '';const match=checkGuidedScanAgainstPlan(data.entry);
@@ -470,17 +481,53 @@ async function populateScannerPersonSelect(selectId,manualWrapId,manualInputId,s
   }
 }
 function scannerSelectedPerson(selectId,manualInputId){const select=$(selectId);if(!select)return '';if(select.value==='__manual__')return String($(manualInputId)?.value||'').trim();return String(select.value||'').trim();}
+function multiQueueControlAlreadyDone(item){const row=(state.guidedPlan?.items||[]).find(x=>Number(x.entry)===Number(item?.entry));return !!row&&guidedIsDone(row);}
 function renderMultiQueue(){
-  const panel=$('multiQueuePanel'),list=$('multiQueueList'),count=$('multiQueueCount'),toolbar=$('multiQueueToolbar');if(!panel||!list||!count||!toolbar)return;
+  const panel=$('multiQueuePanel'),list=$('multiQueueList'),count=$('multiQueueCount'),toolbar=$('multiQueueToolbar'),controlTools=$('multiQueueControlTools');if(!panel||!list||!count||!toolbar)return;
   const q=state.multiQueue||[],auth=activeScannerSession(),isAdmin=!!auth?.session?.isAdmin;panel.classList.toggle('hidden',q.length===0);count.textContent=`${q.length} scellé${q.length>1?'s':''}`;
-  if(!q.length){list.innerHTML='';toolbar.classList.add('hidden');$('queueOpenBulkClose')?.classList.add('hidden');$('multiQueueCloseForm')?.classList.add('hidden');return;}
-  list.innerHTML=q.map(item=>{const d=item.data||{},status=String(d.status||'Non renseigné'),closed=['CLOTURE','CLOTUREE'].includes(status.toUpperCase());return `<div class="multi-queue-item"><input type="checkbox" aria-label="Sélectionner le scellé ${esc(d.entry)}" ${item.selected?'checked':''} ${closed?'disabled':''} onchange="toggleMultiQueueSelection(${Number(item.entry)},this.checked)"><div><div class="mq-name">N° ${esc(d.entry||'—')} — ${esc(d.scelle||'Scellé sans numéro')}</div><div class="mq-meta">Procédure ${esc(d.procedure||'non renseignée')} · ${esc(d.nature||d.description||'sans désignation')}</div><span class="mq-status">${esc(status)}</span></div><div class="mq-actions"><button class="btn" type="button" ${closed?'disabled':''} onclick="openMultiQueueItem(${Number(item.entry)})">Voir / agir</button><button class="btn danger" type="button" aria-label="Retirer le scellé ${esc(d.entry)}" onclick="removeMultiQueueItem(${Number(item.entry)})">Retirer</button></div></div>`;}).join('');
-  toolbar.classList.remove('hidden');const active=q.filter(x=>!['CLOTURE','CLOTUREE'].includes(String(x.data?.status||'').toUpperCase())),selected=active.filter(x=>x.selected);const all=$('queueSelectAll');if(all)all.textContent=selected.length===active.length?'☑ Tout désélectionner':'☑ Tout sélectionner';const bulk=$('queueOpenBulkMove');if(bulk){bulk.disabled=!selected.length||state.queueMoveBusy;bulk.textContent=`📦 Mettre en mouvement (${selected.length})`;}const close=$('queueOpenBulkClose');if(close){close.classList.toggle('hidden',!isAdmin);close.disabled=!selected.length||state.queueMoveBusy;close.textContent=`✅ Clôturer / archiver (${selected.length})`;}
+  if(!q.length){list.innerHTML='';toolbar.classList.add('hidden');controlTools?.classList.add('hidden');$('queueOpenBulkClose')?.classList.add('hidden');$('multiQueueCloseForm')?.classList.add('hidden');return;}
+  const controlOptions=item=>{
+    const current=String(item.controlResult||'');
+    const options=[['','— Choisir un résultat —'],['CONFORME','✓ Conforme'],['ABSENT','! Absent'],['EMPLACEMENT NON CONFORME','⌖ Mauvais emplacement'],['SCELLÉ À VÉRIFIER','⚠ À vérifier']];
+    return options.map(([v,label])=>`<option value="${esc(v)}" ${v===current?'selected':''}>${esc(label)}</option>`).join('');
+  };
+  list.innerHTML=q.map(item=>{
+    const d=item.data||{},status=String(d.status||'Non renseigné'),statusUpper=status.toUpperCase(),closed=['CLOTURE','CLOTUREE'].includes(statusUpper),inStock=statusUpper==='EN STOCK',saved=!!item.controlSaved,campaignDone=multiQueueControlAlreadyDone(item);
+    let controlUi='';
+    if(isAdmin){
+      if(saved)controlUi=`<span class="mq-control-saved">✓ Contrôle enregistré : ${esc(item.controlSavedResult||item.controlResult||'—')}${item.controlSavedAt?' • '+esc(item.controlSavedAt):''}</span>`;
+      else if(campaignDone)controlUi=`<span class="mq-control-saved">✓ Déjà contrôlé dans la campagne</span>`;
+      else if(inStock)controlUi=`<div class="mq-control-wrap"><label for="mqControl_${Number(item.entry)}">Résultat du contrôle</label><select id="mqControl_${Number(item.entry)}" aria-label="Résultat du contrôle pour le scellé ${Number(item.entry)}" ${state.queueMoveBusy?'disabled':''} onchange="setMultiQueueControlResult(${Number(item.entry)},this.value)">${controlOptions(item)}</select></div>`;
+      else controlUi=`<div class="mq-control-wrap"><small>Contrôle indisponible : scellé non en stock</small></div>`;
+    }
+    const guidedQueue=state.guidedActive&&guidedPendingRows().some(x=>Number(x.entry)===Number(item.entry));
+    return `<div class="multi-queue-item"><input type="checkbox" aria-label="Sélectionner le scellé ${esc(d.entry)}" ${item.selected?'checked':''} ${closed||state.queueMoveBusy?'disabled':''} onchange="toggleMultiQueueSelection(${Number(item.entry)},this.checked)"><div><div class="mq-name">N° ${esc(d.entry||'—')} — ${esc(d.scelle||'Scellé sans numéro')}</div><div class="mq-meta">Procédure ${esc(d.procedure||'non renseignée')} · ${esc(d.nature||d.description||'sans désignation')}</div><span class="mq-status">${esc(status)}</span>${guidedQueue?'<span class="mq-status" style="background:#eef8f1;color:#256840">Dans la tournée guidée</span>':''}${controlUi}</div><div class="mq-actions"><button class="btn" type="button" ${closed||state.queueMoveBusy?'disabled':''} onclick="openMultiQueueItem(${Number(item.entry)})">Voir / agir</button><button class="btn danger" type="button" aria-label="Retirer le scellé ${esc(d.entry)}" ${state.queueMoveBusy?'disabled':''} onclick="removeMultiQueueItem(${Number(item.entry)})">Retirer</button></div></div>`;
+  }).join('');
+  toolbar.classList.remove('hidden');
+  const active=q.filter(x=>!['CLOTURE','CLOTUREE'].includes(String(x.data?.status||'').toUpperCase())),selected=active.filter(x=>x.selected);
+  const all=$('queueSelectAll');if(all)all.textContent=selected.length===active.length?'☑ Tout désélectionner':'☑ Tout sélectionner';
+  const bulk=$('queueOpenBulkMove');if(bulk){bulk.disabled=!selected.length||state.queueMoveBusy;bulk.textContent=`📦 Mettre en mouvement (${selected.length})`;}
+  const close=$('queueOpenBulkClose');if(close){close.classList.toggle('hidden',!isAdmin);close.disabled=!selected.length||state.queueMoveBusy;close.textContent=`✅ Clôturer / archiver (${selected.length})`;}
+  if(controlTools){controlTools.classList.toggle('hidden',!isAdmin);}
+  const pendingSelected=selected.filter(x=>!x.controlSaved&&!multiQueueControlAlreadyDone(x)),stockSelected=pendingSelected.filter(x=>String(x.data?.status||'').toUpperCase()==='EN STOCK');
+  const controlCount=$('queueControlCount');if(controlCount)controlCount.textContent=`${selected.length} sélectionné(s) • ${stockSelected.length} à contrôler`;
+  const bulkResult=$('queueBulkControlResult'),apply=$('queueApplyControlResult'),submit=$('queueSubmitControls'),help=$('queueControlHelp');
+  if(apply)apply.disabled=!isAdmin||!pendingSelected.length||stockSelected.length!==pendingSelected.length||!String(bulkResult?.value||'')||state.queueMoveBusy;
+  if(submit)submit.disabled=!isAdmin||!pendingSelected.length||stockSelected.length!==pendingSelected.length||pendingSelected.some(x=>!x.controlResult)||state.queueMoveBusy;
+  if(help){
+    if(!isAdmin)help.textContent='Le contrôle groupé est réservé à un administrateur connecté.';
+    else if(!selected.length)help.textContent='Sélectionne les scellés à contrôler. Tu peux choisir un résultat par ligne ou appliquer un résultat commun.';
+    else if(!pendingSelected.length)help.textContent='Tous les scellés sélectionnés ont déjà un contrôle enregistré. Tu peux les retirer de la liste ou en scanner d’autres.';
+    else if(stockSelected.length!==pendingSelected.length)help.textContent='La sélection contient un scellé non traité qui n’est pas en stock. Désélectionne-le avant d’enregistrer des contrôles.';
+    else if(pendingSelected.some(x=>!x.controlResult))help.textContent='Choisis un résultat pour chaque scellé sélectionné, ou applique le même résultat depuis le menu ci-dessus. Les contrôles déjà enregistrés seront ignorés.';
+    else help.textContent='Chaque contrôle sera enregistré séparément dans la campagne active. Les contrôles déjà enregistrés seront ignorés et le bilan détaillera chaque opération.';
+  }
 }
+
 function addCurrentToMultiQueue(){
   const d=state.sealData;if(!d?.ok){setStatus('Impossible d’ajouter un scellé non reconnu à la sélection.','bad');return false;}
   const entry=Number(d.entry),token=String(state.token||d.qrId||'').trim();if(!Number.isFinite(entry)||entry<1||!token){setStatus('Le numéro d’entrée ou le QR de ce scellé est manquant.','bad');return false;}
-  const existing=state.multiQueue.find(x=>Number(x.entry)===entry);if(existing){existing.data=Object.assign({},d);existing.token=token;existing.selected=true;setStatus(`Le scellé N° ${entry} est déjà dans la sélection.`,'good');}else{if(state.multiQueue.length>=100){setStatus('Limite de 100 scellés par session atteinte. Termine cette sélection avant d’en commencer une autre.','bad');return false;}state.multiQueue.push({entry,token,data:Object.assign({},d),selected:true});setStatus(`Scellé N° ${entry} ajouté • ${state.multiQueue.length} dans la sélection`,'good');}
+  const existing=state.multiQueue.find(x=>Number(x.entry)===entry);if(existing){existing.data=Object.assign({},d);existing.token=token;existing.selected=true;if(existing.controlSaved){existing.controlSaved=false;existing.controlSavedResult='';existing.controlSavedAt='';existing.controlResult='';}if(state.guidedActive)existing.controlQueue=true;setStatus(`Le scellé N° ${entry} est déjà dans la sélection.`,'good');}else{if(state.multiQueue.length>=100){setStatus('Limite de 100 scellés par session atteinte. Termine cette sélection avant d’en commencer une autre.','bad');return false;}state.multiQueue.push({entry,token,data:Object.assign({},d),selected:true,controlResult:'',controlSaved:false,controlSavedResult:'',controlSavedAt:'',controlQueue:!!state.guidedActive});setStatus(`Scellé N° ${entry} ajouté • ${state.multiQueue.length} dans la sélection`,'good');}
   renderMultiQueue();resumeScanner();return true;
 }
 function toggleMultiQueueSelection(entry,checked){const item=state.multiQueue.find(x=>Number(x.entry)===Number(entry));if(item)item.selected=!!checked;renderMultiQueue();}
@@ -503,6 +550,77 @@ async function submitMultiQueueMovement(){
   state.queueMoveBusy=false;renderMultiQueue();if(resultHost){resultHost.classList.remove('hidden');const good=results.filter(x=>x.ok).length,bad=results.length-good;resultHost.innerHTML=`<b>${good}/${results.length} mise(s) en mouvement enregistrée(s)${bad?` • ${bad} échec(s)`:''}</b><div>${results.map(r=>`<div class="${r.ok?'ok':'bad'}">${r.ok?'✓':'✕'} N° ${esc(r.entry)} — ${esc(r.scelle||'')} : ${esc(r.message)}</div>`).join('')}</div>`;}
   if(button){button.disabled=false;button.textContent='Confirmer';}if(results.some(x=>x.ok)){beep();vibrate([70,35,70]);}setStatus(`Mise en mouvement groupée terminée : ${results.filter(x=>x.ok).length}/${results.length} réussi(s)`,results.every(x=>x.ok)?'good':'bad');
 }
+function setMultiQueueControlResult(entry,result){
+  const allowed=['CONFORME','ABSENT','EMPLACEMENT NON CONFORME','SCELLÉ À VÉRIFIER',''];
+  if(!allowed.includes(String(result||'')))return;
+  const item=state.multiQueue.find(x=>Number(x.entry)===Number(entry));if(!item||item.controlSaved)return;
+  item.controlResult=String(result||'');
+  // Keep focus in the current select; rebuilds here would make entering mixed results tedious on mobile.
+  const auth=activeScannerSession(),selected=state.multiQueue.filter(x=>x.selected),pending=selected.filter(x=>!x.controlSaved&&!multiQueueControlAlreadyDone(x)),stock=pending.filter(x=>String(x.data?.status||'').toUpperCase()==='EN STOCK');
+  const apply=$('queueApplyControlResult'),submit=$('queueSubmitControls'),help=$('queueControlHelp');
+  if(apply)apply.disabled=!auth?.session?.isAdmin||!pending.length||stock.length!==pending.length||!String($('queueBulkControlResult')?.value||'')||state.queueMoveBusy;
+  if(submit)submit.disabled=!auth?.session?.isAdmin||!pending.length||stock.length!==pending.length||pending.some(x=>!x.controlResult)||state.queueMoveBusy;
+  if(help){if(!selected.length)help.textContent='Sélectionne les scellés à contrôler.';else if(!pending.length)help.textContent='Les scellés sélectionnés sont déjà contrôlés. Choisis des scellés encore à traiter.';else if(stock.length!==pending.length)help.textContent='La sélection contient un scellé non traité qui n’est pas en stock.';else if(pending.some(x=>!x.controlResult))help.textContent='Choisis un résultat pour chaque scellé ou applique un résultat commun.';else help.textContent='Les résultats sont prêts. Vérifie la liste puis enregistre les contrôles sélectionnés.';}
+}
+function applyMultiQueueControlResult(){
+  const auth=activeScannerSession();if(!auth?.session?.isAdmin){state.pendingToken=state.token;void showSessionLogin('Une session administrateur est requise pour le contrôle physique groupé.');return;}
+  const result=String($('queueBulkControlResult')?.value||''),selected=state.multiQueue.filter(x=>x.selected),pending=selected.filter(x=>!x.controlSaved&&!multiQueueControlAlreadyDone(x)),eligible=pending.filter(x=>String(x.data?.status||'').toUpperCase()==='EN STOCK'),help=$('queueControlHelp');
+  if(!result){if(help)help.textContent='Choisis d’abord le résultat commun à appliquer.';return;}
+  if(!selected.length){if(help)help.textContent='Sélectionne d’abord les scellés concernés.';return;}
+  if(eligible.length!==pending.length){if(help)help.textContent='La sélection contient un scellé non traité qui n’est pas en stock. Ajuste la sélection avant de continuer.';return;}
+  if(!eligible.length){if(help)help.textContent='Aucun nouveau contrôle à préparer dans la sélection.';return;}
+  eligible.forEach(x=>x.controlResult=result);renderMultiQueue();if(help)help.textContent=`Résultat « ${result} » appliqué aux ${eligible.length} scellé(s) non encore contrôlé(s). Tu peux encore changer un résultat directement sur une ligne avant l’enregistrement.`;
+}
+async function submitMultiQueueControls(){
+  if(state.queueMoveBusy)return;
+  const auth=activeScannerSession(),button=$('queueSubmitControls'),help=$('queueControlHelp'),resultHost=$('multiQueueResult');
+  const fail=m=>{if(help)help.textContent=m;setStatus(m,'bad');};
+  if(!auth?.session?.isAdmin){state.pendingToken=state.token;await showSessionLogin('Une session administrateur est requise pour enregistrer les contrôles physiques.');return;}
+  const chosen=state.multiQueue.filter(x=>x.selected);
+  if(!chosen.length){fail('Sélectionne au moins un scellé à contrôler.');return;}
+  const selected=chosen.filter(x=>!x.controlSaved&&!multiQueueControlAlreadyDone(x));
+  if(!selected.length){fail('Les scellés sélectionnés ont déjà été contrôlés. Scanne de nouveaux scellés ou change la sélection.');return;}
+  const notStock=selected.filter(x=>String(x.data?.status||'').toUpperCase()!=='EN STOCK');
+  if(notStock.length){fail(`Contrôle annulé : ${notStock.map(x=>'N° '+x.entry).join(', ')} n’est pas en stock. Désélectionne ces éléments.`);return;}
+  const missing=selected.filter(x=>!['CONFORME','ABSENT','EMPLACEMENT NON CONFORME','SCELLÉ À VÉRIFIER'].includes(String(x.controlResult||'')));
+  if(missing.length){fail(`Choisis un résultat pour : ${missing.map(x=>'N° '+x.entry).join(', ')}. Tu peux appliquer un statut commun ou utiliser le menu de chaque ligne.`);return;}
+  if(!state.guidedPlan?.campaign?.id){fail('Charge une campagne ouverte depuis « Contrôle guidé par emplacement » avant de soumettre les résultats groupés.');return;}
+  const planned=new Set((state.guidedPlan.items||[]).map(x=>Number(x.entry)));
+  const outside=selected.filter(x=>!planned.has(Number(x.entry)));
+  if(outside.length){fail(`Ces scellés ne font pas partie de la campagne chargée : ${outside.map(x=>'N° '+x.entry).join(', ')}. Actualise la campagne ou retire-les de la sélection.`);return;}
+  const description=selected.map(x=>`N° ${x.entry} — ${x.data?.scelle||'Scellé'} : ${x.controlResult}`).join('\n');
+  if(!confirm(`Enregistrer les contrôles physiques de ${selected.length} scellé(s) ?\n\n${description}\n\nChaque résultat sera enregistré individuellement dans la campagne ouverte. Les contrôles déjà enregistrés seront ignorés.`))return;
+  state.queueMoveBusy=true;if(button){button.disabled=true;button.textContent='Enregistrement des contrôles…';}renderMultiQueue();
+  if(resultHost){resultHost.classList.remove('hidden');resultHost.innerHTML=`<b>Contrôles en cours…</b><div>0 / ${selected.length} traité(s).</div>`;}
+  const results=[];let lastOut=null;
+  for(let i=0;i<selected.length;i++){
+    const item=selected[i],result=String(item.controlResult||'');
+    if(resultHost)resultHost.innerHTML=`<b>Contrôles en cours…</b><div>${i+1} / ${selected.length} — N° ${esc(item.entry)} • ${esc(result)}</div>`;
+    try{
+      const out=await apiPost('control',{scan:item.token,result,obs:String(item.controlObs||''),authToken:auth.token,agent:auth.session.name||''},20000);
+      if(!out?.ok)throw Object.assign(new Error(out?.message||'Contrôle refusé.'),{code:out?.code||'CONTROL_REFUSED'});
+      item.controlSaved=true;item.controlSavedResult=String(out.result||result);item.controlSavedAt=String(out.controlledAt||'');item.selected=false;
+      item.data=Object.assign({},item.data,{lastControlResult:item.controlSavedResult,lastControl:out.controlledAt||item.data?.lastControl||''});
+      if(!out.already){state.sessionChecks++;updateSessionProgress();}
+      if(out.campaignTitle){campaignUI({title:out.campaignTitle,progress:out.progress||{}});}
+      lastOut=out;results.push({entry:item.entry,scelle:item.data?.scelle||'',result:item.controlSavedResult,ok:true,already:!!out.already,message:out.already?'Résultat déjà présent dans la campagne':'Contrôle enregistré',dateTime:item.controlSavedAt});
+      beep();vibrate(25);
+    }catch(e){results.push({entry:item.entry,scelle:item.data?.scelle||'',result,ok:false,message:String(e?.message||e||'Erreur inconnue').slice(0,220)});}
+    if(resultHost)resultHost.innerHTML=`<b>Contrôles en cours…</b><div>${i+1} / ${selected.length} traités.</div>`;
+  }
+  state.queueMoveBusy=false;
+  if(state.guidedActive)await loadGuidedControlPlan(true);else if(activeScannerSession()?.session?.isAdmin)await loadGuidedControlPlan(true).catch(()=>{});
+  renderMultiQueue();
+  const ok=results.filter(x=>x.ok).length,bad=results.length-ok,skippedSaved=chosen.length-selected.length;
+  if(resultHost){resultHost.classList.remove('hidden');resultHost.innerHTML=`<b>${ok}/${results.length} contrôle(s) enregistré(s)${bad?` • ${bad} échec(s)`:''}</b>${skippedSaved?`<div>${skippedSaved} scellé(s) déjà contrôlé(s) ignoré(s).</div>`:''}<div>${results.map(r=>`<div class="${r.ok?'ok':'bad'}">${r.ok?'✓':'✕'} N° ${esc(r.entry)} — ${esc(r.scelle)} : ${esc(r.message)}${r.ok?` • ${esc(r.result)}${r.dateTime?' • '+esc(r.dateTime):''}`:''}${!r.ok?`<br><small>${esc(r.message)}</small>`:''}</div>`).join('')}</div>`;}
+  if(button){button.disabled=false;button.textContent='Enregistrer les contrôles sélectionnés';}
+  setStatus(`Contrôles groupés terminés : ${ok}/${results.length} réussi(s)`,bad?'bad':'good');
+  if(help)help.textContent=bad?'Les réussites sont enregistrées ; les lignes en échec restent sélectionnées pour permettre une nouvelle tentative.':'Tous les contrôles sélectionnés sont enregistrés. Tu peux continuer à scanner ou vider la liste.';
+}
+window.setMultiQueueControlResult=setMultiQueueControlResult;
+window.applyMultiQueueControlResult=applyMultiQueueControlResult;
+window.submitMultiQueueControls=submitMultiQueueControls;
+
 function showAdminCloseForm(single=false){
   const auth=activeScannerSession();if(!auth?.session?.isAdmin){state.pendingToken=state.token;void showSessionLogin('Une session administrateur est requise pour clôturer des scellés.');return;}
   const form=single?$('adminCloseForm'):$('multiQueueCloseForm');if(!form)return;const candidates=single?[{entry:Number(state.sealData?.entry),data:state.sealData,token:String(state.token||'')}]:state.multiQueue.filter(x=>x.selected),stock=candidates.filter(x=>String(x.data?.status||'').toUpperCase()==='EN STOCK');if(!stock.length){setStatus('Seuls les scellés en stock peuvent être clôturés.','bad');return;}if(stock.length!==candidates.length){setStatus('Clôture annulée : la sélection contient un scellé qui n’est pas en stock. Désélectionne-le ou remets-le en stock avant de recommencer.','bad');return;}
@@ -524,6 +642,7 @@ async function submitAdminClose(stock,single,prefix){
 window.toggleMultiQueueSelection=toggleMultiQueueSelection;window.removeMultiQueueItem=removeMultiQueueItem;window.openMultiQueueItem=openMultiQueueItem;
 $('queueSelectAll')?.addEventListener('click',()=>{const allSelected=state.multiQueue.length&&state.multiQueue.every(x=>x.selected);state.multiQueue.forEach(x=>x.selected=!allSelected);renderMultiQueue();});
 $('queueClear')?.addEventListener('click',clearMultiQueue);$('queueOpenBulkMove')?.addEventListener('click',showMultiQueueMoveForm);$('queueOpenBulkClose')?.addEventListener('click',()=>showAdminCloseForm(false));
+$('queueApplyControlResult')?.addEventListener('click',applyMultiQueueControlResult);$('queueSubmitControls')?.addEventListener('click',submitMultiQueueControls);
 
 function renderSeal(data){
   state.busy=false;state.sealData=data;
@@ -964,7 +1083,7 @@ async function boot(){
   }catch(e){if(e.message==='SCANNER_NOT_ACTIVATED'){showActivation();return;}setStatus(String(e?.message||e),'bad');await startCamera({decode:true});}
   updateCameraControls();updateSessionBadge();
 }
-window.resumeScanner=resumeScanner;boot();
+window.resumeScanner=resumeScanner;try{document.title='Scanner QR — Référent Scellés 2.8.9';document.body.dataset.scannerVersion='2.8.9';}catch(_){}boot();
 </script>
 </body>
 </html>
