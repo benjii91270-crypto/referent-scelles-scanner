@@ -140,7 +140,7 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
   <header class="top">
     <div class="brand">RÉFÉRENT SCELLÉS</div>
     <div class="title">Scanner QR</div>
-    <div class="sub">Contrôle terrain • V2.8.10 — absence depuis le guidage</div>
+    <div class="sub">Contrôle terrain • V2.8.11 — lecteur iPhone renforcé</div>
     <div id="userBar" class="user-bar" aria-live="polite"><div id="userLabel" class="user-label">Connexion requise</div><button id="changeUser" class="user-change" type="button">Changer de session</button></div>
     <div id="camp" class="camp"><div id="campTitle" class="camp-title"></div><div id="campMeta" class="camp-meta"></div><div class="bar"><i id="campBar" style="width:0%"></i></div></div>
   </header>
@@ -226,7 +226,7 @@ function readSeriesMode(){try{const saved=localStorage.getItem(SERIES_MODE_KEY);
 function readBoolPreference(key,fallback=true){try{const saved=localStorage.getItem(key);return saved===null?fallback:saved==='1';}catch(e){return fallback;}}
 function readPreferredCamera(){try{return localStorage.getItem(CAMERA_DEVICE_KEY)||null;}catch(e){return null;}}
 function savePreferredCamera(id){try{if(id)localStorage.setItem(CAMERA_DEVICE_KEY,id);}catch(e){}}
-const state={reader:null,controls:null,readerMode:'none',readerRunning:false,readerGeneration:0,decodeLoopTimer:null,nativeDetector:null,nativeDecodeErrors:0,stream:null,track:null,devices:[],deviceIndex:0,deviceId:readPreferredCamera(),busy:false,cameraOpening:false,cameraSwitching:false,cameraResumeOnVisible:false,resumeDecodeAfterVisibility:false,seriesMode:readSeriesMode(),soundEnabled:readBoolPreference(SOUND_PREF_KEY,true),vibrationEnabled:readBoolPreference(VIBRATION_PREF_KEY,true),sessionChecks:0,token:'',lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null,photoMode:false,userAuth:null,pendingToken:'',sealData:null,sessionOptionsLoading:false,multiQueue:[],queueMoveBusy:false,investigatorOptions:[],recipientOptions:[],peopleOptionsRevision:0,guidedPlan:null,guidedLocationKey:'',guidedActive:false,guidedExpectedEntry:null,guidedLoading:false,guidedMissingBusy:false};
+const state={reader:null,controls:null,readerMode:'none',readerRunning:false,readerGeneration:0,decodeLoopTimer:null,nativeDetector:null,nativeDecodeErrors:0,stream:null,track:null,devices:[],deviceIndex:0,deviceId:readPreferredCamera(),busy:false,cameraOpening:false,cameraSwitching:false,cameraResumeOnVisible:false,resumeDecodeAfterVisibility:false,seriesMode:readSeriesMode(),soundEnabled:readBoolPreference(SOUND_PREF_KEY,true),vibrationEnabled:readBoolPreference(VIBRATION_PREF_KEY,true),sessionChecks:0,token:'',lastToken:'',lastAt:0,torch:false,zoom:null,campaign:null,photoMode:false,userAuth:null,pendingToken:'',sealData:null,sessionOptionsLoading:false,multiQueue:[],queueMoveBusy:false,investigatorOptions:[],recipientOptions:[],peopleOptionsRevision:0,guidedPlan:null,guidedLocationKey:'',guidedActive:false,guidedExpectedEntry:null,guidedLoading:false,guidedMissingBusy:false,qrCanvas:null,qrContext:null,jsqrDecodeErrors:0};
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
 function loadSavedScannerSession(){
@@ -960,21 +960,61 @@ function acceptDecodedValue(raw,generation){
   if(token===state.lastToken&&now-state.lastAt<1800)return;state.lastToken=token;state.lastAt=now;
   void lookupToken(token);
 }
+async function startJsQRLiveReader(){
+  pauseReader();state.readerRunning=true;const generation=state.readerGeneration;state.jsqrDecodeErrors=0;
+  try{if(!window.jsQR)await loadJsQR();if(generation!==state.readerGeneration||!state.readerRunning)return;}
+  catch(e){if(generation===state.readerGeneration){state.readerRunning=false;state.readerMode='none';setStatus('Lecteur QR de secours indisponible. Utilise « Scanner avec une photo » ou réessaie.','bad');showPhotoFallback();ensureRetryReaderButton();updateCameraControls();}throw e;}
+  const video=$('video');
+  if(!state.qrCanvas)state.qrCanvas=document.createElement('canvas');
+  const canvas=state.qrCanvas;
+  const ctx=state.qrContext||(state.qrContext=canvas.getContext('2d',{willReadFrequently:true}));
+  if(!ctx)throw new Error('Canvas QR indisponible sur ce navigateur.');
+  state.readerMode='jsqr-live';
+  setStatus('Scanner prêt • lecteur iPhone de secours'+(state.devices.length>1?` • caméra ${state.deviceIndex+1}/${state.devices.length}`:''),'good');
+  const tick=()=>{
+    if(generation!==state.readerGeneration||!state.readerRunning)return;
+    if(state.busy||state.cameraSwitching||document.hidden||!video||video.readyState<2||!video.videoWidth||!video.videoHeight){state.decodeLoopTimer=setTimeout(tick,260);return;}
+    try{
+      const maxSide=900,scale=Math.min(1,maxSide/Math.max(video.videoWidth,video.videoHeight));
+      const width=Math.max(1,Math.round(video.videoWidth*scale)),height=Math.max(1,Math.round(video.videoHeight*scale));
+      if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;}
+      ctx.drawImage(video,0,0,width,height);
+      const frame=ctx.getImageData(0,0,width,height);
+      const found=window.jsQR(frame.data,frame.width,frame.height,{inversionAttempts:'attemptBoth'});
+      state.jsqrDecodeErrors=0;
+      if(found&&found.data){const raw=String(found.data||'').trim();if(raw){acceptDecodedValue(raw,generation);if(generation!==state.readerGeneration||!state.readerRunning)return;}}
+    }catch(e){state.jsqrDecodeErrors++;if(state.jsqrDecodeErrors===5)setStatus('Lecture vidéo ralentie. Garde le QR centré et stable dans le cadre.','');}
+    if(generation===state.readerGeneration&&state.readerRunning)state.decodeLoopTimer=setTimeout(tick,220);
+  };
+  state.decodeLoopTimer=setTimeout(tick,0);updateCameraControls();
+}
+async function ensureRetryReaderButton(){
+  const host=$('photoRow');if(!host)return;host.classList.add('show');
+  let b=$('retryReaderBtn');if(!b){b=document.createElement('button');b.id='retryReaderBtn';b.type='button';b.className='btn';b.style.marginTop='8px';b.textContent='↻ Réessayer la lecture QR';host.appendChild(b);}
+  b.onclick=async()=>{b.disabled=true;b.textContent='Chargement du lecteur…';try{await startReader();}catch(e){setStatus('Impossible de relancer le lecteur QR : '+String(e?.message||e),'bad');}finally{b.disabled=false;b.textContent='↻ Réessayer la lecture QR';}};
+}
 async function startZXingReader(){
   pauseReader();state.readerRunning=true;const generation=state.readerGeneration;
   try{
-    if(!window.ZXingBrowser?.BrowserQRCodeReader){await loadZxing();}
+    if(!window.ZXingBrowser?.BrowserQRCodeReader)await loadZxing();
     if(generation!==state.readerGeneration||!state.readerRunning)return;
     state.reader=new window.ZXingBrowser.BrowserQRCodeReader(undefined,{delayBetweenScanAttempts:220,delayBetweenScanSuccess:160,tryPlayVideoTimeout:5000});
     const controls=await state.reader.decodeFromVideoElement($('video'),(result,error,returnedControls)=>{
       if(generation!==state.readerGeneration||!state.readerRunning)return;
       if(returnedControls)state.controls=returnedControls;
       if(result){const raw=String(result.getText?.()||result.text||'').trim();if(raw){try{returnedControls?.stop?.();}catch(e){}acceptDecodedValue(raw,generation);}}
-      // NotFound/format errors are expected while aiming at a QR and are intentionally silent.
     });
     if(generation===state.readerGeneration&&state.readerRunning)state.controls=controls;else try{controls?.stop?.();}catch(e){}
     if(generation===state.readerGeneration&&state.readerRunning){state.readerMode='zxing';setStatus('Scanner prêt • lecteur compatible'+(state.devices.length>1?` • caméra ${state.deviceIndex+1}/${state.devices.length}`:''),'good');}
-  }catch(e){if(generation===state.readerGeneration){state.readerRunning=false;state.readerMode='none';setStatus('Lecteur QR indisponible : '+String(e?.message||e),'bad');showPhotoFallback();updateCameraControls();}}
+  }catch(e){
+    if(generation!==state.readerGeneration)return;
+    console.warn('ZXing indisponible, essai du décodeur vidéo jsQR.',e);
+    try{await startJsQRLiveReader();return;}catch(fallbackError){
+      state.readerRunning=false;state.readerMode='none';
+      const reason=String(fallbackError?.message||e?.message||'dépendance QR indisponible');
+      setStatus('Lecteur QR indisponible. '+reason+' Utilise la lecture par photo ou réessaie.','bad');showPhotoFallback();ensureRetryReaderButton();updateCameraControls();
+    }
+  }
 }
 async function startReader(){
   if(!hasLiveCamera())throw new Error('La caméra n’est pas active.');
@@ -1079,14 +1119,29 @@ $('zoomMinus').onclick=()=>setZoom(-1);$('zoomPlus').onclick=()=>setZoom(1);
 $('activateBtn').onclick=activateScanner;
 $('pairCode').addEventListener('keydown',e=>{if(e.key==='Enter')activateScanner();});
 let zxingLoadPromise=null,jsQrLoadPromise=null;
-function loadScriptUrl(url){return new Promise((resolve,reject)=>{const existing=[...document.scripts].find(x=>x.src===url);if(existing&&existing.dataset.loaded==='true'){resolve();return;}const s=existing||document.createElement('script');s.src=url;s.async=true;s.dataset.loaded='false';s.onload=()=>{s.dataset.loaded='true';resolve();};s.onerror=()=>{s.remove();reject(new Error('Chargement impossible : '+url));};if(!existing)document.head.appendChild(s);});}
+function loadScriptUrl(url,timeoutMs=8500){return new Promise((resolve,reject)=>{
+  const existing=[...document.scripts].find(x=>x.src===url);
+  if(existing&&existing.dataset.loaded==='true'){resolve();return;}
+  const s=existing||document.createElement('script');let settled=false;
+  const finish=(ok,error)=>{if(settled)return;settled=true;clearTimeout(timer);s.onload=null;s.onerror=null;if(ok){s.dataset.loaded='true';resolve();}else{try{s.remove();}catch(_){}reject(error||new Error('Chargement impossible : '+url));}};
+  const timer=setTimeout(()=>finish(false,new Error('Délai dépassé pour '+new URL(url).hostname)),timeoutMs);
+  s.src=url;s.async=true;s.dataset.loaded='false';s.onload=()=>finish(true);s.onerror=()=>finish(false,new Error('Chargement refusé ou indisponible : '+new URL(url).hostname));
+  if(!existing)document.head.appendChild(s);
+});}
 async function loadZxing(){
   if(window.ZXingBrowser?.BrowserQRCodeReader)return true;
   if(zxingLoadPromise)return zxingLoadPromise;
   zxingLoadPromise=(async()=>{
-  const urls=['https://unpkg.com/@zxing/browser@0.2.1/umd/index.min.js','https://cdn.jsdelivr.net/npm/@zxing/browser@0.2.1/umd/index.min.js'];
-  for(const url of urls){try{await loadScriptUrl(url);if(window.ZXingBrowser?.BrowserQRCodeReader)return true;}catch(e){}}
-  throw new Error('Impossible de charger le lecteur QR. Vérifie la connexion Internet puis réessaie.');
+  // Les points d’entrée standards sont essayés avant le chemin UMD historique.
+  const urls=[
+    'https://unpkg.com/@zxing/browser@0.2.1',
+    'https://cdn.jsdelivr.net/npm/@zxing/browser@0.2.1',
+    'https://unpkg.com/@zxing/browser@0.2.1/umd/index.min.js',
+    'https://cdn.jsdelivr.net/npm/@zxing/browser@0.2.1/umd/index.min.js'
+  ];
+  const errors=[];
+  for(const url of urls){try{await loadScriptUrl(url,7500);if(window.ZXingBrowser?.BrowserQRCodeReader)return true;errors.push(new URL(url).hostname+': le script ne fournit pas ZXingBrowser');}catch(e){errors.push(String(e?.message||e));}}
+  throw new Error('Le lecteur ZXing ne s’est pas chargé ('+errors.slice(0,2).join(' ; ')+'). Essai du lecteur de secours…');
   })();
   try{return await zxingLoadPromise;}finally{zxingLoadPromise=null;}
 }
@@ -1114,7 +1169,7 @@ async function boot(){
   }catch(e){if(e.message==='SCANNER_NOT_ACTIVATED'){showActivation();return;}setStatus(String(e?.message||e),'bad');await startCamera({decode:true});}
   updateCameraControls();updateSessionBadge();
 }
-window.resumeScanner=resumeScanner;try{document.title='Scanner QR — Référent Scellés 2.8.10';document.body.dataset.scannerVersion='2.8.10';}catch(_){}boot();
+window.resumeScanner=resumeScanner;try{document.title='Scanner QR — Référent Scellés 2.8.11';document.body.dataset.scannerVersion='2.8.11';}catch(_){}boot();
 </script>
 </body>
 </html>
