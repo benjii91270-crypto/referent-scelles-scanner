@@ -31,6 +31,14 @@ textarea{width:100%;min-height:78px;margin-top:5px;border:1px solid var(--line);
 .next{width:100%;margin-top:10px;background:var(--navy);color:#fff;border:0;border-radius:13px;padding:14px;font:inherit;font-weight:950;cursor:pointer}.small-note{text-align:center;color:#7a8594;font-size:10px;margin-top:9px;line-height:1.45}.error{background:#fff2f1;border:1px solid #efc7c5;color:#91332d;border-radius:13px;padding:11px;font-size:11px;line-height:1.45}
 .photoRow{display:none;margin-top:8px}.photoRow.show{display:block}.file{display:none}.photoBtn{width:100%;display:flex;justify-content:center;align-items:center}.preferences-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px}.preferences-row button{min-height:42px;font-size:11px;padding:8px}.session-progress{margin-top:7px;text-align:center;color:#667386;font-size:10px;font-weight:800}
  .activation-overlay{position:fixed;inset:0;background:rgba(11,18,29,.82);display:none;place-items:center;padding:16px;z-index:9999}.activation-overlay.show{display:grid}.activation-card{width:min(460px,100%);background:#fff;border-radius:20px;padding:22px;box-shadow:0 22px 70px rgba(0,0,0,.28)}.activation-kicker{font-size:10px;font-weight:950;letter-spacing:.08em;color:#6b7788}.activation-card h1{margin:6px 0;font-size:24px;color:var(--navy)}.activation-card p{margin:0 0 14px;font-size:12px;line-height:1.45;color:var(--muted)}.activation-input{width:100%;height:50px;border:1px solid #cad3de;border-radius:12px;padding:0 13px;font:inherit;font-size:17px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.activation-btn{width:100%;margin-top:9px;min-height:46px;border:0;border-radius:12px;background:var(--navy);color:#fff;font:inherit;font-weight:950}.activation-help{margin-top:9px;font-size:10px;line-height:1.45;color:#7a8695}
+
+/* V2.8.12 — résolution individuelle d'anomalie, sans campagne */
+.individual-anomaly{margin-top:12px;border:1px solid #e4c4c1;background:linear-gradient(180deg,#fffafa,#fff);border-radius:16px;padding:13px;box-shadow:0 5px 18px rgba(105,38,31,.06)}
+.individual-anomaly.good{border-color:#c5dfcc;background:linear-gradient(180deg,#f7fcf8,#fff)}
+.individual-anomaly h3{font-size:15px;margin:0 0 5px;color:#84322e}.individual-anomaly.good h3{color:#22623d}
+.individual-anomaly .ia-sub{font-size:11px;color:#6d7a88;line-height:1.45;margin-bottom:10px}
+.ia-card{border:1px solid #e3d6d5;border-radius:12px;background:#fff;padding:11px;margin-top:9px}.ia-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}.ia-card-head b{font-size:13px;color:#24364b}.ia-badge{display:inline-flex;background:#ffebe8;color:#a23027;border-radius:99px;padding:4px 8px;font-size:9px;font-weight:950;max-width:42%;white-space:normal;text-align:center}.ia-meta{font-size:10px;color:#66788a;line-height:1.5;margin-top:6px}.ia-field{display:block;font-size:10px;font-weight:900;color:#42556b;margin-top:10px}.ia-field input,.ia-field select,.ia-field textarea{width:100%;margin-top:5px;border:1px solid #d7dfe7;border-radius:10px;padding:10px;font:inherit;font-size:12px;color:#1b2a3c;background:#fff}.ia-field textarea{min-height:72px;resize:vertical}.ia-confirm{display:flex;align-items:flex-start;gap:8px;font-size:11px;font-weight:800;color:#34475b;margin-top:10px;line-height:1.4}.ia-confirm input{width:18px;height:18px;flex:none;margin:0}.ia-action{width:100%;margin-top:10px;border:0;border-radius:11px;background:#226244;color:#fff;font-size:12px;font-weight:950;min-height:45px;padding:10px}.ia-action:disabled{opacity:.55}.ia-msg{font-size:11px;font-weight:800;line-height:1.45;margin-top:9px}.ia-msg.err{color:#a23027}.ia-msg.ok{color:#226244}
+
 @media(max-width:520px){body{padding:7px 7px 22px}.facts{grid-template-columns:1fr 1fr}video{height:55vh}.frame{width:74vw;height:74vw}.actions{grid-template-columns:repeat(2,minmax(0,1fr))}.actions button{font-size:12px;padding:10px 8px}.camera.compact video{height:110px}.camera.compact{min-height:110px}}@media(min-width:521px){.actions{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 /* V2.7 — terrain-first interface; V2.8 — accessibility and resilience polish */
@@ -140,7 +148,7 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
   <header class="top">
     <div class="brand">RÉFÉRENT SCELLÉS</div>
     <div class="title">Scanner QR</div>
-    <div class="sub">Contrôle terrain • V2.8.11 — lecteur iPhone renforcé</div>
+    <div class="sub">Contrôle terrain • V2.8.12 — contrôle individuel des anomalies</div>
     <div id="userBar" class="user-bar" aria-live="polite"><div id="userLabel" class="user-label">Connexion requise</div><button id="changeUser" class="user-change" type="button">Changer de session</button></div>
     <div id="camp" class="camp"><div id="campTitle" class="camp-title"></div><div id="campMeta" class="camp-meta"></div><div class="bar"><i id="campBar" style="width:0%"></i></div></div>
   </header>
@@ -215,7 +223,7 @@ body{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
 'use strict';
 const SCANNER_API_ENDPOINT='https://referent-scelles-api.benjii91270.workers.dev/api';
 const DEVICE_TOKEN_KEY='referent_scelles_device_token_v2';
-const SCANNER_VERSION='2.8.8';
+const SCANNER_VERSION='2.8.12';
 const SERIES_MODE_KEY='referent_scelles_series_mode_v1';
 const SOUND_PREF_KEY='referent_scelles_scanner_sound_v1';
 const VIBRATION_PREF_KEY='referent_scelles_scanner_vibration_v1';
@@ -329,7 +337,7 @@ async function authenticateScannerUser(){
     try{localStorage.setItem(APP_SESSION_STORAGE_KEY,JSON.stringify(state.userAuth));}catch(e){}
     $('sessionLogin').classList.remove('show');input.value='';updateSessionBadge();
     const pending=state.pendingToken;state.pendingToken='';
-    if(state.sealData){renderSeal(state.sealData);return;}
+    if(state.sealData){await loadIndividualAnomalyInfo(state.sealData,state.token);renderSeal(state.sealData);return;}
     if(pending){await lookupToken(pending);return;}
     await startCamera({decode:true});
   }catch(e){fail(String(e.message||e||'Connexion impossible.'));}
@@ -675,6 +683,82 @@ $('queueSelectAll')?.addEventListener('click',()=>{const allSelected=state.multi
 $('queueClear')?.addEventListener('click',clearMultiQueue);$('queueOpenBulkMove')?.addEventListener('click',showMultiQueueMoveForm);$('queueOpenBulkClose')?.addEventListener('click',()=>showAdminCloseForm(false));
 $('queueApplyControlResult')?.addEventListener('click',applyMultiQueueControlResult);$('queueSubmitControls')?.addEventListener('click',submitMultiQueueControls);
 
+async function loadIndividualAnomalyInfo(data, token){
+  if(!data || !data.ok)return data;
+  const auth=activeScannerSession();
+  if(!auth){data.individualAnomalies=null;data.individualAnomaliesLoaded=false;data.individualAnomalyError='';return data;}
+  try{
+    const res=await apiCall('seal-anomalies',{scan:String(token||data.qrId||state.token||''),entry:String(data.entry||''),authToken:String(auth.token||''),sessionId:String(auth.session?.id||'')},12000);
+    if(!res?.ok)throw Object.assign(new Error(res?.message||'Impossible de consulter les anomalies.'),{code:res?.code||''});
+    data.individualAnomalies=Array.isArray(res.anomalies)?res.anomalies:[];
+    data.individualAnomalyLocations=Array.isArray(res.locations)?res.locations:[];
+    data.individualCurrentLocationKey=String(res.currentLocationKey||'');
+    data.individualCurrentLocationLabel=String(res.currentLocationLabel||'');
+    data.individualIsAdmin=!!res.isAdmin;data.individualAnomaliesLoaded=true;data.individualAnomalyError='';
+  }catch(e){data.individualAnomalies=[];data.individualAnomalyLocations=[];data.individualAnomaliesLoaded=false;data.individualAnomalyError=String(e.message||e||'Erreur de consultation des anomalies.');}
+  return data;
+}
+function renderIndividualAnomalyPanel(data){
+  const auth=activeScannerSession();
+  if(!auth)return `<section class="individual-anomaly"><h3>⚠ Anomalies liées à ce scellé</h3><div class="ia-sub">Tu peux retrouver et régulariser une anomalie directement après le scan, sans campagne de contrôle. Une session nominative est nécessaire pour afficher les dossiers et enregistrer une action.</div><button class="btn primary" id="connectAnomalySession" type="button">Connexion nominative pour gérer une anomalie</button></section>`;
+  if(data.individualAnomalyError)return `<section class="individual-anomaly"><h3>⚠ Vérification des anomalies indisponible</h3><div class="ia-sub">${esc(data.individualAnomalyError)}</div><button class="btn" id="retryAnomalyLookup" type="button">↻ Réessayer</button><div class="ia-msg err" aria-live="polite">Aucune anomalie n’a été modifiée.</div></section>`;
+  const anomalies=Array.isArray(data.individualAnomalies)?data.individualAnomalies:[];
+  if(!anomalies.length)return `<section class="individual-anomaly good"><h3>✓ Aucune anomalie ouverte</h3><div class="ia-sub">La consultation individuelle est terminée. Aucun dossier d’anomalie ouvert n’est actuellement associé à ce scellé. Ce résultat est indépendant de toute campagne.</div></section>`;
+  const admin=!!(auth.session&&auth.session.isAdmin),locations=Array.isArray(data.individualAnomalyLocations)?data.individualAnomalyLocations:[],currentKey=String(data.individualCurrentLocationKey||'');
+  const kindLabel=k=>({ABSENCE:'Scellé signalé introuvable',EMPLACEMENT:'Anomalie d’emplacement',INTEGRITE:'Anomalie d’intégrité'})[String(k||'').toUpperCase()]||'Anomalie de contrôle';
+  return `<section class="individual-anomaly"><h3>⚠ Anomalies ouvertes pour ce scellé</h3><div class="ia-sub">Traitement individuel par QR — aucune campagne nécessaire. La résolution enregistre un contrôle, un commentaire, l’auteur et l’horodatage. Le statut physique reste en stock.</div>${anomalies.map(a=>{
+    const id=String(a.id||'');
+    const options=admin?`<label class="ia-field" for="iaLocation_${esc(id)}">Emplacement constaté <span style="color:#758398;font-weight:600">(facultatif si le rangement est correct)</span><select id="iaLocation_${esc(id)}"><option value="${esc(currentKey)}">Retrouvé à l’emplacement enregistré — ${esc(data.individualCurrentLocationLabel||'emplacement actuel')}</option>${locations.filter(x=>x.key!==currentKey).map(x=>`<option value="${esc(x.key)}">${esc(x.label)}</option>`).join('')}</select></label>`:'';
+    return `<div class="ia-card" data-anomaly-id="${esc(id)}"><div class="ia-card-head"><b>${esc(kindLabel(a.kind))}</b><span class="ia-badge">${esc(a.status==='RECHERCHE_EN_COURS'?'RECHERCHE EN COURS':'À TRAITER')}</span></div><div class="ia-meta">N° d’entrée ${esc(a.entry)} · Procédure ${esc(a.procedure||data.procedure||'—')}<br>Emplacement attendu : <b>${esc(a.expectedLocation||data.individualCurrentLocationLabel||'non renseigné')}</b>${a.createdAt?`<br>Signalée le ${esc(a.createdAt)}`:''}</div><label class="ia-field" for="iaComment_${esc(id)}">Commentaire de résolution *<textarea id="iaComment_${esc(id)}" maxlength="1200" placeholder="Ex. Scellé retrouvé physiquement dans la zone A, étiquette et intégrité vérifiées…"></textarea></label>${options}${!admin?`<div class="ia-msg">Cette action convient uniquement si le scellé a été retrouvé à l’emplacement enregistré. S’il a été retrouvé ailleurs, laisse l’anomalie ouverte et demande à un administrateur de régulariser le rangement.</div>`:''}<label class="ia-confirm"><input id="iaConfirm_${esc(id)}" type="checkbox"><span>Je confirme avoir retrouvé physiquement le scellé et avoir vérifié sa référence.</span></label><button class="ia-action" type="button" data-resolve-anomaly="${esc(id)}">✓ Confirmer la découverte et lever l’anomalie</button><div id="iaMessage_${esc(id)}" class="ia-msg" aria-live="polite"></div></div>`;
+  }).join('')}</section>`;
+}
+async function resolveIndividualAnomaly(anomalyId,button){
+  const data=state.sealData,auth=activeScannerSession(),id=String(anomalyId||'');
+  if(!data?.ok||!auth?.token||!auth?.session?.id)return;
+  const comment=String(document.getElementById('iaComment_'+id)?.value||'').trim();
+  const confirmed=!!document.getElementById('iaConfirm_'+id)?.checked;
+  const msg=document.getElementById('iaMessage_'+id),select=document.getElementById('iaLocation_'+id);
+  const target=String(select?.value||data.individualCurrentLocationKey||'');
+  const fail=t=>{if(msg){msg.className='ia-msg err';msg.textContent=t;}};
+  if(comment.length<8){fail('Ajoute un commentaire d’au moins 8 caractères décrivant où le scellé a été retrouvé.');document.getElementById('iaComment_'+id)?.focus();return;}
+  if(!confirmed){fail('Coche la confirmation après avoir vérifié physiquement le scellé.');return;}
+  const anomaly=(data.individualAnomalies||[]).find(x=>String(x.id)===id);
+  if(!anomaly){fail('Cette anomalie ne fait plus partie des dossiers ouverts. Recharge le scellé.');return;}
+  const targetLabel=select?.selectedOptions?.[0]?.textContent||data.individualCurrentLocationLabel||'emplacement enregistré';
+  if(!confirm(`Confirmer la découverte du scellé N° ${data.entry} — ${data.scelle||'sans référence'} ?\n\nAnomalie : ${anomaly.id}\nLieu : ${targetLabel}\n\nLe dossier sera résolu avec ton commentaire, ton identité et la date. Le statut physique reste EN STOCK.`))return;
+  button.disabled=true;button.textContent='Enregistrement…';
+  if(msg){msg.className='ia-msg';msg.textContent='Enregistrement sécurisé de la résolution…';}
+  try{
+    const res=await apiPost('anomaly-resolve-from-scan',{
+      scan:String(data.qrId||state.token||''),entry:String(data.entry),anomalyId:id,
+      sessionId:String(auth.session.id),authToken:String(auth.token),comment,targetLocationKey:target,
+      confirmation:'SCELLE_RETROUVE_CONFIRME'
+    },18000);
+    if(!res?.ok)throw Object.assign(new Error(res?.message||'La résolution a été refusée.'),{code:res?.code||''});
+    beep();vibrate([70,35,70]);
+    // Refresh is separated from the write: a refresh failure must never imply that the save failed.
+    try{
+      const fresh=await apiCall('lookup',{scan:String(data.qrId||state.token||'')},10000);
+      if(!fresh?.ok)throw new Error(fresh?.message||'Le scellé a été enregistré, mais l’affichage n’a pas été actualisé.');
+      await loadIndividualAnomalyInfo(fresh,state.token);
+      renderSeal(fresh);
+      setStatus(res.already?'Anomalie déjà traitée.':(res.message||'Anomalie régularisée.'),'good');
+    }catch(refreshError){
+      const fallback=Object.assign({},data,{
+        individualAnomalies:(data.individualAnomalies||[]).filter(x=>String(x.id)!==id),
+        individualAnomalyError:'',individualAnomaliesLoaded:true
+      });
+      if(res.moved){fallback.locationDetail=String(res.location||targetLabel);fallback.individualCurrentLocationLabel=String(res.location||targetLabel);fallback.individualCurrentLocationKey=target;}
+      state.sealData=fallback;renderSeal(fallback);
+      setStatus('Anomalie enregistrée. Recharge le scellé pour confirmer le rangement actualisé.','good');
+    }
+  }catch(e){
+    fail(String(e.message||e||'Résolution impossible.'));
+    button.disabled=false;button.textContent='✓ Réessayer la résolution';
+    if(['AUTH_REQUIRED','AUTH_EXPIRED','AUTH_REVOKED','SESSION_MISMATCH'].includes(String(e.code||''))){clearSavedScannerSession();await showSessionLogin('La session a expiré. Reconnecte-toi pour finaliser le traitement.');}
+  }
+}
+
 function renderSeal(data){
   state.busy=false;state.sealData=data;
   const card=$('sealCard');card.classList.remove('hidden');hideReaderVisual();
@@ -712,12 +796,16 @@ function renderSeal(data){
     html+=`<section class="move-panel"><h3>📦 Prise en charge du scellé</h3><p class="hintline">Aucune session obligatoire. Le nom de l’enquêteur et la destination sont les seules informations demandées pour la prise en charge.</p><div id="movementForm"></div><button class="next" id="openMovementForm" type="button">📦 Prendre en charge et passer en déplacement</button></section>`;
   }
   if(isAdmin && statusUpper!=='EN STOCK') html+=`<section class="move-panel"><h3>🛠 Panneau administrateur — actions disponibles</h3><p class="hintline">Actions autorisées : corriger les informations descriptives ; valider le retour en stock lorsque le scellé est en mouvement ; effectuer le contrôle physique lorsqu’il est en stock. Les historiques de mouvement ne sont pas réécrits.</p><div class="actions"><button class="btn primary" id="openAdminEdit" type="button">✏️ Modifier les informations</button></div><div id="adminEditForm"></div></section>`;
+  html+=renderIndividualAnomalyPanel(data);
   const queued=state.multiQueue.some(x=>Number(x.entry)===Number(data.entry));
   html+=`<button class="next queue-add-button" id="addToMultiQueue" type="button" ${queued?'disabled':''}>${queued?'✓ Déjà dans la sélection':'➕ Ajouter à la sélection et scanner le suivant'}</button>`;
   html+=renderGuidedScanNotice(data);
   html+=`<button class="next secondary-next" id="cancelSeal" type="button">↩ Retour au scanner</button>`;
   card.innerHTML=html;
   card.querySelector('#cancelSeal').onclick=resumeScanner;
+  card.querySelector('#connectAnomalySession')?.addEventListener('click',()=>{state.pendingToken=state.token;void showSessionLogin('Connecte-toi à ton compte nominatif pour consulter et régulariser les anomalies sans campagne.');});
+  card.querySelector('#retryAnomalyLookup')?.addEventListener('click',async()=>{const fresh=await apiCall('lookup',{scan:String(state.token||data.qrId||'')},10000);await loadIndividualAnomalyInfo(fresh,state.token);renderSeal(fresh);});
+  card.querySelectorAll('[data-resolve-anomaly]').forEach(b=>b.addEventListener('click',()=>resolveIndividualAnomaly(b.getAttribute('data-resolve-anomaly'),b)));
   card.querySelector('#addToMultiQueue')?.addEventListener('click',addCurrentToMultiQueue);
   card.querySelectorAll('[data-result]').forEach(b=>b.addEventListener('click',()=>submitControl(b.dataset.result,b)));
   card.querySelector('#openMovementForm')?.addEventListener('click',showMovementForm);
@@ -781,7 +869,7 @@ async function lookupToken(token){
   if(!state.seriesMode)stopCamera();
   updateUrlWithoutToken();$('sealCard').classList.remove('hidden');$('sealCard').innerHTML='<div class="status"><span>QR reconnu • recherche du scellé…</span></div>';
   showResultCameraState();setStatus('QR reconnu • recherche du scellé…','good');$('frame').classList.add('ok');beep();vibrate(70);updateCameraControls();
-  try{const data=await apiCall('lookup',{scan:token},10000);renderSeal(data);}
+  try{const data=await apiCall('lookup',{scan:token},10000);await loadIndividualAnomalyInfo(data,token);renderSeal(data);}
   catch(e){state.busy=false;$('sealCard').innerHTML=`<div class="error"><b>Base temporairement indisponible</b><div style="margin-top:4px">${esc(e.message||'Erreur de communication.')}</div></div><button class="next" id="retryLookup" type="button">↻ Réessayer la recherche</button><button class="next" id="backToScan" type="button">📷 Revenir au scanner</button>`;
     $('retryLookup').onclick=()=>lookupToken(state.token);$('backToScan').onclick=resumeScanner;showResultCameraState();setStatus('Erreur de communication • nouvelle tentative possible','bad');updateCameraControls();}
 }
@@ -1169,7 +1257,7 @@ async function boot(){
   }catch(e){if(e.message==='SCANNER_NOT_ACTIVATED'){showActivation();return;}setStatus(String(e?.message||e),'bad');await startCamera({decode:true});}
   updateCameraControls();updateSessionBadge();
 }
-window.resumeScanner=resumeScanner;try{document.title='Scanner QR — Référent Scellés 2.8.11';document.body.dataset.scannerVersion='2.8.11';}catch(_){}boot();
+window.resumeScanner=resumeScanner;try{document.title='Scanner QR — Référent Scellés 2.8.12';document.body.dataset.scannerVersion='2.8.12';}catch(_){}boot();
 </script>
 </body>
 </html>
