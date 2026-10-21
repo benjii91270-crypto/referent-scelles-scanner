@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f4f1e9">
 <meta name="color-scheme" content="light">
-<title>SCELLÉS — ESPACES V8.2.0</title>
+<title>SCELLÉS — ESPACES V8.3.1</title>
 <style>
 :root{--paper:#f4f1e9;--paper-2:#ebe7dd;--white:#fffdf9;--ink:#191b19;--muted:#70746d;--line:#d7d4ca;--line-dark:#aaa99e;--red:#df4c30;--red-dark:#af321e;--orange-soft:#fae0d7;--acid:#d5f35c;--green:#1f785e;--green-soft:#e0efe8;--blue:#244d90;--blue-soft:#e4ebf7;--shadow:0 10px 24px rgba(31,32,27,.06);--safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}html{background:var(--paper);scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.42;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #ed8a71;outline-offset:2px}svg{display:block}a{color:inherit}.hidden{display:none!important}
@@ -308,9 +308,180 @@ body.seal-sheet-open{overflow:hidden}
 @media(min-width:701px) and (max-width:920px){.seal-sheet-content{padding:20px!important}.seal-sheet-header{padding:19px 20px!important}.seal-sheet-dialog{width:min(860px,100%)!important}.seal-sheet-series-picker{min-width:200px!important}.seal-sheet-content #sealCard .fiche-location-tag{display:none!important}}
 @media(prefers-reduced-motion:reduce){.seal-sheet-dialog,.seal-sheet-overlay{transition:none!important}}
 
+
+
+/* V8.3.1 — finition d'interface : rythme, lisibilité, navigation mobile et import photo */
+:root{--v83-ink:#173440;--v83-teal:#138f83;--v83-teal-dark:#0d6f68;--v83-line:#d7e0e3;--v83-muted:#607680;--v83-paper:#f3f6f7}
+html{scroll-padding-top:90px;scroll-behavior:smooth}
+body{font-size:15px;line-height:1.55;color:#183641}
+button,input,select,textarea{font-size:inherit;line-height:1.4}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #e5b85a!important;outline-offset:3px!important}
+button,.btn,.next,.v8-button-primary,.identity-action,.seal-sheet-action{min-height:44px}
+button,.btn,.next,.v8-button-primary,.identity-action,.seal-sheet-action{transition:background-color .16s ease,border-color .16s ease,box-shadow .16s ease,transform .12s ease}
+button:disabled{cursor:not-allowed;filter:saturate(.65)}
+.page-title{font-size:12px!important}
+.home-masthead{gap:clamp(22px,3vw,42px)!important;padding-bottom:24px!important}
+.home-masthead h2{font-size:clamp(40px,5.2vw,72px)!important;line-height:1.01!important;letter-spacing:-.067em!important;margin:18px 0 15px!important;max-width:760px!important}
+.home-description{font-size:15px!important;line-height:1.6!important;max-width:58ch!important}
+.home-status{gap:14px!important}
+.status-mini-label{font-size:10px!important;letter-spacing:.13em!important;line-height:1.35!important}
+.status-mini-value{font-size:16px!important;line-height:1.35!important}
+.status-mini-detail{font-size:12px!important;line-height:1.45!important}
+.command-section-label h3{font-size:15px!important;line-height:1.4!important}
+.command-row{min-height:80px!important;padding-top:17px!important;padding-bottom:17px!important}
+.command-copy strong{font-size:clamp(17px,1.7vw,22px)!important;line-height:1.25!important}
+.command-copy small{font-size:12px!important;line-height:1.5!important}
+.lower-heading h3{font-size:12px!important;line-height:1.35!important}
+.lower-heading span{font-size:10px!important;line-height:1.35!important}
+.shortcut{font-size:12px!important;line-height:1.45!important;min-height:76px!important}
+.workstation-note span{font-size:11px!important}.workstation-note strong{font-size:12px!important;line-height:1.45!important}
+.view-intro h2,.screen-heading h2,.guided-head h2,.multi-queue-head h2,.v8-module-head h2{line-height:1.12!important;letter-spacing:-.045em!important}
+.view-intro p,.screen-heading p,.guided-head p,.multi-queue-head p,.v8-module-head p{font-size:13px!important;line-height:1.6!important;max-width:65ch!important}
+.module-overline,.v8-overline,.eyebrow,.home-overline{font-size:10px!important;line-height:1.45!important;letter-spacing:.14em!important}
+.module-heading h2{font-size:22px!important;line-height:1.2!important}
+.module-heading p{font-size:12px!important;line-height:1.55!important}
+.camera-note,.settings-drawer,.scanner-control-status,.workflow-status{font-size:12px!important;line-height:1.55!important}
+.btn,.next{font-size:12px!important;line-height:1.35!important;border-radius:11px!important;padding:10px 14px!important}
+label{font-size:12px;line-height:1.45!important}
+input,select,textarea{font-size:14px!important;min-height:44px!important}
+.move-panel p,.hintline,.notice,.error,.status,.form-result{line-height:1.6!important}
+.v8-empty-module h3{line-height:1.2!important}.v8-empty-module p{font-size:13px!important;line-height:1.65!important}
+/* Do not render the browser's native English file-picker next to our own label. */
+.photoRow{display:none;align-items:stretch;gap:10px;margin-top:12px;min-width:0}
+.photoRow.show{display:grid;grid-template-columns:minmax(0,1fr)}
+.photoRow .photoBtn{display:flex;align-items:center;justify-content:center;min-height:46px;width:100%;padding:12px 15px!important;text-align:center;font-size:12px!important;white-space:normal;line-height:1.35!important}
+.photoRow .file{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;clip-path:inset(50%)!important;white-space:nowrap!important;border:0!important;opacity:0!important}
+/* The existing full navigation remains for desktop. A dedicated compact bar is used on small screens. */
+.mobile-action-nav,.mobile-more-menu{display:none}
+.seal-sheet-titleblock h2{font-size:clamp(21px,2.2vw,28px)!important;line-height:1.16!important}
+.seal-sheet-titleblock p{font-size:12px!important;line-height:1.5!important}
+.seal-sheet-action{font-size:12px!important;line-height:1.35!important;min-height:44px!important;overflow-wrap:anywhere}
+.seal-sheet-content #sealCard .fiche-record-overline{font-size:10px!important}
+.seal-sheet-content #sealCard .fiche-record-type{font-size:9px!important}
+.seal-sheet-content #sealCard .fiche-field-label{font-size:10px!important;line-height:1.4!important}
+.seal-sheet-content #sealCard .fiche-fact span{font-size:11px!important}
+.seal-sheet-content #sealCard .fiche-fact strong{font-size:14px!important;line-height:1.5!important}
+.seal-sheet-content #sealCard .fiche-observation p{font-size:13px!important;line-height:1.65!important}
+.seal-sheet-content #sealCard .fiche-technical summary{font-size:12px!important;min-height:44px}
+.seal-sheet-content #sealCard .fiche-technical-item span{font-size:10px!important}
+.seal-sheet-content #sealCard .fiche-technical-item strong{font-size:12px!important}
+@media(max-width:900px){
+  #quickNavigation{display:none!important}
+  .mobile-action-nav{position:fixed;left:0;right:0;bottom:0;z-index:125;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;height:calc(68px + var(--safe-b));padding:6px max(7px,env(safe-area-inset-left)) calc(5px + var(--safe-b)) max(7px,env(safe-area-inset-right));background:rgba(16,49,62,.98);border-top:1px solid #2e5663;box-shadow:0 -8px 28px rgba(8,28,38,.18);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  .mobile-nav-tab{min-width:0;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:5px 3px;border:1px solid transparent;border-radius:10px;background:transparent;color:#c1d1d6;font-size:10px!important;font-weight:750;line-height:1.15!important;white-space:nowrap}
+  .mobile-nav-tab .mobile-nav-icon{width:24px;height:24px;display:grid;place-items:center;border-radius:8px;background:#ffffff12;color:#dcf3f3;font-size:17px;line-height:1}
+  .mobile-nav-tab[aria-current="page"]{color:#fff;background:#214956;border-color:#326271;box-shadow:inset 0 2px 0 #55dec2}
+  .mobile-nav-tab[aria-current="page"] .mobile-nav-icon{background:#55dec2;color:#10313e}
+  .mobile-nav-tab.more-open{background:#214956;border-color:#326271;color:#fff}
+  .mobile-more-menu{position:fixed;left:12px;right:12px;bottom:calc(76px + var(--safe-b));z-index:126;max-height:min(60dvh,480px);overflow:auto;padding:17px;background:#fff;border:1px solid #d8e2e5;border-radius:18px;box-shadow:0 22px 70px rgba(7,30,40,.25);color:#183641}
+  .mobile-more-menu.is-open{display:block}
+  .mobile-more-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:13px;padding-bottom:12px;border-bottom:1px solid #e1e8ea}
+  .mobile-more-head h2{font-size:19px;line-height:1.2;letter-spacing:-.035em;margin:0}
+  .mobile-more-head p{font-size:12px;color:#647983;line-height:1.5;margin:5px 0 0}
+  .mobile-more-close{width:40px;min-width:40px;height:40px;min-height:40px;padding:0;border:1px solid #d5e0e3;border-radius:10px;background:#f6f8f8;color:#294b57;font-size:19px}
+  .mobile-more-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .mobile-more-link{display:flex;align-items:center;gap:10px;min-width:0;min-height:62px;padding:10px;border:1px solid #dbe4e7;border-radius:12px;background:#fbfcfc;color:#173b48;text-align:left;font-size:12px!important;font-weight:800;line-height:1.35!important;white-space:normal}
+  .mobile-more-link .mobile-more-icon{display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:9px;background:#e5f6f2;color:#147c72;font-size:16px}
+  .mobile-more-link.hidden{display:none!important}
+  .atelier-main{padding-bottom:calc(112px + var(--safe-b))!important}
+  .v7-footer{padding-bottom:calc(104px + var(--safe-b))!important}
+  .home-masthead h2{font-size:clamp(40px,5.5vw,64px)!important}
+  .home-description{font-size:14px!important}
+  .status-mini-label{font-size:10px!important}
+  .status-mini-detail{font-size:11px!important}
+  .command-row{min-height:76px!important}
+  .seal-sheet-dialog{max-height:calc(100dvh - 12px - var(--safe-t) - var(--safe-b))!important}
+  .seal-sheet-action{font-size:11px!important}
+}
+@media(max-width:600px){
+  .atelier-header{height:67px!important;padding-left:15px!important;padding-right:15px!important}
+  .atelier-topline{height:67px!important;min-height:67px!important;grid-template-columns:minmax(0,1fr) auto!important;gap:7px!important}
+  .atelier-brand{gap:8px!important}.atelier-logo{width:27px!important;height:35px!important}.atelier-logo img{height:34px!important;max-height:34px!important}
+  .atelier-brand-name{font-size:11px!important;letter-spacing:.07em!important}.atelier-brand-sub{font-size:7px!important;letter-spacing:.08em!important;margin-top:3px!important}
+  .atelier-tools{gap:5px!important}.signal-label{font-size:0!important}.signal-dot{width:8px!important;height:8px!important}.status-chip{font-size:9px!important;max-width:102px!important;padding:6px 8px!important}.identity-action{font-size:10px!important;padding:7px 8px!important;min-width:0!important}
+  .atelier-pagebar{height:35px!important}.page-crumb{font-size:8px!important;letter-spacing:.12em!important}.page-title{font-size:10px!important}
+  .atelier-main{padding:22px 15px calc(110px + var(--safe-b))!important}
+  .home-masthead{grid-template-columns:1fr!important;gap:13px!important;padding:3px 0 16px!important}
+  .home-overline{font-size:9px!important;letter-spacing:.12em!important;gap:7px!important}.home-overline:before{width:17px!important;height:2px!important}
+  .home-masthead h2{font-size:clamp(35px,9.4vw,42px)!important;line-height:1.02!important;letter-spacing:-.065em!important;margin:12px 0 12px!important;max-width:100%!important}
+  .home-description{font-size:13px!important;line-height:1.55!important}
+  .home-status{border:1px solid #dbe4e7!important;border-radius:14px!important;background:#fff!important;padding:12px 13px!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px 13px!important;box-shadow:0 5px 16px rgba(18,44,58,.035)!important}
+  .home-status>div:nth-child(3){grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 10px;border-top:1px solid #edf0f1;padding-top:8px}
+  .home-status>div:nth-child(3) .status-mini-label{grid-column:1;grid-row:1}.home-status>div:nth-child(3) #homeClock{grid-column:2;grid-row:1/3;text-align:right;margin:0;font-size:14px!important}.home-status .status-mini-detail{display:none!important}
+  .status-mini-label{font-size:9px!important;letter-spacing:.11em!important;line-height:1.3!important}.status-mini-value{font-size:14px!important;line-height:1.35!important;margin-top:3px!important}
+  .home-clockline{margin:10px 0 17px!important;padding:9px 0 10px!important;font-size:8px!important;line-height:1.4!important;gap:8px!important}.home-clockline span:first-child{max-width:65%;overflow-wrap:anywhere}.clockmark{font-size:8px!important;text-align:right}
+  .command-section{grid-template-columns:1fr!important;gap:6px!important;padding-bottom:19px!important}.command-section-label{padding:0 0 5px!important}.section-number{font-size:10px!important}.command-section-label h3{display:inline!important;margin:0 0 0 8px!important;font-size:14px!important}
+  .command-row{grid-template-columns:32px minmax(0,1fr) 30px!important;gap:9px!important;min-height:70px!important;padding:12px 9px!important;border-radius:12px!important}.command-index{width:29px!important;height:29px!important;font-size:10px!important}.command-copy strong{font-size:16px!important;line-height:1.25!important;letter-spacing:-.025em!important}.command-copy small{font-size:11px!important;line-height:1.4!important;margin-top:4px!important}.command-arrow{width:29px!important;height:29px!important;border-radius:9px!important;font-size:16px!important}
+  .home-lower{grid-template-columns:1fr!important;gap:18px!important;padding-top:18px!important}.quick-actions{grid-template-columns:repeat(3,minmax(0,1fr))!important}.shortcut{font-size:11px!important;line-height:1.4!important;min-height:64px!important;margin-right:7px!important;padding:9px 6px 7px 0!important}.shortcut:before{margin-bottom:5px!important;font-size:15px!important}.lower-heading h3{font-size:11px!important}.lower-heading span{font-size:9px!important}
+  .view-intro,.screen-heading,.guided-head,.multi-queue-head,.v8-module-head{align-items:flex-start!important;gap:12px!important;padding-bottom:14px!important;margin-bottom:14px!important}.view-intro h2,.screen-heading h2,.guided-head h2,.multi-queue-head h2,.v8-module-head h2{font-size:clamp(27px,7vw,34px)!important;line-height:1.08!important;margin-top:8px!important}.view-intro p,.screen-heading p,.guided-head p,.multi-queue-head p,.v8-module-head p{font-size:12px!important;line-height:1.55!important}.view-code{display:none!important}
+  .module-heading{padding:14px 0 12px!important}.module-heading h2{font-size:20px!important}.module-heading p{font-size:12px!important}.module-overline{font-size:9px!important}
+  .camera{height:min(70vw,340px)!important;min-height:240px!important}.hint{font-size:12px!important;line-height:1.4!important;padding:11px!important;left:9px!important;right:9px!important;bottom:9px!important}
+  .scanner-controls .actions .btn{flex:1 1 calc(50% - 8px)!important;min-height:46px!important;font-size:12px!important;white-space:normal!important}
+  .photoRow.show{grid-template-columns:minmax(0,1fr)!important}.photoRow .photoBtn{width:100%!important;min-height:46px!important}
+  .v8-context-card{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;padding:14px!important}.v8-context-main{grid-column:1/-1!important}.v8-context-main small,.v8-context-fact small{font-size:9px!important}.v8-context-main strong{font-size:17px!important}.v8-context-fact strong{font-size:12px!important}
+  .v8-empty-module{min-height:0!important;padding:22px 18px!important}.v8-empty-module h3{font-size:20px!important}.v8-empty-module p{font-size:13px!important}.v8-button-primary{width:100%;justify-content:space-between;gap:16px!important}
+  .move-panel,.individual-anomaly,.guided-control-panel,.multi-queue-panel{padding:14px!important;border-radius:14px!important}.move-panel h3{font-size:17px!important;line-height:1.25!important}.move-panel p,.hintline,.notice,.error,.status,.form-result{font-size:12px!important;line-height:1.55!important}
+  .v7-footer{padding-top:14px!important;font-size:10px!important;gap:7px!important}.footer-right{font-size:9px!important}
+  .seal-sheet-header{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important;padding:14px 14px 12px!important}.seal-sheet-brandline{gap:10px!important}.seal-sheet-mark{width:36px!important;height:36px!important;border-radius:10px!important}.seal-sheet-titleblock h2{font-size:20px!important}.seal-sheet-titleblock p{font-size:11px!important}.seal-sheet-head-actions{display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;width:100%!important}.seal-sheet-series-picker{flex:1 1 auto!important;min-width:0!important}.seal-sheet-close{min-height:40px!important;font-size:11px!important;padding:8px 10px!important}
+  .seal-sheet-action-rail{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;padding:9px 10px!important}.seal-sheet-action{min-height:42px!important;font-size:11px!important;padding:8px!important;white-space:normal!important}
+  .seal-sheet-content{padding:11px 10px 16px!important}.seal-sheet-content #sealCard .fiche-record{padding:17px 13px!important}.seal-sheet-content #sealCard .fiche-record-name{font-size:24px!important;line-height:1.15!important}.seal-sheet-content #sealCard .fiche-location .value{font-size:20px!important;line-height:1.25!important}.seal-sheet-content #sealCard .fiche-location-foot{font-size:10px!important}.seal-sheet-content #sealCard .fiche-fact span{font-size:11px!important}.seal-sheet-content #sealCard .fiche-fact strong{font-size:14px!important}.seal-sheet-footer{font-size:9px!important;padding:8px 11px!important}
+}
+@media(max-width:360px){
+  .mobile-more-links{grid-template-columns:1fr!important}
+  .home-masthead h2{font-size:35px!important}
+  .status-chip{max-width:88px!important;font-size:8px!important}
+  .atelier-main{padding-left:12px!important;padding-right:12px!important}
+  .mobile-nav-tab{font-size:9px!important}
+  .seal-sheet-titleblock h2{font-size:18px!important}.seal-sheet-action-rail{grid-template-columns:1fr!important}
+}
+@media(prefers-reduced-motion:reduce){.mobile-action-nav,.mobile-more-menu,.app-page,.seal-sheet-dialog{animation:none!important;transition:none!important}}
 </style>
+<style id="v831-interface-finish">
+/* V8.3.1 — finition après retour d'usage */
+:root{--v831-space-1:5px;--v831-space-2:9px;--v831-space-3:13px;--v831-space-4:18px;--v831-space-5:24px}
+body{ text-rendering:optimizeLegibility; -webkit-font-smoothing:antialiased; }
+button, [role="button"], a, input, select, textarea, summary{-webkit-tap-highlight-color:transparent}
+button:focus-visible,[role="button"]:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #d9a441!important;outline-offset:3px!important}
+/* Text wrap is intentional: long labels never stretch or crop their action row. */
+button,.btn,.mobile-more-link,.command-row,.admin-command-card,.workstation-note,.fiche-fact,.fiche-location{overflow-wrap:anywhere;word-break:normal}
+.command-row,.admin-command-card,.shortcut,.mobile-more-link{touch-action:manipulation}
+.status-chip,.seal-status,.status-badge{white-space:normal;overflow-wrap:anywhere}
+.seal-sheet-overlay .seal-sheet-dialog{overscroll-behavior:contain;scrollbar-gutter:stable}
+.seal-sheet-content{overscroll-behavior:contain}
+/* In phone mode, the quick shortcuts duplicate actions available from the "Autres" menu.
+   Removing that secondary block keeps the main task visible and prevents the fixed dock
+   from covering secondary status rows near the bottom of the home screen. */
+@media(max-width:600px){
+  .home-lower{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:18px!important;padding-top:18px!important}
+  .home-lower>div:nth-child(2){display:none!important}
+  .atelier-main{padding-bottom:calc(92px + var(--safe-b))!important}
+  .v7-footer{display:none!important}
+  .home-masthead h2{max-width:13ch!important;overflow-wrap:normal!important}
+  .home-description{max-width:42ch!important}
+  .camera{height:clamp(170px,50vw,220px)!important;min-height:170px!important}
+  .frame{width:62%!important}
+  .module-heading{padding:10px 12px 7px!important}
+  .status-chip{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:102px!important}
+  .atelier-main{scroll-padding-bottom:calc(84px + var(--safe-b))}
+  .command-copy small{max-width:42ch}
+  .mobile-more-links{gap:8px!important}
+  .mobile-more-link{min-height:56px!important;padding:9px!important;font-size:12px!important}
+  .seal-sheet-overlay .seal-sheet-dialog{width:100%!important}
+}
+@media(max-width:360px){
+  .atelier-brand-sub{display:none!important}
+  .status-chip{max-width:86px!important}
+  .home-masthead h2{font-size:34px!important;letter-spacing:-.055em!important}
+  .home-status{padding:10px!important;gap:8px!important}
+  .mobile-nav-tab{font-size:9px!important}
+  .mobile-nav-tab .mobile-nav-icon{width:22px!important;height:22px!important}
+  .seal-sheet-head-actions{gap:6px!important}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+
 </head>
-<body data-scanner-version="8.2.0">
+<body data-scanner-version="8.3.1">
 <div id="sealSheetOverlay" class="seal-sheet-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="sealSheetDialogTitle">
   <div class="seal-sheet-dialog" role="document">
     <header class="seal-sheet-header">
@@ -359,14 +530,14 @@ body.seal-sheet-open{overflow:hidden}
         <button id="navAdminFunctions" class="task-tab hidden needs-admin" type="button" aria-pressed="false"><span class="v8-nav-icon">⚙</span><span class="v8-nav-text">Gestion du scellé</span></button>
         <div class="v8-nav-footer"><span class="v8-live-dot"></span><span id="v8NavStatus">Poste vérifié</span><small id="v8NavIdentity">Poste autorisé</small></div>
       </nav>
-      <div class="atelier-tools"><span class="signal-label"><i class="signal-dot"></i><span id="connectionLabel">Connexion en cours</span></span><span id="deviceReadyText" class="status-chip">Vérification du poste</span><div id="userBar" class="user-bar"><span id="userLabel" class="user-label"></span><button id="changeUser" class="identity-action hidden" type="button">Espace admin</button></div></div>
+      <div class="atelier-tools"><span class="signal-label"><i class="signal-dot"></i><span id="connectionLabel">Connexion en cours</span></span><span id="deviceReadyText" class="status-chip" aria-live="polite">Vérification…</span><div id="userBar" class="user-bar"><span id="userLabel" class="user-label"></span><button id="changeUser" class="identity-action hidden" type="button">Espace admin</button></div></div>
     </div>
     <div class="atelier-pagebar"><span id="pageCrumb" class="page-crumb">SCELLÉS / OPÉRATIONS</span><h1 id="pageTitle" class="page-title">Espaces de travail</h1></div>
   </header>
   <main id="mainContent" class="atelier-main">
     <div id="camp" class="hidden"><div id="campTitle"></div><div id="campMeta"></div><i id="campBar"></i></div>
     <section id="homeView" class="app-page is-active" data-app-view="home" aria-label="Espaces de travail">
-      <div id="roleOverview" class="home-masthead"><div><div id="roleKicker" class="home-overline">ESPACE TERRAIN <span id="rolePill" class="role-pill agent">ACCÈS RAPIDE</span></div><h2 id="roleHeadline">Chaque geste compte.<br><span class="accent">Chaque trace aussi.</span></h2><p id="roleDescription" class="home-description">Scanne un QR pour consulter sa fiche et effectuer une prise en charge autorisée.</p><p id="roleFootnote" class="hidden"></p></div><div class="home-status"><div><div class="status-mini-label">État du poste</div><div id="homeStatusTitle" class="status-mini-value">Initialisation</div><div id="homeStatusDetail" class="status-mini-detail">Vérification de l’autorisation et du réseau.</div></div><div><div class="status-mini-label">Identité associée</div><div id="homeAgentInfo" class="status-mini-value">Appareil terrain</div><div class="status-mini-detail">Identité attribuée par un administrateur</div></div><div class="home-clock-wrap"><div class="status-mini-label">Session terrain</div><div id="homeClock" class="status-mini-value">Prêt</div><div id="sessionProgress" class="status-mini-detail">Aucune opération enregistrée.</div></div></div></div>
+      <div id="roleOverview" class="home-masthead"><div><div id="roleKicker" class="home-overline">ESPACE TERRAIN <span id="rolePill" class="role-pill agent">ACCÈS RAPIDE</span></div><h2 id="roleHeadline">Le bon scellé.<br><span class="accent">La bonne trace.</span></h2><p id="roleDescription" class="home-description">Scanne un QR pour consulter sa fiche et effectuer une prise en charge autorisée.</p><p id="roleFootnote" class="hidden"></p></div><div class="home-status"><div><div class="status-mini-label">État du poste</div><div id="homeStatusTitle" class="status-mini-value">Initialisation</div><div id="homeStatusDetail" class="status-mini-detail">Vérification de l’autorisation et du réseau.</div></div><div><div class="status-mini-label">Identité associée</div><div id="homeAgentInfo" class="status-mini-value">Appareil terrain</div><div class="status-mini-detail">Identité attribuée par un administrateur</div></div><div class="home-clock-wrap"><div class="status-mini-label">Session terrain</div><div id="homeClock" class="status-mini-value">Prêt</div><div id="sessionProgress" class="status-mini-detail">Aucune opération enregistrée.</div></div></div></div>
       <div class="home-clockline"><span>POSTE DE TRAVAIL <b> / EN ATTENTE D’UNE ACTION</b></span><span class="clockmark">SCELLÉS · TRAÇABILITÉ</span></div>
       <section class="command-section"><div class="command-section-label"><span class="section-number">CHOISIR UNE ACTION</span><h3>Que doit-on faire ?</h3></div><div class="command-list">
         <button id="roleStartScan" class="command-row primary-row" type="button"><span class="command-index">01</span><span class="command-copy"><strong>Lire un QR</strong><small>Consulter la fiche du scellé et poursuivre l’action autorisée</small></span><span class="command-arrow">↗</span></button>
@@ -408,7 +579,7 @@ body.seal-sheet-open{overflow:hidden}
     </section>
 <section id="adminView" class="app-page" data-app-view="admin" aria-label="Contrôles physiques"><div class="v8-module-head"><div><span class="v8-overline">ESPACE 06 / ADMINISTRATION</span><h2>Contrôles physiques</h2><p>Contrôle un scellé après lecture ou lance une tournée guidée par emplacement.</p></div><span class="v8-module-index">06</span></div><div id="controlEmpty" class="v8-empty-module"><div class="v8-empty-symbol">✓</div><h3>Contrôle individuel ou tournée guidée</h3><p>Pour un contrôle individuel, lis un scellé. Pour une tournée, charge le plan de campagne ci-dessous.</p><button class="v8-button-primary" type="button" id="controlGoScan">Lire un scellé <span>→</span></button></div><div id="controlContext" class="v8-context-card hidden"></div><div id="individualControlWorkspace" class="v8-operation-workspace"></div></section>
   </main>
-  <footer class="v7-footer"><span class="footer-logo">SCELLÉS / ESPACES</span><span>Une fonction par espace. Une trace par opération.</span><span class="footer-right">V8.2.0 • Fiche détaillée et opérations journalisées.</span></footer>
+  <footer class="v7-footer"><span class="footer-logo">SCELLÉS / ESPACES</span><span>Une fonction par espace. Une trace par opération.</span><span class="footer-right">V8.3.1 • Interface peaufinée, navigation mobile clarifiée.</span></footer>
 </div>
 <script>
 
@@ -417,7 +588,7 @@ const SCANNER_API_ENDPOINT='https://referent-scelles-api.benjii91270.workers.dev
 const DEVICE_TOKEN_KEY='referent_scelles_device_token_v2';
 const DEVICE_IDENTITY_KEY='referent_scelles_assigned_identity_v1';
 const DEVICE_NAME_KEY='referent_scelles_device_name_v1';
-const SCANNER_VERSION='7.0.0';
+const SCANNER_VERSION='8.3.1';
 const SERIES_MODE_KEY='referent_scelles_series_mode_v1';
 const SOUND_PREF_KEY='referent_scelles_scanner_sound_v1';
 const VIBRATION_PREF_KEY='referent_scelles_scanner_vibration_v1';
@@ -439,7 +610,7 @@ function loadSavedScannerSession(){
 function activeScannerSession(){const a=state.userAuth;if(!a?.token||!a?.session?.id)return null;if(!Number(a.expiresAt)||Date.now()>=Number(a.expiresAt)){clearSavedScannerSession();return null;}return a;}
 function clearSavedScannerSession(){state.userAuth=null;try{localStorage.removeItem(APP_SESSION_STORAGE_KEY);}catch(e){}updateSessionBadge();}
 function updateSessionBadge(){
-  const ready=$('deviceReadyText');if(ready)ready.textContent=localStorage.getItem(DEVICE_TOKEN_KEY)?'Appareil autorisé':'Activation requise';
+  const ready=$('deviceReadyText');if(ready)ready.textContent=localStorage.getItem(DEVICE_TOKEN_KEY)?'Poste autorisé':'À activer';
   const bar=$('userBar'),label=$('userLabel'),button=$('changeUser'),auth=activeScannerSession(),sess=auth?.session,isAdmin=!!auth&&!!sess?.isAdmin;
   const guidedPanel=$('guidedControlPanel');if(guidedPanel){guidedPanel.classList.toggle('hidden',!isAdmin);if(!isAdmin)state.guidedActive=false;}
   const guidedNav=$('navGuided'),guidedMeta=$('navGuidedMeta');if(guidedNav){guidedNav.classList.toggle('hidden',!isAdmin);guidedNav.classList.toggle('admin-visible',isAdmin);if(guidedMeta)guidedMeta.textContent=isAdmin?'Campagnes et contrôles':'Réservé administrateur';}
@@ -452,15 +623,15 @@ function updateSessionBadge(){
     const linkedDevice=String(localStorage.getItem(DEVICE_NAME_KEY)||'Téléphone autorisé').trim();
     if(bar&&label&&button){label.replaceChildren(document.createTextNode(linkedIdentity?`Agent : ${linkedIdentity}`:'Mode terrain • identité non liée'));if(linkedIdentity){const badge=document.createElement('span');badge.className='user-role';badge.textContent='IDENTITÉ LIÉE';label.appendChild(badge);}bar.title=linkedIdentity?`Identité attribuée à ${linkedDevice} par un administrateur`:'Cet appareil utilise un ancien appairage sans identité liée';bar.classList.add('show');button.classList.remove('hidden');button.textContent='Espace admin';button.setAttribute('aria-label','Ouvrir la connexion administrateur');}
     if(kicker)kicker.textContent='ESPACE TERRAIN';if(pill){pill.textContent='Accès rapide';pill.className='role-pill agent';}
-    if(headline)headline.innerHTML='Chaque geste compte.<br><span class="accent">Chaque trace aussi.</span>';
-    if(description)description.textContent=linkedIdentity?`Ce téléphone est attribué à ${linkedIdentity}. Scanne un QR pour consulter la fiche ; les prises en charge seront automatiquement enregistrées sous cette identité.`:'Scanne un QR pour consulter la fiche. Cet appareil n’a pas encore d’identité attribuée : demande à un administrateur de le réappairer pour automatiser la traçabilité.';
+    if(headline)headline.innerHTML='Le bon scellé.<br><span class="accent">La bonne trace.</span>';
+    if(description)description.textContent=linkedIdentity?`Ce téléphone est attribué à ${linkedIdentity}. Scanne un QR pour ouvrir la fiche et enregistrer une prise en charge sous cette identité.`:'Scanne un QR pour ouvrir la fiche. Demande à un administrateur de lier une identité à ce téléphone pour attribuer automatiquement les prises en charge.';
     if(foot)foot.textContent='Les retours, contrôles physiques, campagnes et régularisations restent exclusivement réservés aux administrateurs.';
     if(subtitle)subtitle.textContent='Mode terrain • consultation et prise en charge';
     if(overview)overview.classList.remove('admin-mode');adminAction?.classList.add('hidden');
   }else{
     if(bar&&label&&button){label.replaceChildren(document.createTextNode('Espace administrateur : '+String(sess.name||'Administrateur')+(sess.grade?' • '+String(sess.grade):'')));const role=document.createElement('span');role.className='user-role';role.textContent='ADMINISTRATEUR';label.appendChild(role);bar.classList.add('show');button.classList.remove('hidden');button.textContent='Changer d’admin';button.setAttribute('aria-label','Changer de session administrateur');}
     if(kicker)kicker.textContent='ESPACE ADMINISTRATEUR';if(pill){pill.textContent='Accès protégé';pill.className='role-pill admin';}
-    if(headline)headline.innerHTML='Piloter.<br><span class="accent">Vérifier. Régulariser.</span>';
+    if(headline)headline.innerHTML='Contrôler.<br><span class="accent">Tout tracer.</span>';
     if(description)description.textContent='Accès aux contrôles physiques, retours, anomalies, campagnes et réglages réservés.';
     if(foot)foot.textContent='Chaque opération sensible est revérifiée par le serveur et journalisée.';
     if(subtitle)subtitle.textContent='Administration • contrôles et régularisations';
@@ -1726,11 +1897,11 @@ $('navQueue')?.addEventListener('click',()=>{
 });
 $('roleStartScan')?.addEventListener('click',()=>{$('navScan')?.click();});
 $('roleStartGuided')?.addEventListener('click',()=>{$('navCampaigns')?.click();});
-window.resumeScanner=resumeScanner;try{document.title='SCELLÉS — ESPACES V8.2.0';document.body.dataset.scannerVersion='8.2.0';}catch(_){}activateAppView('home');boot();
+window.resumeScanner=resumeScanner;try{document.title='SCELLÉS — ESPACES V8.3.1';document.body.dataset.scannerVersion='8.3.1';}catch(_){}activateAppView('home');boot();
 
 </script>
 <script>
-(function(){const $=id=>document.getElementById(id);const home=$('navHome');home?.addEventListener('click',()=>{activateAppView('home');if(state.readerRunning||hasLiveCamera())stopCamera();setCameraNote('Caméra en pause • ouvre le lecteur quand tu en as besoin.','paused');updateCameraControls();});$('homeStartScanShortcut')?.addEventListener('click',()=>$('navScan')?.click());$('homeQueueShortcut')?.addEventListener('click',()=>{if((state.multiQueue||[]).length)$('navQueue')?.click();else{$('navScan')?.click();setStatus('Scanne un scellé et ajoute-le à ta série depuis sa fiche.','');}});$('homeSeriesAction')?.addEventListener('click',()=>{if((state.multiQueue||[]).length)$('navQueue')?.click();else{$('navScan')?.click();setStatus('Scanne un scellé et ajoute-le à ta série depuis sa fiche.','');}});$('homePhotoShortcut')?.addEventListener('click',()=>{$('navScan')?.click();$('photoRow')?.classList.add('show');requestAnimationFrame(()=>$('qrPhoto')?.click());});const updateHomeCounters=()=>{const n=Number($('navQueueCount')?.textContent||0);if($('homeSeriesCount'))$('homeSeriesCount').textContent=String(n);const c=$('connectionLabel')?.textContent||'';if($('homeNetworkState'))$('homeNetworkState').textContent=/hors|indisponible|erreur/i.test(c)?'À vérifier':/connect|disponible|en ligne/i.test(c)?'Connecté au service':'Vérification…';const b=$('homeStatusTitle'),d=$('homeStatusDetail');if(b&&d){b.textContent=n?`${n} scellé(s) dans ta série`:'Poste prêt';d.textContent=n?'Tu peux vérifier ta série avant l’enregistrement.':(/hors|indisponible|erreur/i.test(c)?'Connexion à vérifier. La lecture peut rester possible, les écritures doivent être confirmées.':'Le lecteur s’ouvre uniquement lorsque tu le demandes.');}};const queueCount=$('navQueueCount');if(queueCount)new MutationObserver(updateHomeCounters).observe(queueCount,{subtree:true,childList:true,characterData:true});const connectionLabel=$('connectionLabel');if(connectionLabel)new MutationObserver(updateHomeCounters).observe(connectionLabel,{subtree:true,childList:true,characterData:true});updateHomeCounters();const syncStatusMirror=()=>{const a=$('status'),b=$('workflowStatusText');if(a&&b)a.classList.toggle('duplicate-status',a.textContent.trim()!==''&&a.textContent.trim()===b.textContent.trim());};['status','workflowStatusText'].forEach(id=>{const e=$(id);if(e)new MutationObserver(syncStatusMirror).observe(e,{subtree:true,childList:true,characterData:true});});syncStatusMirror();const idLabel=$('homeAgentInfo');const refreshIdentity=()=>{if(!idLabel)return;const ident=localStorage.getItem('referent_scelles_assigned_identity_v1')||'';idLabel.textContent=ident||'Poste autorisé';};refreshIdentity();$('navScan')?.addEventListener('click',()=>setTimeout(()=>{const scanHeading=document.querySelector('#scanView .view-intro h2');if(scanHeading)scanHeading.textContent='Lire un scellé.';},0));})();
+(function(){const $=id=>document.getElementById(id);const home=$('navHome');home?.addEventListener('click',()=>{activateAppView('home');if(state.readerRunning||hasLiveCamera())stopCamera();setCameraNote('Caméra en pause • ouvre le lecteur quand tu en as besoin.','paused');updateCameraControls();});$('homeStartScanShortcut')?.addEventListener('click',()=>$('navScan')?.click());$('homeQueueShortcut')?.addEventListener('click',()=>{if((state.multiQueue||[]).length)$('navQueue')?.click();else{$('navScan')?.click();setStatus('Scanne un scellé et ajoute-le à ta série depuis sa fiche.','');}});$('homeSeriesAction')?.addEventListener('click',()=>{if((state.multiQueue||[]).length)$('navQueue')?.click();else{$('navScan')?.click();setStatus('Scanne un scellé et ajoute-le à ta série depuis sa fiche.','');}});$('homePhotoShortcut')?.addEventListener('click',()=>{$('navScan')?.click();$('photoRow')?.classList.add('show');$('qrPhoto')?.click();});const updateHomeCounters=()=>{const n=Number($('navQueueCount')?.textContent||0);if($('homeSeriesCount'))$('homeSeriesCount').textContent=String(n);const c=$('connectionLabel')?.textContent||'';if($('homeNetworkState'))$('homeNetworkState').textContent=/hors|indisponible|erreur/i.test(c)?'À vérifier':/connect|disponible|en ligne/i.test(c)?'Connecté au service':'Vérification…';const b=$('homeStatusTitle'),d=$('homeStatusDetail');if(b&&d){b.textContent=n?`${n} scellé(s) dans ta série`:'Poste prêt';d.textContent=n?'Tu peux vérifier ta série avant l’enregistrement.':(/hors|indisponible|erreur/i.test(c)?'Connexion à vérifier. La lecture peut rester possible, les écritures doivent être confirmées.':'Le lecteur s’ouvre uniquement lorsque tu le demandes.');}};const queueCount=$('navQueueCount');if(queueCount)new MutationObserver(updateHomeCounters).observe(queueCount,{subtree:true,childList:true,characterData:true});const connectionLabel=$('connectionLabel');if(connectionLabel)new MutationObserver(updateHomeCounters).observe(connectionLabel,{subtree:true,childList:true,characterData:true});updateHomeCounters();const syncStatusMirror=()=>{const a=$('status'),b=$('workflowStatusText');if(a&&b)a.classList.toggle('duplicate-status',a.textContent.trim()!==''&&a.textContent.trim()===b.textContent.trim());};['status','workflowStatusText'].forEach(id=>{const e=$(id);if(e)new MutationObserver(syncStatusMirror).observe(e,{subtree:true,childList:true,characterData:true});});syncStatusMirror();const idLabel=$('homeAgentInfo');const refreshIdentity=()=>{if(!idLabel)return;const ident=localStorage.getItem('referent_scelles_assigned_identity_v1')||'';idLabel.textContent=ident||'Poste autorisé';};refreshIdentity();$('navScan')?.addEventListener('click',()=>setTimeout(()=>{const scanHeading=document.querySelector('#scanView .view-intro h2');if(scanHeading)scanHeading.textContent='Lire un scellé.';},0));})();
 </script>
 
 <script>
@@ -1759,6 +1930,63 @@ window.resumeScanner=resumeScanner;try{document.title='SCELLÉS — ESPACES V8.2
   if(series)series.addEventListener('change',()=>{const entry=Number(series.value||0);if(entry)openSealSheetFromQueue(entry);});
   if(overlay)overlay.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();closeSealSheet();}});
   if(content)content.addEventListener('click',event=>{const link=event.target.closest('a[href^="#"]');if(link){const id=link.getAttribute('href').slice(1);const target=document.getElementById(id);if(target){event.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}}});
+})();
+</script>
+
+
+<nav id="mobileActionNav" class="mobile-action-nav" aria-label="Navigation rapide mobile">
+  <button class="mobile-nav-tab" type="button" id="mobileNavHome" data-mobile-target="navHome" aria-current="page"><span class="mobile-nav-icon" aria-hidden="true">⌂</span><span>Accueil</span></button>
+  <button class="mobile-nav-tab" type="button" id="mobileNavScan" data-mobile-target="navScan"><span class="mobile-nav-icon" aria-hidden="true">⌕</span><span>Scanner</span></button>
+  <button class="mobile-nav-tab" type="button" id="mobileNavRecovery" data-mobile-target="navRecovery"><span class="mobile-nav-icon" aria-hidden="true">↗</span><span>Récupérer</span></button>
+  <button class="mobile-nav-tab" type="button" id="mobileNavMore" aria-expanded="false" aria-controls="mobileMoreMenu"><span class="mobile-nav-icon" aria-hidden="true">＋</span><span>Autres</span></button>
+</nav>
+<section id="mobileMoreMenu" class="mobile-more-menu" aria-hidden="true" aria-label="Autres espaces" role="dialog" aria-modal="false">
+  <header class="mobile-more-head"><div><h2>Autres espaces</h2><p>Les fonctions visibles dépendent de tes autorisations.</p></div><button id="mobileMoreClose" class="mobile-more-close" type="button" aria-label="Fermer le menu">×</button></header>
+  <div class="mobile-more-links">
+    <button class="mobile-more-link" type="button" data-mobile-target="navQueue"><span class="mobile-more-icon" aria-hidden="true">▤</span><span>Série de scellés</span></button>
+    <button class="mobile-more-link" type="button" data-mobile-target="navAnomalies"><span class="mobile-more-icon" aria-hidden="true">!</span><span>Centre des anomalies</span></button>
+    <button class="mobile-more-link" type="button" data-mobile-target="navReturns"><span class="mobile-more-icon" aria-hidden="true">↩</span><span>Retour en stock</span></button>
+    <button class="mobile-more-link" type="button" data-mobile-target="navGuided"><span class="mobile-more-icon" aria-hidden="true">✓</span><span>Contrôle individuel</span></button>
+    <button class="mobile-more-link" type="button" data-mobile-target="navCampaigns"><span class="mobile-more-icon" aria-hidden="true">▦</span><span>Tournées & campagnes</span></button>
+    <button class="mobile-more-link" type="button" data-mobile-target="navAdminFunctions"><span class="mobile-more-icon" aria-hidden="true">⚙</span><span>Gestion du scellé</span></button>
+    <button class="mobile-more-link" type="button" data-mobile-action="photo"><span class="mobile-more-icon" aria-hidden="true">▧</span><span>Lire un QR depuis une photo</span></button>
+  </div>
+</section>
+<script>
+(function(){
+  'use strict';
+  const $m=id=>document.getElementById(id);
+  const mobileMenu=$m('mobileMoreMenu'),moreToggle=$m('mobileNavMore');
+  function closeMore(){if(!mobileMenu||!moreToggle)return;mobileMenu.classList.remove('is-open');mobileMenu.setAttribute('aria-hidden','true');moreToggle.setAttribute('aria-expanded','false');moreToggle.classList.remove('more-open');}
+  function syncMore(){
+    document.querySelectorAll('#mobileMoreMenu [data-mobile-target]').forEach(btn=>{const original=$m(btn.dataset.mobileTarget);const available=!!original&&!original.classList.contains('hidden');btn.classList.toggle('hidden',!available);btn.setAttribute('aria-hidden',String(!available));});
+    const hasLinks=Array.from(document.querySelectorAll('#mobileMoreMenu .mobile-more-link')).some(btn=>!btn.classList.contains('hidden'));
+    if(!hasLinks&&mobileMenu){const p=mobileMenu.querySelector('.mobile-more-head p');if(p)p.textContent='Aucun autre espace disponible pour ce profil.';}
+  }
+  function syncActive(){
+    const page=(typeof state!=='undefined'&&state.activePage)||'home';
+    const targets={home:'mobileNavHome',scan:'mobileNavScan',recovery:'mobileNavRecovery'};
+    document.querySelectorAll('#mobileActionNav .mobile-nav-tab').forEach(btn=>{const active=btn.id===(targets[page]||'mobileNavMore');if(active)btn.setAttribute('aria-current','page');else btn.removeAttribute('aria-current');});
+    if(['anomalies','returns','adminFunctions','queue','admin','campaigns'].includes(page))closeMore();
+    syncMore();
+  }
+  document.querySelectorAll('#mobileActionNav [data-mobile-target],#mobileMoreMenu [data-mobile-target]').forEach(btn=>btn.addEventListener('click',()=>{
+    const target=$m(btn.dataset.mobileTarget);if(!target)return;
+    // Click the original route control so its existing navigation and authorization checks remain authoritative.
+    target.click();closeMore();window.setTimeout(syncActive,80);
+  }));
+  $m('mobileNavMore')?.addEventListener('click',()=>{syncMore();const open=!mobileMenu.classList.contains('is-open');mobileMenu.classList.toggle('is-open',open);mobileMenu.setAttribute('aria-hidden',String(!open));moreToggle.setAttribute('aria-expanded',String(open));moreToggle.classList.toggle('more-open',open);if(open)$m('mobileMoreClose')?.focus({preventScroll:true});});
+  $m('mobileMoreClose')?.addEventListener('click',closeMore);
+  $m('mobileMoreMenu')?.addEventListener('click',e=>{if(e.target===mobileMenu)closeMore();});
+  $m('mobileMoreMenu')?.querySelector('[data-mobile-action="photo"]')?.addEventListener('click',()=>{
+    closeMore();$m('navScan')?.click();const row=$m('photoRow');if(row)row.classList.add('show');const input=$m('qrPhoto');if(input)input.click();
+  });
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mobileMenu?.classList.contains('is-open')){closeMore();moreToggle?.focus({preventScroll:true});}});
+  const observer=new MutationObserver(()=>{syncMore();syncActive();});
+  document.querySelectorAll('#quickNavigation .task-tab').forEach(el=>observer.observe(el,{attributes:true,attributeFilter:['class']}));
+  document.querySelectorAll('[data-app-view]').forEach(el=>observer.observe(el,{attributes:true,attributeFilter:['class']}));
+  window.addEventListener('resize',syncActive,{passive:true});
+  syncActive();
 })();
 </script>
 
