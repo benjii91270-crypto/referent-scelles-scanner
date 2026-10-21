@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f4f1e9">
 <meta name="color-scheme" content="light">
-<title>SCELLÉS — ESPACES V8.1.0</title>
+<title>SCELLÉS — ESPACES V8.2.0</title>
 <style>
 :root{--paper:#f4f1e9;--paper-2:#ebe7dd;--white:#fffdf9;--ink:#191b19;--muted:#70746d;--line:#d7d4ca;--line-dark:#aaa99e;--red:#df4c30;--red-dark:#af321e;--orange-soft:#fae0d7;--acid:#d5f35c;--green:#1f785e;--green-soft:#e0efe8;--blue:#244d90;--blue-soft:#e4ebf7;--shadow:0 10px 24px rgba(31,32,27,.06);--safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}html{background:var(--paper);scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.42;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #ed8a71;outline-offset:2px}svg{display:block}a{color:inherit}.hidden{display:none!important}
@@ -39,7 +39,7 @@
 @media(max-width:360px){.atelier-brand-sub{display:none}.atelier-tools .status-chip{display:none}.task-tab{font-size:9px;padding:11px 5px}.home-masthead h2{font-size:39px}.command-copy strong{font-size:16px}.home-status{grid-template-columns:1fr 1fr}.quick-actions{grid-template-columns:1fr}.shortcut{min-height:50px;border-right:0;border-bottom:1px solid var(--line);margin:0;padding:10px 0}.shortcut:before{display:inline;margin-right:7px}.screen-heading h2,.guided-head h2,.multi-queue-head h2{font-size:29px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 
-/* === SCELLÉS ESPACES V8.1.0 : fiche de scellé en fenêtre dédiée et typographie harmonisée === */
+/* === SCELLÉS ESPACES V8.2.0 : fiche de scellé en fenêtre dédiée et typographie harmonisée === */
 :root{--paper:#f4f7f8;--paper-2:#eaf0f2;--white:#fff;--ink:#122532;--muted:#657580;--line:#d8e1e5;--line-dark:#bdcbd1;--red:#c8473e;--red-dark:#a72c27;--orange-soft:#fff0dc;--green:#147d68;--green-soft:#e0f4ed;--blue:#176d91;--blue-soft:#e6f4fa;--acid:#c9f36b;--shadow:0 18px 48px rgba(16,45,57,.08);--v8-rail:#102c39;--v8-rail-muted:#9bb0ba;--v8-turq:#25c4aa;--v8-radius:18px}
 html,body{background:var(--paper);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
 #orionApp{min-height:100dvh;background:var(--paper)}
@@ -184,18 +184,142 @@ body.seal-sheet-open{overflow:hidden}
 .seal-sheet-action:hover{box-shadow:0 4px 12px rgba(25,27,25,.08)}
 @media(max-width:700px){.seal-sheet-action-rail{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:10px 13px}.seal-sheet-action{width:100%;min-width:0;min-height:42px;padding:9px 8px;text-align:center;font-size:11px}}
 
+
+/* V8.2.0 — refonte éditoriale de la fiche du scellé */
+:root{--fiche-navy:#142d3a;--fiche-navy-2:#203f4b;--fiche-gold:#bd985c;--fiche-ink:#17232b;--fiche-muted:#65737b;--fiche-paper:#f3f5f6;--fiche-border:#d9e0e3;--fiche-green:#23745b;--fiche-red:#b64035}
+.seal-sheet-overlay{background:rgba(10,24,32,.76)!important;backdrop-filter:blur(9px)!important;-webkit-backdrop-filter:blur(9px)!important}
+.seal-sheet-dialog{width:min(1040px,100%)!important;max-height:min(94dvh,1100px)!important;border:1px solid #d9e0e3!important;border-radius:20px!important;background:#fff!important;box-shadow:0 34px 100px rgba(4,20,29,.34)!important;grid-template-rows:auto 3px auto minmax(0,1fr) auto!important}
+.seal-sheet-header{padding:22px 28px 21px!important;background:var(--fiche-navy)!important;border-bottom:1px solid #284b58!important}
+.seal-sheet-mark{position:relative;width:46px!important;height:46px!important;border-radius:13px!important;background:var(--fiche-gold)!important;color:var(--fiche-navy)!important;font-size:0!important;overflow:hidden;box-shadow:inset 0 0 0 1px #ffffff5c}
+.seal-mark-lines{position:absolute;left:12px;right:12px;top:12px;bottom:12px;border:1px solid var(--fiche-navy);opacity:.8}
+.seal-mark-lines:before,.seal-mark-lines:after{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--fiche-navy);transform:translateX(-50%)}
+.seal-mark-lines:after{left:0;right:0;top:50%;height:1px;width:auto;bottom:auto;transform:translateY(-50%)}
+.seal-mark-core{position:absolute;inset:0;display:grid;place-items:center;font-size:19px;font-weight:950;letter-spacing:-.08em;color:var(--fiche-navy);text-shadow:0 1px #fff5}
+.seal-sheet-titleblock h2{font-size:clamp(21px,2.2vw,28px)!important;letter-spacing:-.035em!important;color:#fff!important;font-weight:850!important}
+.seal-sheet-eyebrow{color:#dfc18f!important;font-size:9px!important;letter-spacing:.2em!important}
+.seal-sheet-titleblock p{color:#c5d1d5!important;font-size:12px!important}
+.seal-sheet-close{border:1px solid #54707c!important;background:#203e4a!important;border-radius:10px!important;min-height:42px!important}
+.seal-sheet-close:hover{background:#2a4d5a!important}.seal-sheet-close:focus-visible{outline:3px solid var(--fiche-gold)!important;outline-offset:2px!important}
+.seal-sheet-progress{background:#e3e8ea!important}.seal-sheet-progress span{background:var(--fiche-gold)!important}
+.seal-sheet-action-rail{padding:12px 28px!important;background:#fff!important;border-bottom:1px solid var(--fiche-border)!important;gap:8px!important}
+.seal-sheet-action{min-height:39px!important;border-radius:9px!important;border:1px solid #d1dade!important;background:#fff!important;color:#243b46!important;padding:9px 13px!important;font-size:11px!important;font-weight:800!important}
+.seal-sheet-action.primary{background:var(--fiche-navy)!important;border-color:var(--fiche-navy)!important;color:#fff!important}
+.seal-sheet-action.admin{background:#f8f0e4!important;border-color:#e4d2b3!important;color:#795d2e!important}
+.seal-sheet-content{background:var(--fiche-paper)!important;padding:27px 30px 30px!important;scrollbar-color:#bbc6cb transparent!important}
+.seal-sheet-content #sealCard{font-size:14px!important;color:var(--fiche-ink)!important}
+.seal-sheet-content #sealCard .fiche-record{background:#fff!important;border:1px solid #dce2e5!important;border-radius:17px!important;padding:clamp(20px,3vw,34px)!important;margin:0 0 20px!important;box-shadow:0 8px 22px rgba(18,44,58,.045)!important;overflow:hidden!important;position:relative!important}
+.seal-sheet-content #sealCard .fiche-record:before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--fiche-gold) 0 22%,var(--fiche-navy) 22% 100%)}
+.seal-sheet-content #sealCard .fiche-record-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:3px 0 17px;border-bottom:1px solid #e6ebed;margin-bottom:19px}
+.seal-sheet-content #sealCard .fiche-record-overline{display:flex;align-items:center;gap:8px;color:#526873;font-size:9px;font-weight:900;letter-spacing:.17em;line-height:1.4}
+.seal-sheet-content #sealCard .fiche-record-dot{width:7px;height:7px;border-radius:50%;background:#339276;box-shadow:0 0 0 4px #33927618}
+.seal-sheet-content #sealCard .fiche-record-type{font-size:9px;font-weight:850;letter-spacing:.12em;color:#8a959a;text-align:right}
+.seal-sheet-content #sealCard .fiche-entry-block{margin-bottom:13px}
+.seal-sheet-content #sealCard .fiche-field-label{font-size:9px!important;line-height:1.45!important;font-weight:900!important;letter-spacing:.14em!important;text-transform:uppercase!important;color:#78868c!important}
+.seal-sheet-content #sealCard .fiche-entry-line{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:5px}
+.seal-sheet-content #sealCard .fiche-entry-number{font-size:clamp(33px,4.2vw,48px);letter-spacing:-.06em;line-height:1;font-weight:950;color:var(--fiche-navy);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.seal-sheet-content #sealCard .fiche-status-badge{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:8px 12px;max-width:48%;font-size:10px;line-height:1.35;font-weight:850;white-space:normal;text-align:left;border:1px solid #d4dfe2;background:#f2f5f6;color:#425965}
+.seal-sheet-content #sealCard .fiche-status-badge i{width:7px;height:7px;flex:none;border-radius:50%;background:currentColor}
+.seal-sheet-content #sealCard .fiche-status-badge.is-stock{color:#17694f;background:#e8f5ef;border-color:#c4e5d5}
+.seal-sheet-content #sealCard .fiche-status-badge.is-moving{color:#8b5b1d;background:#fff3df;border-color:#efd8af}
+.seal-sheet-content #sealCard .fiche-status-badge.is-closed{color:#9f362c;background:#fff0ed;border-color:#efc9c1}
+.seal-sheet-content #sealCard .fiche-status-badge.is-other{color:#425965;background:#f1f4f5;border-color:#d7e0e3}
+.seal-sheet-content #sealCard .fiche-record-name{font-size:clamp(24px,3vw,35px)!important;line-height:1.15!important;letter-spacing:-.045em!important;font-weight:880!important;color:#172b35!important;margin:16px 0 12px!important;overflow-wrap:anywhere!important}
+.seal-sheet-content #sealCard .fiche-procedure{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;margin:0 0 22px;font-size:12px;line-height:1.55}
+.seal-sheet-content #sealCard .fiche-procedure span{color:#7c898e;font-size:9px;font-weight:900;letter-spacing:.14em}
+.seal-sheet-content #sealCard .fiche-procedure strong{color:#344e59;font-size:13px;font-weight:800;overflow-wrap:anywhere}
+.seal-sheet-content #sealCard .fiche-location{display:grid!important;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:15px;padding:20px 21px!important;margin:0 0 25px!important;border:1px solid #284d5a!important;border-left:4px solid var(--fiche-gold)!important;border-radius:13px!important;background:linear-gradient(110deg,#153441,#214653)!important;color:#fff!important}
+.seal-sheet-content #sealCard .fiche-location:before{display:none!important}
+.seal-sheet-content #sealCard .fiche-location-icon{width:42px;height:42px;display:grid;place-items:center;border:1px solid #ffffff30;border-radius:11px;color:#e0c38d;background:#ffffff08}
+.seal-sheet-content #sealCard .fiche-location-icon svg{width:22px;height:22px}
+.seal-sheet-content #sealCard .fiche-location-copy{min-width:0}
+.seal-sheet-content #sealCard .fiche-location .label{font-size:9px!important;color:#e0c38d!important;letter-spacing:.16em!important;font-weight:900!important;line-height:1.45!important;margin:0!important}
+.seal-sheet-content #sealCard .fiche-location .value{font-size:clamp(20px,2.5vw,29px)!important;line-height:1.2!important;letter-spacing:-.035em!important;color:white!important;font-weight:900!important;margin-top:6px!important;overflow-wrap:anywhere!important}
+.seal-sheet-content #sealCard .fiche-location-foot{font-size:10px;line-height:1.45;color:#c3d1d5;margin-top:6px;overflow-wrap:anywhere}
+.seal-sheet-content #sealCard .fiche-location-tag{align-self:start;border:1px solid #ffffff35;border-radius:6px;padding:6px 8px;font-size:8px;font-weight:900;letter-spacing:.1em;color:#dbe4e5;white-space:nowrap}
+.seal-sheet-content #sealCard .fiche-info-section{margin:0 0 21px}
+.seal-sheet-content #sealCard .fiche-section-heading{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid #dce3e6}
+.seal-sheet-content #sealCard .fiche-section-kicker{display:block;font-size:8px;font-weight:900;letter-spacing:.17em;color:#a27d40;margin-bottom:5px}
+.seal-sheet-content #sealCard .fiche-section-heading h4{margin:0;color:#223b46;font-size:17px;letter-spacing:-.025em;line-height:1.25;font-weight:850}
+.seal-sheet-content #sealCard .fiche-fact-count{font-size:9px;color:#75858d;font-weight:800;white-space:nowrap;padding-bottom:2px}
+.seal-sheet-content #sealCard .fiche-facts-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.seal-sheet-content #sealCard .fiche-fact{min-width:0;padding:14px 15px;border:1px solid #e0e6e8;border-radius:10px;background:#f9fbfb}
+.seal-sheet-content #sealCard .fiche-fact span{display:block;font-size:9px;font-weight:800;letter-spacing:.035em;color:#71818a;line-height:1.4;margin-bottom:6px}
+.seal-sheet-content #sealCard .fiche-fact strong{display:block;color:#233e49;font-size:13px;font-weight:800;line-height:1.5;overflow-wrap:anywhere}
+.seal-sheet-content #sealCard .fiche-empty-info{font-size:12px;color:#7a878d;border:1px dashed #d5dfe2;border-radius:10px;padding:14px}
+.seal-sheet-content #sealCard .fiche-observation{padding:15px 16px;margin:0 0 18px;border:1px solid #e2e4d8;border-radius:11px;background:#fbfaf5}
+.seal-sheet-content #sealCard .fiche-observation p{margin:7px 0 0;color:#4e5d62;font-size:12px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
+.seal-sheet-content #sealCard .fiche-technical{margin:0!important;padding:0!important;border:1px solid #dce3e6!important;border-radius:10px!important;background:#fff!important;overflow:hidden}
+.seal-sheet-content #sealCard .fiche-technical summary{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 15px!important;background:#f8fafb;border:0!important;border-radius:0!important;color:#3b535d;font-size:11px!important;font-weight:850!important;list-style:none}
+.seal-sheet-content #sealCard .fiche-technical summary::-webkit-details-marker{display:none}
+.seal-sheet-content #sealCard .fiche-technical summary span{font-size:16px;color:#a27d40}
+.seal-sheet-content #sealCard .fiche-technical[open] summary span{transform:rotate(45deg)}
+.seal-sheet-content #sealCard .fiche-technical-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:15px;border-top:1px solid #e2e8ea}
+.seal-sheet-content #sealCard .fiche-technical-item{min-width:0}
+.seal-sheet-content #sealCard .fiche-technical-item span{display:block;font-size:8px;color:#798890;font-weight:850;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.seal-sheet-content #sealCard .fiche-technical-item strong{display:block;font-size:11px;line-height:1.5;color:#2b4651;overflow-wrap:anywhere}
+.seal-sheet-content #sealCard .fiche-operation-stack{margin-top:18px}
+.seal-sheet-content #sealCard .fiche-operation-heading{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:0 0 12px;padding:0 0 10px;border-bottom:1px solid #d5dfe2;color:#526a74;font-size:9px;font-weight:900;letter-spacing:.13em}
+.seal-sheet-content #sealCard .fiche-operation-heading span:last-child{color:#9b7a43;text-align:right}
+.seal-sheet-content #sealCard .notice,.seal-sheet-content #sealCard .error,.seal-sheet-content #sealCard .status{border-radius:11px!important;box-shadow:none!important;line-height:1.6!important;font-size:12px!important}
+.seal-sheet-content #sealCard .move-panel,.seal-sheet-content #sealCard .individual-anomaly{border-radius:12px!important;border:1px solid #dce3e6!important;background:#fff!important;box-shadow:0 5px 18px rgba(18,44,58,.035)!important}
+.seal-sheet-footer{background:#fff!important;border-top:1px solid #dce3e6!important;padding:12px 28px!important;color:#74838a!important}
+.sheet-state-dot{background:#2e9977!important;box-shadow:0 0 0 3px #2e99771c!important}
+@media(max-width:700px){
+ .seal-sheet-overlay{padding:0!important;align-items:stretch!important;background:#f3f5f6!important}
+ .seal-sheet-dialog{width:100%!important;max-height:100dvh!important;height:100dvh!important;border:0!important;border-radius:0!important;grid-template-rows:auto 3px auto minmax(0,1fr) auto!important;padding-top:var(--safe-t)!important;padding-bottom:var(--safe-b)!important}
+ .seal-sheet-header{padding:15px 16px 14px!important;gap:12px!important}
+ .seal-sheet-brandline{gap:11px!important;align-items:center!important}
+ .seal-sheet-mark{width:38px!important;height:38px!important;border-radius:10px!important;flex:none!important}
+ .seal-mark-lines{left:10px;right:10px;top:10px;bottom:10px}
+ .seal-mark-core{font-size:16px}
+ .seal-sheet-titleblock h2{font-size:19px!important;margin:3px 0!important}
+ .seal-sheet-titleblock p{font-size:10px!important;line-height:1.4!important}
+ .seal-sheet-eyebrow{font-size:8px!important}
+ .seal-sheet-head-actions{width:100%!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:7px!important}
+ .seal-sheet-series-picker{min-width:0!important;width:100%!important;font-size:9px!important}
+ .seal-sheet-series-picker select{width:100%!important;min-height:38px!important;font-size:10px!important}
+ .seal-sheet-close{min-height:38px!important;padding:7px 9px!important;font-size:10px!important;gap:5px!important}
+ .seal-sheet-action-rail{padding:9px 12px!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;display:grid!important;gap:7px!important}
+ .seal-sheet-action{width:100%!important;min-width:0!important;min-height:40px!important;padding:8px 7px!important;font-size:10px!important}
+ .seal-sheet-content{padding:13px 12px 20px!important}
+ .seal-sheet-content #sealCard .fiche-record{padding:20px 16px!important;border-radius:14px!important;margin-bottom:15px!important}
+ .seal-sheet-content #sealCard .fiche-record-topline{align-items:flex-start!important;gap:8px!important;margin-bottom:16px!important;padding-bottom:13px!important}
+ .seal-sheet-content #sealCard .fiche-record-overline{font-size:8px!important;letter-spacing:.12em!important}
+ .seal-sheet-content #sealCard .fiche-record-type{font-size:7px!important;letter-spacing:.08em!important}
+ .seal-sheet-content #sealCard .fiche-entry-number{font-size:36px!important}
+ .seal-sheet-content #sealCard .fiche-status-badge{max-width:56%!important;padding:7px 9px!important;font-size:9px!important}
+ .seal-sheet-content #sealCard .fiche-record-name{font-size:25px!important;margin:14px 0 10px!important}
+ .seal-sheet-content #sealCard .fiche-procedure{margin-bottom:17px!important}
+ .seal-sheet-content #sealCard .fiche-location{grid-template-columns:35px minmax(0,1fr)!important;gap:10px!important;padding:15px 13px!important;margin-bottom:20px!important}
+ .seal-sheet-content #sealCard .fiche-location-icon{width:34px!important;height:34px!important;border-radius:9px!important}
+ .seal-sheet-content #sealCard .fiche-location-icon svg{width:19px;height:19px}
+ .seal-sheet-content #sealCard .fiche-location-tag{display:none!important}
+ .seal-sheet-content #sealCard .fiche-location .label{font-size:8px!important;letter-spacing:.11em!important}
+ .seal-sheet-content #sealCard .fiche-location .value{font-size:21px!important}
+ .seal-sheet-content #sealCard .fiche-location-foot{font-size:9px!important}
+ .seal-sheet-content #sealCard .fiche-section-heading h4{font-size:16px!important}
+ .seal-sheet-content #sealCard .fiche-facts-grid{grid-template-columns:1fr!important;gap:7px!important}
+ .seal-sheet-content #sealCard .fiche-fact{padding:12px 13px!important}
+ .seal-sheet-content #sealCard .fiche-technical-grid{grid-template-columns:1fr!important;gap:12px!important}
+ .seal-sheet-content #sealCard .fiche-operation-heading{font-size:8px!important}
+ .seal-sheet-footer{padding:9px 13px!important;gap:7px!important;font-size:8px!important}
+ #sealSheetFooterState{font-size:10px!important}
+}
+@media(min-width:701px) and (max-width:920px){.seal-sheet-content{padding:20px!important}.seal-sheet-header{padding:19px 20px!important}.seal-sheet-dialog{width:min(860px,100%)!important}.seal-sheet-series-picker{min-width:200px!important}.seal-sheet-content #sealCard .fiche-location-tag{display:none!important}}
+@media(prefers-reduced-motion:reduce){.seal-sheet-dialog,.seal-sheet-overlay{transition:none!important}}
+
 </style>
 </head>
-<body data-scanner-version="8.1.0">
+<body data-scanner-version="8.2.0">
 <div id="sealSheetOverlay" class="seal-sheet-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="sealSheetDialogTitle">
   <div class="seal-sheet-dialog" role="document">
     <header class="seal-sheet-header">
       <div class="seal-sheet-brandline">
-        <span class="seal-sheet-mark">S</span>
+        <span class="seal-sheet-mark" aria-hidden="true"><span class="seal-mark-lines"></span><span class="seal-mark-core">S</span></span>
         <div class="seal-sheet-titleblock">
-          <span class="seal-sheet-eyebrow">DOSSIER INDIVIDUEL</span>
+          <span class="seal-sheet-eyebrow">REGISTRE DE TRAÇABILITÉ</span>
           <h2 id="sealSheetDialogTitle">Fiche du scellé</h2>
-          <p id="sealSheetSubtitle">Informations et emplacement enregistré</p>
+          <p id="sealSheetSubtitle">Identification, statut et rangement de référence</p>
         </div>
       </div>
       <div class="seal-sheet-head-actions">
@@ -284,7 +408,7 @@ body.seal-sheet-open{overflow:hidden}
     </section>
 <section id="adminView" class="app-page" data-app-view="admin" aria-label="Contrôles physiques"><div class="v8-module-head"><div><span class="v8-overline">ESPACE 06 / ADMINISTRATION</span><h2>Contrôles physiques</h2><p>Contrôle un scellé après lecture ou lance une tournée guidée par emplacement.</p></div><span class="v8-module-index">06</span></div><div id="controlEmpty" class="v8-empty-module"><div class="v8-empty-symbol">✓</div><h3>Contrôle individuel ou tournée guidée</h3><p>Pour un contrôle individuel, lis un scellé. Pour une tournée, charge le plan de campagne ci-dessous.</p><button class="v8-button-primary" type="button" id="controlGoScan">Lire un scellé <span>→</span></button></div><div id="controlContext" class="v8-context-card hidden"></div><div id="individualControlWorkspace" class="v8-operation-workspace"></div></section>
   </main>
-  <footer class="v7-footer"><span class="footer-logo">SCELLÉS / ESPACES</span><span>Une fonction par espace. Une trace par opération.</span><span class="footer-right">V8.1.0 • Les opérations confirmées sont journalisées.</span></footer>
+  <footer class="v7-footer"><span class="footer-logo">SCELLÉS / ESPACES</span><span>Une fonction par espace. Une trace par opération.</span><span class="footer-right">V8.2.0 • Fiche détaillée et opérations journalisées.</span></footer>
 </div>
 <script>
 
@@ -889,7 +1013,7 @@ function refreshSealSheetHeader(){
   const overlay=$('sealSheetOverlay'),select=$('sealSheetSeriesSelect'),wrap=$('sealSheetSeriesPickerWrap'),title=$('sealSheetDialogTitle'),subtitle=$('sealSheetSubtitle'),footer=$('sealSheetFooterState'),rail=$('sealSheetActionRail');
   const raw=state.sealData, data=raw&&raw.ok?raw:null;
   if(title)title.textContent=data?'Fiche du scellé':raw&&!raw.ok?'Scellé non reconnu':'Lecture du QR';
-  if(subtitle)subtitle.textContent=data?`Entrée ${data.entry||'—'} · Procédure ${data.procedure||'—'}`:raw&&!raw.ok?'Aucune correspondance dans le registre':'Recherche du scellé dans le registre';
+  if(subtitle)subtitle.textContent=data?`Entrée n° ${data.entry||'—'}${data.procedure?` · Procédure ${data.procedure}`:''}`:raw&&!raw.ok?'Aucune correspondance dans le registre':'Recherche du scellé dans le registre';
   const closeButton=$('sealSheetClose'),cardClose=$('sealCard')?.querySelector('#cancelSeal');
   if(closeButton)closeButton.innerHTML=(sealSheetReturnView==='queue'?'Retour à la série':'Fermer la fiche')+' <span aria-hidden="true">×</span>';
   if(cardClose)cardClose.textContent=sealSheetReturnView==='queue'?'↩ Retour à la série':'↩ Fermer la fiche';
@@ -983,13 +1107,30 @@ function renderSeal(data){
   updateSessionBadge();campaignUI(data.campaign);state.token=String(data.qrId||state.token||'');
   const queuedItem=(state.multiQueue||[]).find(x=>Number(x.entry)===Number(data.entry));if(queuedItem){queuedItem.data=Object.assign({},data);queuedItem.token=state.token;renderMultiQueue();}
   const c=data.campaign,status=String(data.status||'').trim(),statusUpper=status.toUpperCase(),inStock=statusUpper==='EN STOCK';
-  const location=String(data.locationDetail||data.location||'—');
-  let html=`<div class="result-kicker"><span><i class="dot"></i>Scellé identifié</span><span class="entry">Entrée ${esc(data.entry||'—')}</span></div>
-    <div class="seal-summary"><div class="sealname">${esc(data.scelle||'Scellé sans désignation')}</div>
-    <div class="procedure-line">Procédure : <b>${esc(data.procedure||'—')}</b></div>
-    <div class="location-highlight"><div class="label">EMPLACEMENT ATTENDU</div><div class="value">${esc(location)}</div></div>
-    <div class="seal-meta"><div class="fact"><span>STATUT ACTUEL</span><b>${esc(status||'Non renseigné')}</b></div><div class="fact"><span>MODE</span><b>${isAdmin?'Administration':'Terrain'}</b></div></div>
-    <details class="more-info"><summary>Autres informations du scellé</summary><div class="facts"><div class="fact"><span>CATÉGORIE</span><b>${esc(data.category||'—')}</b></div><div class="fact"><span>TAILLE</span><b>${esc(data.size||'—')}</b></div><div class="fact full"><span>ENQUÊTEUR RÉFÉRENT</span><b>${esc(data.investigator||'—')}</b></div></div></details></div>`;
+  const location=String(data.locationDetail||data.location||'').trim();
+  const statusTone=statusUpper==='EN STOCK'?'is-stock':statusUpper==='EN MOUVEMENT'?'is-moving':/(CLOT|ARCHIV|DÉTRUIT|DETRUIT)/.test(statusUpper)?'is-closed':'is-other';
+  const cleanValue=v=>String(v==null?'':v).trim();
+  const ficheFacts=[
+    ['Nature du scellé',data.nature||data.description],
+    ['Catégorie',data.category],
+    ['Format',data.size],
+    ['Enquêteur référent',data.investigator]
+  ].filter(([label,value])=>{const v=cleanValue(value);return !!v&&v!=='—'&&v!=='-';});
+  const ficheFactsHtml=ficheFacts.map(([label,value])=>`<div class="fiche-fact"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join('');
+  const observationText=cleanValue(data.observations);
+  const observationHtml=observationText&&observationText!=='—'&&observationText!=='-'
+    ?`<section class="fiche-observation"><div class="fiche-field-label">OBSERVATIONS AU REGISTRE</div><p>${esc(observationText)}</p></section>`:'';
+  const qrReference=cleanValue(data.qrId||state.token);
+  let html=`<section class="seal-summary fiche-record" aria-label="Fiche d’identification du scellé">
+      <div class="fiche-record-topline"><span class="fiche-record-overline"><i class="fiche-record-dot"></i> FICHE D’IDENTIFICATION</span><span class="fiche-record-type">SCELLÉS · REGISTRE</span></div>
+      <div class="fiche-entry-block"><div class="fiche-field-label">NUMÉRO D’ENTRÉE</div><div class="fiche-entry-line"><strong class="fiche-entry-number">${esc(data.entry||'—')}</strong><span class="fiche-status-badge ${statusTone}"><i></i>${esc(status||'Statut non renseigné')}</span></div></div>
+      <h3 class="sealname fiche-record-name">${esc(data.scelle||'Scellé sans désignation')}</h3>
+      ${cleanValue(data.procedure)?`<div class="fiche-procedure"><span>PROCÉDURE</span><strong>${esc(data.procedure)}</strong></div>`:''}
+      <section class="location-highlight fiche-location" aria-label="Emplacement enregistré"><div class="fiche-location-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M19 10.1c0 5-7 11-7 11s-7-6-7-11a7 7 0 1 1 14 0Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.3" stroke="currentColor" stroke-width="1.8"/></svg></div><div class="fiche-location-copy"><div class="label">EMPLACEMENT ENREGISTRÉ</div><div class="value">${esc(location||'Emplacement non renseigné')}</div><div class="fiche-location-foot">${location?'Rangement de référence du scellé':'Aucun emplacement renseigné dans le registre'}</div></div><span class="fiche-location-tag">RANGEMENT</span></section>
+      <section class="fiche-info-section"><div class="fiche-section-heading"><div><span class="fiche-section-kicker">REPÈRES DU DOSSIER</span><h4>Informations essentielles</h4></div><span class="fiche-fact-count">${ficheFacts.length} ${ficheFacts.length>1?'informations':'information'}</span></div>${ficheFactsHtml?`<div class="fiche-facts-grid">${ficheFactsHtml}</div>`:`<div class="fiche-empty-info">Aucune information complémentaire renseignée.</div>`}</section>
+      ${observationHtml}
+      <details class="more-info fiche-technical"><summary>Références complémentaires <span aria-hidden="true">＋</span></summary><div class="fiche-technical-grid"><div class="fiche-technical-item"><span>Référence QR</span><strong>${esc(qrReference||'Non disponible')}</strong></div><div class="fiche-technical-item"><span>Consultation</span><strong>${isAdmin?'Session administrateur':'Mode terrain'}</strong></div><div class="fiche-technical-item"><span>Source</span><strong>Registre de référence</strong></div></div></details>
+    </section><div class="fiche-operation-stack"><div class="fiche-operation-heading"><span>OPÉRATIONS LIÉES</span><span>${isAdmin?'ESPACE ADMINISTRATEUR':'ESPACE TERRAIN'}</span></div>`;
   if(statusUpper==='EN MOUVEMENT'){
     html+=`<div class="notice warn"><b>Scellé en déplacement</b><div style="margin-top:5px">Pris en charge par : <b>${esc(data.retrievedBy||'—')}</b></div><div>Destination : <b>${esc(data.destination||'Non renseignée')}</b></div><div>Date de sortie : <b>${esc(formatMovementDate(data.dateSortieHeure||data.dateSortie))}</b></div></div>`;
     if(isAdmin)html+=`<section class="move-panel"><h3>Retour en stock</h3><p class="hintline">Réservé à l’administrateur connecté. Vérifie physiquement la présence du scellé à son emplacement attendu.</p><div id="movementForm"></div><button class="next" id="openReturnForm" type="button">↩ Confirmer le retour en stock</button></section>`;
@@ -1014,6 +1155,7 @@ function renderSeal(data){
   if(isAdmin || inStock)html+=`<button class="next queue-add-button" id="addToMultiQueue" type="button" ${queued?'disabled':''}>${queued?'✓ Déjà dans la sélection':'＋ Ajouter à la série de récupérations'}</button>`;
   html+=renderGuidedScanNotice(data);
   html+=`<button class="next secondary-next" id="cancelSeal" type="button">↩ Retour au scanner</button>`;
+  html+='</div>';
   card.innerHTML=html;
   card.querySelector('#cancelSeal').onclick=closeSealSheet;
   card.querySelector('#connectAnomalySession')?.addEventListener('click',()=>{state.pendingToken=state.token;void showSessionLogin('Connecte-toi à ton compte nominatif pour consulter et régulariser les anomalies sans campagne.');});
@@ -1584,7 +1726,7 @@ $('navQueue')?.addEventListener('click',()=>{
 });
 $('roleStartScan')?.addEventListener('click',()=>{$('navScan')?.click();});
 $('roleStartGuided')?.addEventListener('click',()=>{$('navCampaigns')?.click();});
-window.resumeScanner=resumeScanner;try{document.title='SCELLÉS — ESPACES V8.1.0';document.body.dataset.scannerVersion='8.1.0';}catch(_){}activateAppView('home');boot();
+window.resumeScanner=resumeScanner;try{document.title='SCELLÉS — ESPACES V8.2.0';document.body.dataset.scannerVersion='8.2.0';}catch(_){}activateAppView('home');boot();
 
 </script>
 <script>
