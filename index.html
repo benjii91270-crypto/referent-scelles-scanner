@@ -9,7 +9,7 @@
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<title>SCELLÉS — ESPACES V8.4.4</title>
+<title>SCELLÉS — ESPACES V8.5.0</title>
 <style>
 :root{--paper:#f4f1e9;--paper-2:#ebe7dd;--white:#fffdf9;--ink:#191b19;--muted:#70746d;--line:#d7d4ca;--line-dark:#aaa99e;--red:#df4c30;--red-dark:#af321e;--orange-soft:#fae0d7;--acid:#d5f35c;--green:#1f785e;--green-soft:#e0efe8;--blue:#244d90;--blue-soft:#e4ebf7;--shadow:0 10px 24px rgba(31,32,27,.06);--safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}html{background:var(--paper);scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.42;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #ed8a71;outline-offset:2px}svg{display:block}a{color:inherit}.hidden{display:none!important}
@@ -31,7 +31,7 @@
 /* Seal card: large location block and well-separated facts. */
 .result-kicker{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line-dark);padding:17px 0 12px;font-size:9px;letter-spacing:.15em;font-weight:950;text-transform:uppercase}.result-kicker>span:first-child{display:flex;gap:7px;align-items:center}.dot{width:7px;height:7px;background:var(--green);border-radius:50%;display:inline-block}.entry{background:var(--ink);color:white;padding:6px 8px;font-size:10px;letter-spacing:.04em}.seal-summary{padding:14px 0}.sealname{font-size:clamp(23px,3vw,35px);letter-spacing:-.055em;line-height:1.08;font-weight:950;overflow-wrap:anywhere}.procedure-line{font-size:11px;color:var(--muted);margin-top:9px}.location-highlight{margin:16px 0 14px;background:var(--ink);color:var(--white);padding:17px 18px;position:relative;overflow:hidden}.location-highlight:before{content:'EMPLACEMENT';position:absolute;right:12px;top:9px;color:#ffffff19;font-size:20px;letter-spacing:.08em;font-weight:950}.location-highlight .label{font-size:9px;letter-spacing:.17em;color:var(--acid);font-weight:950}.location-highlight .value{position:relative;font-size:clamp(20px,2.5vw,31px);letter-spacing:-.045em;line-height:1.18;font-weight:950;margin-top:7px;overflow-wrap:anywhere}.seal-meta,.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 18px}.fact{padding:11px 0;border-top:1px solid var(--line)}.fact span{display:block;color:var(--muted);font-size:8px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}.fact b{display:block;margin-top:5px;font-size:12px;overflow-wrap:anywhere}.fact.full{grid-column:1/-1}.more-info{margin-top:6px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.more-info summary{padding:12px 0;font-size:10px;font-weight:850;cursor:pointer}.notice{padding:12px 13px;margin:10px 0;font-size:11px;border-left:3px solid var(--blue);background:var(--blue-soft)}.notice.warn{border-color:#d38b27;background:var(--orange-soft)}.notice.good{border-color:var(--green);background:var(--green-soft)}.notice.bad{border-color:var(--red);background:#fde8e3}.move-panel{padding:14px 0;margin-top:14px;border-top:1px solid var(--line-dark)}.move-panel h3{font-size:13px;margin:0 0 5px;letter-spacing:-.02em}.hintline{font-size:10px;color:var(--muted);margin:0 0 10px;line-height:1.6}.next{width:100%;border:0;background:var(--red);color:white;font-weight:900;font-size:12px;padding:14px 16px;margin-top:10px;min-height:46px;text-align:left}.next:hover{background:var(--red-dark)}.next.secondary-next{border:1px solid var(--line-dark);background:transparent;color:var(--ink)}.next.secondary-next:hover{background:#e7e2d7}.error{background:#fde8e3;color:#8e2819;border-left:3px solid var(--red);padding:14px;font-size:12px}
 /* Queue/admin: line-based lists and flat operation bands. */
-.screen-heading,.guided-head,.multi-queue-head{display:flex;justify-content:space-between;align-items:end;gap:18px;padding:4px 0 21px;border-bottom:1px solid var(--line-dark);margin-bottom:19px}.eyebrow{font-size:10px;color:var(--red);letter-spacing:.17em;font-weight:950;text-transform:uppercase}.screen-heading h2,.guided-head h2,.multi-queue-head h2{font-size:clamp(30px,4vw,49px);line-height:1.02;letter-spacing:-.06em;margin:10px 0 8px}.screen-heading p,.guided-head p,.multi-queue-head p{margin:0;color:var(--muted);font-size:12px;max-width:660px}.screen-heading-mark,.admin-stamp{font-size:10px;letter-spacing:.15em;font-weight:950;padding:9px;border:1px solid var(--line-dark)}.multi-queue-panel,.guided-control-panel{border:0;border-bottom:1px solid var(--line-dark);border-top:1px solid var(--line-dark);border-radius:0;background:transparent;padding:0 0 20px;margin-bottom:20px;box-shadow:none}.multi-queue-count{padding:6px 8px;background:var(--ink);color:white;font-size:10px;font-weight:900;white-space:nowrap}.multi-queue-list{display:grid}.multi-queue-list>*{border-radius:0!important;border:0!important;border-bottom:1px solid var(--line)!important;background:transparent!important}.multi-queue-toolbar,.multi-queue-control-actions,.guided-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:15px 0}.multi-queue-control-tools{border-top:1px solid var(--line-dark);margin-top:15px}.multi-queue-control-head h3{font-size:14px;margin:0}.multi-queue-control-head p,.multi-queue-control-help{font-size:11px;color:var(--muted)}.empty-state{padding:28px 0;border-bottom:1px solid var(--line-dark)}.empty-icon{font-size:28px;color:var(--red)}.empty-state h3{font-size:24px;letter-spacing:-.04em;margin:8px 0}.empty-state p{font-size:12px;color:var(--muted)}.admin-command-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark);margin-bottom:20px}.admin-command-card{padding:18px 16px;border-right:1px solid var(--line)}.admin-command-card:last-child{border-right:0}.command-symbol{display:block;color:var(--red);font-size:10px;font-weight:950;letter-spacing:.15em;margin-bottom:17px}.admin-command-card b{display:block;font-size:15px}.admin-command-card small{display:block;color:var(--muted);font-size:10px;margin-top:4px}.guided-admin-tag{font-size:9px;letter-spacing:.12em;font-weight:950;color:var(--red);border:1px solid #dfa18f;padding:6px}.guided-toolbar label{font-size:10px;font-weight:900;letter-spacing:.05em}.guided-toolbar select,.multi-queue-control-actions select{max-width:100%;min-height:40px;background:var(--white);border:1px solid var(--line-dark);padding:8px;border-radius:2px}.guided-status{padding:12px;background:#e9e4d9;font-size:11px;border-left:3px solid var(--line-dark)}.guided-next,.guided-queue{margin-top:12px}.guided-next>* ,.guided-queue>*{border-radius:0!important}
+.screen-heading,.guided-head,.multi-queue-head{display:flex;justify-content:space-between;align-items:end;gap:18px;padding:4px 0 21px;border-bottom:1px solid var(--line-dark);margin-bottom:19px}.eyebrow{font-size:10px;color:var(--red);letter-spacing:.17em;font-weight:950;text-transform:uppercase}.screen-heading h2,.guided-head h2,.multi-queue-head h2{font-size:clamp(30px,4vw,49px);line-height:1.02;letter-spacing:-.06em;margin:10px 0 8px}.screen-heading p,.guided-head p,.multi-queue-head p{margin:0;color:var(--muted);font-size:12px;max-width:660px}.screen-heading-mark,.admin-stamp{font-size:10px;letter-spacing:.15em;font-weight:950;padding:9px;border:1px solid var(--line-dark)}.multi-queue-panel,.guided-control-panel{border:0;border-bottom:1px solid var(--line-dark);border-top:1px solid var(--line-dark);border-radius:0;background:transparent;padding:0 0 20px;margin-bottom:20px;box-shadow:none}.multi-queue-count{padding:6px 8px;background:var(--ink);color:white;font-size:10px;font-weight:900;white-space:nowrap}.multi-queue-list{display:grid}.multi-queue-list>*{border-radius:0!important;border:0!important;border-bottom:1px solid var(--line)!important;background:transparent!important}.multi-queue-toolbar,.multi-queue-control-actions,.guided-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:15px 0}.queue-draft-toolbar{border-top:1px solid var(--line);margin:8px 0 16px}.queue-draft-status{flex:1 1 100%;font-size:11px;color:var(--muted);min-width:0}.queue-draft-status.warn{color:#94620c}.queue-draft-status.good{color:#176b52}.multi-queue-control-tools{border-top:1px solid var(--line-dark);margin-top:15px}.multi-queue-control-head h3{font-size:14px;margin:0}.multi-queue-control-head p,.multi-queue-control-help{font-size:11px;color:var(--muted)}.empty-state{padding:28px 0;border-bottom:1px solid var(--line-dark)}.empty-icon{font-size:28px;color:var(--red)}.empty-state h3{font-size:24px;letter-spacing:-.04em;margin:8px 0}.empty-state p{font-size:12px;color:var(--muted)}.admin-command-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark);margin-bottom:20px}.admin-command-card{padding:18px 16px;border-right:1px solid var(--line)}.admin-command-card:last-child{border-right:0}.command-symbol{display:block;color:var(--red);font-size:10px;font-weight:950;letter-spacing:.15em;margin-bottom:17px}.admin-command-card b{display:block;font-size:15px}.admin-command-card small{display:block;color:var(--muted);font-size:10px;margin-top:4px}.guided-admin-tag{font-size:9px;letter-spacing:.12em;font-weight:950;color:var(--red);border:1px solid #dfa18f;padding:6px}.guided-toolbar label{font-size:10px;font-weight:900;letter-spacing:.05em}.guided-toolbar select,.multi-queue-control-actions select{max-width:100%;min-height:40px;background:var(--white);border:1px solid var(--line-dark);padding:8px;border-radius:2px}.guided-status{padding:12px;background:#e9e4d9;font-size:11px;border-left:3px solid var(--line-dark)}.guided-next,.guided-queue{margin-top:12px}.guided-next>* ,.guided-queue>*{border-radius:0!important}
 /* Overlay screens rebuilt from scratch. */
 .activation-overlay{display:none;position:fixed;inset:0;z-index:1000;background:#191b19ef;place-items:center;padding:20px;overflow:auto}.activation-overlay.show{display:grid}.activation-card{width:min(100%,480px);background:var(--paper);padding:clamp(22px,4vw,38px);box-shadow:0 30px 80px #0005}.activation-brand{display:flex;align-items:center;gap:12px;margin-bottom:28px}.activation-brand .nova-emblem{width:38px;height:44px;overflow:hidden;display:grid;place-items:center;flex:none}.activation-brand .nova-emblem img{display:block;height:43px!important;width:auto!important;max-width:100%;object-fit:contain}.activation-brand:after{content:'SCELLÉS / ACCÈS';font-size:10px;letter-spacing:.17em;font-weight:950}.activation-card h1{font-size:31px;letter-spacing:-.055em;line-height:1.05;margin:0 0 10px}.activation-card p{color:var(--muted);font-size:12px;line-height:1.65}.activation-input,.session-login-select{width:100%;min-height:48px;border:1px solid var(--line-dark);background:#fffdf9;padding:12px;margin:8px 0;border-radius:2px;color:var(--ink)}.activation-btn{width:100%;min-height:48px;background:var(--red);color:white;border:0;font-weight:900;margin-top:9px;border-radius:2px}.activation-secondary{width:100%;margin-top:9px;min-height:44px;background:transparent;border:1px solid var(--line-dark);font-size:11px;font-weight:850}.session-login-error{display:none;background:#fde8e3;color:#952a1d;padding:10px;font-size:11px}.session-login-error.show{display:block}.session-login-secondary{background:transparent;border:1px solid var(--line-dark);min-height:42px;padding:9px 12px;margin:7px 5px 0 0;font-size:10px;font-weight:850}
 .v7-footer{border-top:1px solid var(--line-dark);max-width:1600px;width:calc(100% - clamp(36px,6vw,92px));margin:0 auto;padding:14px 0 calc(16px + var(--safe-b));display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:9px;color:var(--muted)}.footer-logo{font-size:10px;font-weight:950;letter-spacing:.12em;color:var(--ink)}.footer-right{margin-left:auto;text-align:right}.activation-overlay .hidden{display:none!important}
@@ -494,7 +494,7 @@ button,.btn,.mobile-more-link,.command-row,.admin-command-card,.workstation-note
 .lookup-skeleton{display:flex;align-items:center;gap:15px;min-height:150px;padding:22px;background:#f8f8f4;border:1px solid #e1e4dc;border-radius:14px;color:#20251f}.lookup-skeleton b{display:block;font-size:16px;line-height:1.3}.lookup-skeleton small{display:block;margin-top:5px;color:#727970;font-size:12px}.lookup-spinner{width:30px;height:30px;border:3px solid #e2e7da;border-top-color:#657d29;border-radius:50%;animation:lookupSpin .7s linear infinite;flex:none}@keyframes lookupSpin{to{transform:rotate(360deg)}}.lookup-error-actions{display:flex;gap:9px;flex-wrap:wrap}.anomaly-loading{min-height:94px}.anomaly-loading-bar{height:4px;border-radius:99px;background:#e7eadf;overflow:hidden;margin-top:16px}.anomaly-loading-bar i{display:block;width:35%;height:100%;background:#8ab73e;border-radius:99px;animation:anomalyLoad 1.1s ease-in-out infinite alternate}@keyframes anomalyLoad{from{transform:translateX(0)}to{transform:translateX(185%)}}.scanner-diagnostics pre{user-select:text}
 @media(prefers-reduced-motion:reduce){.lookup-spinner,.anomaly-loading-bar i{animation:none!important}}
 
-/* V8.4.4 — retour automatique au scan et attribution fiable du poste. */
+/* V8.5.0 — fiabilité du terrain, idempotence et opérations groupées. */
 .camera-select-wrap{display:none;gap:6px;flex-direction:column;margin:10px 0 2px;padding:10px 12px;border:1px solid #d3dedf;background:#f5faf9;border-radius:10px;max-width:100%;}
 .camera-select-wrap.show{display:flex;}
 .camera-select-wrap span{font-size:9px;letter-spacing:.13em;font-weight:950;color:#526b70;}
@@ -504,7 +504,7 @@ button,.btn,.mobile-more-link,.command-row,.admin-command-card,.workstation-note
 @media(max-width:700px){.camera-select-wrap{margin-top:9px}.camera-select-wrap select{min-height:48px;font-size:13px}.scanner-diagnostics .diag-health{align-items:flex-start;gap:12px}.scanner-diagnostics .diag-health strong{max-width:64%;}}
 </style>
 </head>
-<body data-scanner-version="8.4.4">
+<body data-scanner-version="8.5.0">
 <div id="sealSheetOverlay" class="seal-sheet-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="sealSheetDialogTitle">
   <div class="seal-sheet-dialog" role="document">
     <header class="seal-sheet-header">
@@ -575,7 +575,7 @@ button,.btn,.mobile-more-link,.command-row,.admin-command-card,.workstation-note
       <div id="workbenchGrid" class="workbench"><section id="scannerPanel" class="scanner-module" aria-label="Lecteur QR"><div class="module-heading"><div><div class="module-overline"><span class="module-step">02.01</span> CAPTURE</div><h2>Vise le code.</h2><p>Le lecteur s’active uniquement lorsque tu le demandes.</p></div><div class="live-indicator"><i></i><span>CAMÉRA</span></div></div><div class="scanner-body"><div class="scanner-visual"><div id="cameraBox" class="camera"><video id="video" autoplay muted playsinline></video><div class="overlay"><div id="frame" class="frame"></div><div id="hint" class="hint">Présente le QR au centre</div></div></div><div id="cameraNote" class="camera-note">Caméra en attente • démarre la lecture pour commencer.</div></div><div class="scanner-controls"><div id="status" class="scanner-control-status">Lecteur prêt à démarrer.</div><div id="primaryActions" class="actions"><button id="cameraStart" class="btn primary" type="button">Activer la caméra</button><button id="switch" class="btn" type="button">Changer de caméra</button><button id="torch" class="btn" type="button" disabled>Torche</button></div><label id="cameraSelectWrap" class="camera-select-wrap" for="cameraSelect"><span>OBJECTIF UTILISÉ</span><select id="cameraSelect" aria-label="Choisir directement l’objectif de la caméra" disabled><option value="">Active la caméra pour détecter les objectifs…</option></select></label><details id="advancedSettings" class="settings-drawer"><summary><span>Options du lecteur</span><span class="settings-plus">＋</span></summary><div class="settings-content"><div class="settings-label">Mode de lecture</div><button id="modeSeries" class="btn good" type="button" aria-pressed="true">Série rapide : activée</button><div class="settings-label">Image</div><div class="settings-grid"><button id="zoomMinus" class="btn" type="button" disabled>− Zoom</button><button id="zoomPlus" class="btn" type="button" disabled>＋ Zoom</button><button id="cameraStop" class="btn warn" type="button">Pause caméra</button></div><div class="settings-label">Retour sensoriel</div><div class="preferences-row"><button id="soundToggle" class="btn" type="button" aria-pressed="true">Son : activé</button><button id="vibrationToggle" class="btn" type="button" aria-pressed="true">Vibration : activée</button></div></div></details><div id="photoRow" class="photoRow"><label class="btn photoBtn" for="qrPhoto">Importer une photo de QR</label><input id="qrPhoto" class="file" type="file" accept="image/*" capture="environment"></div></div></div></section>
       <section id="sealCard" class="seal-workspace hidden" aria-label="Fiche du scellé" aria-live="polite" aria-atomic="false"></section></div>
     </section>
-    <section id="queueView" class="app-page" data-app-view="queue" aria-label="Série de scellés"><div class="screen-heading"><div><div class="eyebrow">LISTE DE TRAVAIL / 03</div><h2>La série.</h2><p>Regroupe les scellés avant d’effectuer les prises en charge permises par ton profil.</p></div><div class="screen-heading-mark">SÉRIE ACTIVE</div></div><section id="multiQueuePanel" class="multi-queue-panel hidden" aria-label="Série de scellés sélectionnés"><div class="multi-queue-head"><div><span class="eyebrow">SÉLECTION</span><h2>Scellés choisis</h2><p>Chaque série a son propre espace : sélectionne, vérifie, puis prends en charge les éléments autorisés.</p></div><span id="multiQueueCount" class="multi-queue-count">0 scellé</span></div><div id="multiQueueList" class="multi-queue-list"></div><div id="multiQueueToolbar" class="multi-queue-toolbar hidden"><button id="queueSelectAll" class="btn" type="button">Tout sélectionner</button><button id="queueOpenBulkMove" class="btn primary" type="button">Prise en charge groupée</button><button id="queueOpenBulkClose" class="btn danger hidden" type="button">Clôturer / archiver</button><button id="queueClear" class="btn danger" type="button">Vider la série</button></div><div id="multiQueueControlTools" class="multi-queue-control-tools hidden" aria-label="Contrôle physique groupé"><div class="multi-queue-control-head"><h3>Contrôle physique groupé</h3><p>Réservé à l’administrateur. Chaque résultat est enregistré séparément.</p><span id="queueControlCount" class="multi-queue-count">0 sélectionné</span></div><div class="multi-queue-control-actions"><label for="queueBulkControlResult">Résultat commun</label><select id="queueBulkControlResult"><option value="">Choisir un résultat…</option><option value="CONFORME">Conforme</option><option value="ABSENT">Absent</option><option value="EMPLACEMENT NON CONFORME">Mauvais emplacement</option><option value="SCELLÉ À VÉRIFIER">À vérifier</option></select><button id="queueApplyControlResult" class="btn" type="button">Appliquer à la sélection</button><button id="queueSubmitControls" class="btn primary" type="button">Enregistrer les contrôles</button></div><div id="queueControlHelp" class="multi-queue-control-help">Le contrôle groupé est réservé à un administrateur connecté.</div></div><div id="multiQueueMoveForm" class="hidden"></div><div id="multiQueueCloseForm" class="hidden"></div><div id="multiQueueResult" class="hidden" aria-live="polite"></div></section><div id="queueEmptyState" class="empty-state"><div class="empty-icon">≡</div><h3>Ta série apparaîtra ici</h3><p>Scanne un premier scellé, puis ajoute-le à ta série depuis sa fiche.</p><button type="button" class="btn primary" onclick="document.getElementById('navScan').click()">Lire un scellé</button></div></section>
+    <section id="queueView" class="app-page" data-app-view="queue" aria-label="Série de scellés"><div class="screen-heading"><div><div class="eyebrow">LISTE DE TRAVAIL / 03</div><h2>La série.</h2><p>Regroupe les scellés avant d’effectuer les prises en charge permises par ton profil.</p></div><div class="screen-heading-mark">SÉRIE ACTIVE</div></div><section id="multiQueuePanel" class="multi-queue-panel hidden" aria-label="Série de scellés sélectionnés"><div class="multi-queue-head"><div><span class="eyebrow">SÉLECTION</span><h2>Scellés choisis</h2><p>Chaque série a son propre espace : sélectionne, vérifie, puis prends en charge les éléments autorisés.</p></div><span id="multiQueueCount" class="multi-queue-count">0 scellé</span></div><div id="multiQueueList" class="multi-queue-list"></div><div id="multiQueueToolbar" class="multi-queue-toolbar hidden"><button id="queueSelectAll" class="btn" type="button">Tout sélectionner</button><button id="queueOpenBulkMove" class="btn primary" type="button">Prise en charge groupée</button><button id="queueOpenBulkClose" class="btn danger hidden" type="button">Clôturer / archiver</button><button id="queueClear" class="btn danger" type="button">Vider la série</button></div><div id="multiQueueControlTools" class="multi-queue-control-tools hidden" aria-label="Contrôle physique groupé"><div class="multi-queue-control-head"><h3>Contrôle physique groupé</h3><p>Réservé à l’administrateur. Chaque résultat est enregistré séparément.</p><span id="queueControlCount" class="multi-queue-count">0 sélectionné</span></div><div class="multi-queue-control-actions"><label for="queueBulkControlResult">Résultat commun</label><select id="queueBulkControlResult"><option value="">Choisir un résultat…</option><option value="CONFORME">Conforme</option><option value="ABSENT">Absent</option><option value="EMPLACEMENT NON CONFORME">Mauvais emplacement</option><option value="SCELLÉ À VÉRIFIER">À vérifier</option></select><button id="queueApplyControlResult" class="btn" type="button">Appliquer à la sélection</button><button id="queueSubmitControls" class="btn primary" type="button">Enregistrer les contrôles</button></div><div id="queueControlHelp" class="multi-queue-control-help">Le contrôle groupé est réservé à un administrateur connecté.</div></div><div id="multiQueueMoveForm" class="hidden"></div><div id="multiQueueCloseForm" class="hidden"></div><div id="multiQueueResult" class="hidden" aria-live="polite"></div></section><div id="queueDraftToolbar" class="multi-queue-toolbar queue-draft-toolbar" aria-label="Sauvegarde de la série"><button id="queueSaveDraft" class="btn primary" type="button">Enregistrer la série dans Drive</button><button id="queueResumeDraft" class="btn" type="button">Reprendre la série sauvegardée</button><button id="queueDeleteDraft" class="btn danger" type="button" disabled>Supprimer le brouillon</button><span id="queueDraftStatus" class="queue-draft-status" role="status" aria-live="polite">La série temporaire reste en mémoire jusqu’à son enregistrement explicite dans Drive.</span></div><div id="queueEmptyState" class="empty-state"><div class="empty-icon">≡</div><h3>Ta série apparaîtra ici</h3><p>Scanne un premier scellé, puis ajoute-le à ta série depuis sa fiche.</p><button type="button" class="btn primary" onclick="document.getElementById('navScan').click()">Lire un scellé</button></div></section>
     <section id="recoveryView" class="app-page v8-module-page" data-app-view="recovery" aria-label="Récupération d’un scellé">
       <div class="v8-module-head"><div><span class="v8-overline">ESPACE 02 / TERRAIN</span><h2>Prise en charge</h2><p>Une fenêtre dédiée pour enregistrer une sortie, sans mélanger cette opération avec la consultation.</p></div><span class="v8-module-index">02</span></div>
       <div id="recoveryEmpty" class="v8-empty-module"><div class="v8-empty-symbol">↗</div><h3>Choisis d’abord un scellé</h3><p>Scanne le QR, consulte sa fiche, puis reviens ici pour démarrer la prise en charge.</p><button class="v8-button-primary" type="button" id="recoveryGoScan">Ouvrir la lecture QR <span>→</span></button></div>
@@ -602,7 +602,7 @@ button,.btn,.mobile-more-link,.command-row,.admin-command-card,.workstation-note
     </section>
 <section id="adminView" class="app-page" data-app-view="admin" aria-label="Contrôles physiques"><div class="v8-module-head"><div><span class="v8-overline">ESPACE 06 / ADMINISTRATION</span><h2>Contrôles physiques</h2><p>Contrôle un scellé après lecture ou lance une tournée guidée par emplacement.</p></div><span class="v8-module-index">06</span></div><div id="controlEmpty" class="v8-empty-module"><div class="v8-empty-symbol">✓</div><h3>Contrôle individuel ou tournée guidée</h3><p>Pour un contrôle individuel, lis un scellé. Pour une tournée, charge le plan de campagne ci-dessous.</p><button class="v8-button-primary" type="button" id="controlGoScan">Lire un scellé <span>→</span></button></div><div id="controlContext" class="v8-context-card hidden"></div><div id="individualControlWorkspace" class="v8-operation-workspace"></div><section id="scannerDiagnosticsPanel" class="scanner-diagnostics hidden" aria-label="Diagnostic du scanner"><div class="scanner-diagnostics-head"><div><span class="v8-overline">DIAGNOSTIC / ADMINISTRATION</span><h3>Performances du poste</h3><p>Mesures locales de lecture et de réponse du service. Aucun QR ni contenu de scellé n’est conservé ici.</p></div><button class="v8-button-secondary" id="diagProbeButton" type="button">Tester le service</button></div><div class="scanner-diagnostics-grid"><div class="diag-kpi"><span>Dernière ouverture de fiche</span><strong id="diagLastLookup">Aucune mesure</strong></div><div class="diag-kpi"><span>Médiane des 10 dernières</span><strong id="diagLookupMedian">—</strong></div><div class="diag-kpi"><span>Réponse du registre</span><strong id="diagLastResponse">—</strong></div><div class="diag-kpi"><span>Rendu fiche</span><strong id="diagLastRender">—</strong></div><div class="diag-kpi"><span>Complément anomalies</span><strong id="diagLastAnomaly">Non mesuré</strong></div><div class="diag-kpi"><span>QR reconnu → requête</span><strong id="diagDecodeOverhead">—</strong></div><div class="diag-kpi"><span>État lecteur</span><strong id="diagReader">—</strong></div></div><div class="diag-health"><span>Interprétation de la latence</span><strong id="diagLatencyAdvice">En attente de mesures</strong></div><div class="diag-health"><span>Connexion au service</span><strong id="diagNetwork">Non vérifié</strong></div><div class="diag-error"><span>Dernier état réseau</span><div id="diagLastError">Aucune erreur réseau observée.</div></div><details class="diag-request-details"><summary>Historique des 8 dernières requêtes</summary><pre id="diagRecentRequests">Aucune requête mesurée.</pre></details><p class="diag-disclaimer">Ces mesures sont conservées uniquement en mémoire sur cet appareil et sont remises à zéro au rechargement. Les durées observées dépendent également du réseau et du service Google.</p></section></section>
   </main>
-  <footer class="v7-footer"><span class="footer-logo">SCELLÉS / ESPACES</span><span>Une fonction par espace. Une trace par opération.</span><span class="footer-right">V8.4.4 • Attribution du poste et retour automatique au scan après mouvement.</span></footer>
+  <footer class="v7-footer"><span class="footer-logo">SCELLÉS / ESPACES</span><span>Une fonction par espace. Une trace par opération.</span><span class="footer-right">V8.5.0 • Fiabilité des scans, identité unifiée et opérations groupées sécurisées.</span></footer>
 </div>
 <script>
 
@@ -611,7 +611,7 @@ const SCANNER_API_ENDPOINT='https://referent-scelles-api.benjii91270.workers.dev
 const DEVICE_TOKEN_KEY='referent_scelles_device_token_v2';
 const DEVICE_IDENTITY_KEY='referent_scelles_assigned_identity_v1';
 const DEVICE_NAME_KEY='referent_scelles_device_name_v1';
-const SCANNER_VERSION='8.4.4';
+const SCANNER_VERSION='8.5.0';
 const SERIES_MODE_KEY='referent_scelles_series_mode_v1';
 const SOUND_PREF_KEY='referent_scelles_scanner_sound_v1';
 const VIBRATION_PREF_KEY='referent_scelles_scanner_vibration_v1';
@@ -622,10 +622,11 @@ function readSeriesMode(){try{const saved=localStorage.getItem(SERIES_MODE_KEY);
 function readBoolPreference(key,fallback=true){try{const saved=localStorage.getItem(key);return saved===null?fallback:saved==='1';}catch(e){return fallback;}}
 function readPreferredCamera(){try{return localStorage.getItem(CAMERA_DEVICE_KEY)||null;}catch(e){return null;}}
 function savePreferredCamera(id){try{if(id)localStorage.setItem(CAMERA_DEVICE_KEY,id);}catch(e){}}
-const state={lookupGeneration:0,lookupInProgress:false,lastDecodedAt:0,reader:null,controls:null,readerMode:'none',readerRunning:false,readerGeneration:0,decodeLoopTimer:null,nativeDetector:null,nativeDecodeErrors:0,stream:null,track:null,devices:[],deviceIndex:0,deviceId:readPreferredCamera(),busy:false,cameraOpening:false,cameraSwitching:false,cameraResumeOnVisible:false,resumeDecodeAfterVisibility:false,seriesMode:readSeriesMode(),soundEnabled:readBoolPreference(SOUND_PREF_KEY,true),vibrationEnabled:readBoolPreference(VIBRATION_PREF_KEY,true),sessionChecks:0,token:'',lastToken:'',lastAt:0,torch:false,torchSupported:false,zoom:null,campaign:null,photoMode:false,userAuth:null,pendingToken:'',sealData:null,sessionOptionsLoading:false,multiQueue:[],queueMoveBusy:false,investigatorOptions:[],recipientOptions:[],peopleOptionsRevision:0,guidedPlan:null,guidedLocationKey:'',guidedActive:false,guidedExpectedEntry:null,guidedLoading:false,guidedMissingBusy:false,qrCanvas:null,qrContext:null,jsqrDecodeErrors:0};
+const state={lookupGeneration:0,lookupInProgress:false,lastDecodedAt:0,reader:null,controls:null,readerMode:'none',readerRunning:false,readerGeneration:0,decodeLoopTimer:null,nativeDetector:null,nativeDecodeErrors:0,stream:null,track:null,devices:[],deviceIndex:0,deviceId:readPreferredCamera(),busy:false,cameraOpening:false,cameraSwitching:false,cameraResumeOnVisible:false,resumeDecodeAfterVisibility:false,seriesMode:readSeriesMode(),soundEnabled:readBoolPreference(SOUND_PREF_KEY,true),vibrationEnabled:readBoolPreference(VIBRATION_PREF_KEY,true),sessionChecks:0,token:'',lastToken:'',lastAt:0,torch:false,torchSupported:false,zoom:null,campaign:null,photoMode:false,userAuth:null,pendingToken:'',sealData:null,sessionOptionsLoading:false,multiQueue:[],queueMoveBusy:false,queueDraftExists:false,queueDraftEnabled:false,queueDraftDirty:false,queueDraftUpdatedAt:'',investigatorOptions:[],recipientOptions:[],peopleOptionsRevision:0,guidedPlan:null,guidedLocationKey:'',guidedActive:false,guidedExpectedEntry:null,guidedLoading:false,guidedMissingBusy:false,qrCanvas:null,qrContext:null,jsqrDecodeErrors:0};
 const $=id=>document.getElementById(id);
-/* V8.4.4 — identité d’appareil prioritaire et reprise du scan après mouvement confirmé. */
+/* V8.5.0 — identité d’appareil prioritaire et reprise du scan après mouvement confirmé. */
 const scannerTelemetry={requests:[],lookups:[],lastLookup:null,connection:{network:(typeof navigator==='undefined'||navigator.onLine)?'online':'offline',service:'unknown',lastSuccessAt:0,lastError:'',lastProbeMs:null}};
+function makeScannerRequestId(){try{if(typeof crypto!=='undefined'&&typeof crypto.randomUUID==='function')return crypto.randomUUID();}catch(_){}return 'rs-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,12)+'-'+Math.random().toString(36).slice(2,8);} 
 function perfClock(){return (typeof performance!=='undefined'&&performance.now)?performance.now():Date.now();}
 function durationLabel(ms){if(!Number.isFinite(Number(ms)))return '—';const n=Math.max(0,Number(ms));return n<1000?`${Math.round(n)} ms`:`${(n/1000).toFixed(2).replace('.',',')} s`;}
 function recordApiTiming(method,api,elapsed,ok){
@@ -732,13 +733,13 @@ async function apiCall(api,params={},timeout=9000){
     let res;try{res=await fetch(u.toString(),{method:'GET',headers:{Accept:'application/json',...(deviceToken?{Authorization:'Bearer '+deviceToken}:{})},cache:'no-store',signal:controller.signal});}
     catch(e){if(e?.name==='AbortError')throw new Error('Le serveur met trop de temps à répondre. Réessaie quand la connexion sera stable.');if(e instanceof TypeError)throw new Error(typeof navigator!=='undefined'&&navigator.onLine===false?'Téléphone hors ligne. Vérifie la connexion Internet.':'Connexion au serveur impossible. Vérifie le réseau puis réessaie.');throw e;}
     const data=await res.json().catch(()=>null);if(!res.ok||!data)throw new Error(data?.message||(!data?'Réponse serveur illisible. Réessaie.':'HTTP '+res.status));
-    if(data.code==='DEVICE_INVALID'||data.code==='DEVICE_REQUIRED'){localStorage.removeItem(DEVICE_TOKEN_KEY);localStorage.removeItem(DEVICE_IDENTITY_KEY);localStorage.removeItem(DEVICE_NAME_KEY);showActivation('Cette autorisation n’est plus valide.');throw Object.assign(new Error('SCANNER_NOT_ACTIVATED'),{code:'SCANNER_NOT_ACTIVATED'});}perfSucceeded=true;return data;
+    if(data.code==='DEVICE_INVALID'||data.code==='DEVICE_REQUIRED'){localStorage.removeItem(DEVICE_TOKEN_KEY);localStorage.removeItem(DEVICE_IDENTITY_KEY);localStorage.removeItem(DEVICE_NAME_KEY);showActivation('Cette autorisation n’est plus valide.');throw Object.assign(new Error('SCANNER_NOT_ACTIVATED'),{code:'SCANNER_NOT_ACTIVATED'});}perfSucceeded=data.ok!==false;return data;
   }finally{clearTimeout(timer);recordApiTiming('GET',api,perfClock()-perfStarted,perfSucceeded);}
 }
 async function apiPost(api,params={},timeout=12000){
   const perfStarted=perfClock();let perfSucceeded=false;
-  const sessionRequiredPosts=['movement-return','control','control-mark-absent','seal-admin-update','seal-admin-close','anomaly-resolve-from-scan'];
-  const adminOnlyPosts=['movement-return','control','control-mark-absent','seal-admin-update','seal-admin-close','anomaly-resolve-from-scan'];
+  const sessionRequiredPosts=['movement-return','control','control-batch','control-mark-absent','seal-admin-update','seal-admin-close','anomaly-resolve-from-scan'];
+  const adminOnlyPosts=['movement-return','control','control-batch','control-mark-absent','seal-admin-update','seal-admin-close','anomaly-resolve-from-scan'];
   if(sessionRequiredPosts.includes(String(api))){const auth=activeScannerSession();if(!auth)throw Object.assign(new Error('Session administrateur requise.'),{code:'AUTH_REQUIRED'});if(adminOnlyPosts.includes(String(api))&&!auth.session?.isAdmin)throw Object.assign(new Error('Cette opération est réservée aux administrateurs.'),{code:'ADMIN_REQUIRED'});params=Object.assign({},params,{authToken:auth.token,sessionId:String(auth.session.id||'')});}
   const deviceToken=localStorage.getItem(DEVICE_TOKEN_KEY)||'';if(!deviceToken)throw Object.assign(new Error('SCANNER_NOT_ACTIVATED'),{code:'SCANNER_NOT_ACTIVATED'});
   if(typeof navigator!=='undefined'&&navigator.onLine===false)throw new Error('Aucune connexion Internet. Rétablis le réseau puis réessaie.');
@@ -747,7 +748,7 @@ async function apiPost(api,params={},timeout=12000){
     let res;try{res=await fetch(SCANNER_API_ENDPOINT,{method:'POST',headers:{Accept:'application/json','Content-Type':'application/json',Authorization:'Bearer '+deviceToken},body:JSON.stringify(Object.assign({api},params||{})),cache:'no-store',signal:controller.signal});}
     catch(e){if(e?.name==='AbortError')throw new Error('Le serveur met trop de temps à répondre. Réessaie quand la connexion sera stable.');if(e instanceof TypeError)throw new Error(typeof navigator!=='undefined'&&navigator.onLine===false?'Téléphone hors ligne. Vérifie la connexion Internet.':'Connexion au serveur impossible. Vérifie le réseau puis réessaie.');throw e;}
     const data=await res.json().catch(()=>null);if(!res.ok||!data)throw new Error(data?.message||(!data?'Réponse serveur illisible. Réessaie.':'HTTP '+res.status));
-    if(data.code==='DEVICE_INVALID'||data.code==='DEVICE_REQUIRED'){localStorage.removeItem(DEVICE_TOKEN_KEY);showActivation('Cette autorisation n’est plus valide.');throw Object.assign(new Error('SCANNER_NOT_ACTIVATED'),{code:'SCANNER_NOT_ACTIVATED'});}perfSucceeded=true;return data;
+    if(data.code==='DEVICE_INVALID'||data.code==='DEVICE_REQUIRED'){[DEVICE_TOKEN_KEY,DEVICE_IDENTITY_KEY,DEVICE_NAME_KEY].forEach(key=>{try{localStorage.removeItem(key);}catch(_){}});showActivation('Cette autorisation n’est plus valide.');throw Object.assign(new Error('SCANNER_NOT_ACTIVATED'),{code:'SCANNER_NOT_ACTIVATED'});}perfSucceeded=data.ok!==false;return data;
   }finally{clearTimeout(timer);recordApiTiming('POST',api,perfClock()-perfStarted,perfSucceeded);}
 }
 function showActivation(message){
@@ -774,8 +775,10 @@ async function activateScanner(){
     const d=await apiCall('pair',{code});if(!d?.ok)throw new Error(d?.message||'Code invalide.');
     if(!d.token)throw new Error('Le serveur a accepté le code mais n’a pas renvoyé de jeton. Demande à un administrateur de vérifier l’appairage.');
     localStorage.setItem(DEVICE_TOKEN_KEY,d.token);
-    if(Object.prototype.hasOwnProperty.call(d,'assignedIdentity')){const assigned=String(d.assignedIdentity||'').trim().replace(/\s+/g,' ');if(assigned)localStorage.setItem(DEVICE_IDENTITY_KEY,assigned);else localStorage.removeItem(DEVICE_IDENTITY_KEY);}
-    if(d.deviceName)localStorage.setItem(DEVICE_NAME_KEY,String(d.deviceName).trim());
+    // A successful pairing replaces the complete local assignment. Do not keep a prior
+    // gendarme's identity if this service response does not explicitly confirm one.
+    if(Object.prototype.hasOwnProperty.call(d,'assignedIdentity')){const assigned=String(d.assignedIdentity||'').trim().replace(/\s+/g,' ');if(assigned)localStorage.setItem(DEVICE_IDENTITY_KEY,assigned);else localStorage.removeItem(DEVICE_IDENTITY_KEY);}else{localStorage.removeItem(DEVICE_IDENTITY_KEY);}
+    if(d.deviceName)localStorage.setItem(DEVICE_NAME_KEY,String(d.deviceName).trim());else localStorage.removeItem(DEVICE_NAME_KEY);
     hideActivation();$('pairCode').value='';
     await boot();
     const confirmedIdentity=String(localStorage.getItem(DEVICE_IDENTITY_KEY)||'').trim();
@@ -1034,7 +1037,7 @@ function multiQueueControlAlreadyDone(item){const row=(state.guidedPlan?.items||
 function renderMultiQueue(){
   const panel=$('multiQueuePanel'),list=$('multiQueueList'),count=$('multiQueueCount'),toolbar=$('multiQueueToolbar'),controlTools=$('multiQueueControlTools');if(!panel||!list||!count||!toolbar)return;
   const q=state.multiQueue||[],auth=activeScannerSession(),isAdmin=!!auth?.session?.isAdmin;panel.classList.toggle('hidden',q.length===0);count.textContent=`${q.length} scellé${q.length>1?'s':''}`;const navQueue=$('navQueue'),navQueueCount=$('navQueueCount'),quickNav=$('quickNavigation');if(navQueue)navQueue.classList.toggle('hidden',q.length===0);if(navQueueCount)navQueueCount.textContent=String(q.length);if(quickNav){const visibleItems=Array.from(document.querySelectorAll('#quickNavigation .task-tab')).filter(x=>!x.classList.contains('hidden')).length;quickNav.classList.toggle('one-item',visibleItems===1);quickNav.classList.toggle('two-items',visibleItems===2);quickNav.classList.toggle('three-items',visibleItems===3);quickNav.classList.toggle('four-items',visibleItems>=4);}
-  if(!q.length){list.innerHTML='';toolbar.classList.add('hidden');controlTools?.classList.add('hidden');$('queueOpenBulkClose')?.classList.add('hidden');$('multiQueueCloseForm')?.classList.add('hidden');return;}
+  if(!q.length){list.innerHTML='';toolbar.classList.add('hidden');controlTools?.classList.add('hidden');$('queueOpenBulkClose')?.classList.add('hidden');$('multiQueueCloseForm')?.classList.add('hidden');updateQueueDraftControls();return;}
   const controlOptions=item=>{
     const current=String(item.controlResult||'');
     const options=[['','— Choisir un résultat —'],['CONFORME','✓ Conforme'],['ABSENT','! Absent'],['EMPLACEMENT NON CONFORME','⌖ Mauvais emplacement'],['SCELLÉ À VÉRIFIER','⚠ À vérifier']];
@@ -1071,46 +1074,152 @@ function renderMultiQueue(){
     else if(pendingSelected.some(x=>!x.controlResult))help.textContent='Choisis un résultat pour chaque scellé sélectionné, ou applique le même résultat depuis le menu ci-dessus. Les contrôles déjà enregistrés seront ignorés.';
     else help.textContent='Chaque contrôle sera enregistré séparément dans la campagne active. Les contrôles déjà enregistrés seront ignorés et le bilan détaillera chaque opération.';
   }
+  updateQueueDraftControls();
 }
+
+function queueDraftStatus(message, tone=''){
+  const el=$('queueDraftStatus');if(!el)return;el.textContent=String(message||'');el.className='queue-draft-status'+(tone?' '+tone:'');
+}
+function updateQueueDraftControls(){
+  const items=Array.isArray(state.multiQueue)?state.multiQueue:[];
+  const save=$('queueSaveDraft'),resume=$('queueResumeDraft'),del=$('queueDeleteDraft');
+  if(save)save.disabled=state.queueMoveBusy||items.length===0;
+  if(resume)resume.disabled=state.queueMoveBusy;
+  if(del)del.disabled=state.queueMoveBusy;
+  if(state.queueDraftDirty)queueDraftStatus('Modifications non sauvegardées dans Drive. Enregistre la série pour pouvoir la reprendre après fermeture.', 'warn');
+  else if(state.queueDraftExists&&state.queueDraftUpdatedAt)queueDraftStatus('Brouillon Drive disponible • dernière sauvegarde : '+new Date(state.queueDraftUpdatedAt).toLocaleString('fr-FR'), 'good');
+}
+function markQueueDraftDirty(){
+  if(state.queueDraftEnabled||state.queueDraftExists){state.queueDraftDirty=true;queueDraftStatus('Modifications non sauvegardées dans Drive. Enregistre la série pour pouvoir la reprendre après fermeture.','warn');}
+  updateQueueDraftControls();
+}
+function queueDraftPayload(){
+  return (state.multiQueue||[]).map(item=>({
+    qrId:String(item.token||item.data?.qrId||'').trim(), entry:Number(item.entry)||Number(item.data?.entry)||0,
+    selected:item.selected!==false, controlResult:String(item.controlResult||''), controlObs:String(item.controlObs||''),
+    controlSaved:!!item.controlSaved, controlSavedResult:String(item.controlSavedResult||''), controlSavedAt:String(item.controlSavedAt||''),
+    controlQueue:!!item.controlQueue, movementSaved:!!item.movementSaved,
+    moveRequestId:String(item.moveRequestId||''), moveRequestSignature:String(item.moveRequestSignature||''),
+    controlRequestId:String(item.controlRequestId||''), controlRequestSignature:String(item.controlRequestSignature||''),
+    moveMotif:String(item.moveMotif||'')
+  }));
+}
+async function saveQueueDraft(quiet=false){
+  const payload=queueDraftPayload();
+  if(!payload.length){if(!quiet)queueDraftStatus('Aucun scellé dans la série.','warn');return false;}
+  const button=$('queueSaveDraft');if(button&&!quiet){button.disabled=true;button.textContent='Enregistrement dans Drive…';}
+  try{
+    const out=await apiPost('scanner-draft-save',{draftJson:JSON.stringify(payload)},25000);
+    if(!out?.ok)throw new Error(out?.message||'Le serveur n’a pas confirmé la sauvegarde du brouillon.');
+    state.queueDraftExists=true;state.queueDraftEnabled=true;state.queueDraftDirty=false;state.queueDraftUpdatedAt=String(out.updatedAt||new Date().toISOString());
+    queueDraftStatus(`Série sauvegardée dans Google Drive (${out.itemCount||payload.length} scellé(s)) • ${new Date(state.queueDraftUpdatedAt).toLocaleString('fr-FR')}.`,'good');
+    updateQueueDraftControls();return true;
+  }catch(e){
+    if(!quiet)queueDraftStatus('Sauvegarde impossible : '+String(e?.message||e).slice(0,220),'warn');
+    return false;
+  }finally{if(button&&!quiet){button.disabled=false;button.textContent='Enregistrer la série dans Drive';updateQueueDraftControls();}}
+}
+async function resumeQueueDraft(){
+  if(state.queueMoveBusy)return;
+  if(state.multiQueue.length&&!confirm('Remplacer la série actuellement affichée par la série sauvegardée dans Drive ? Les modifications non sauvegardées de la série actuelle seront perdues.'))return;
+  const button=$('queueResumeDraft');if(button){button.disabled=true;button.textContent='Recherche du brouillon…';}
+  try{
+    const out=await apiCall('scanner-draft',{},20000);
+    if(!out?.ok)throw new Error(out?.message||'Le serveur n’a pas pu lire le brouillon.');
+    if(!out.hasDraft||!Array.isArray(out.items)||!out.items.length){state.queueDraftExists=false;state.queueDraftEnabled=false;state.queueDraftDirty=false;state.queueDraftUpdatedAt='';queueDraftStatus('Aucune série sauvegardée dans Drive pour ce téléphone.','warn');updateQueueDraftControls();return;}
+    state.multiQueue=out.items.map(x=>({
+      entry:Number(x.entry)||Number(x.data?.entry)||0, token:String(x.token||x.qrId||x.data?.qrId||''), data:Object.assign({},x.data||{}),
+      selected:x.selected!==false, controlResult:String(x.controlResult||''), controlObs:String(x.controlObs||''),
+      controlSaved:!!x.controlSaved, controlSavedResult:String(x.controlSavedResult||''), controlSavedAt:String(x.controlSavedAt||''),
+      controlQueue:!!x.controlQueue, movementSaved:!!x.movementSaved,
+      moveRequestId:String(x.moveRequestId||''), moveRequestSignature:String(x.moveRequestSignature||''),
+      controlRequestId:String(x.controlRequestId||''), controlRequestSignature:String(x.controlRequestSignature||''), moveMotif:String(x.moveMotif||'')
+    }));
+    state.queueDraftExists=true;state.queueDraftEnabled=true;state.queueDraftDirty=false;state.queueDraftUpdatedAt=String(out.updatedAt||'');
+    renderMultiQueue();activateAppView('queue');
+    queueDraftStatus(`Série reprise depuis Drive • ${state.multiQueue.length} scellé(s) • sauvegardée le ${state.queueDraftUpdatedAt?new Date(state.queueDraftUpdatedAt).toLocaleString('fr-FR'):'date inconnue'}. Les statuts ont été relus dans le registre.`,'good');
+    updateQueueDraftControls();setStatus('Série sauvegardée restaurée. Les fiches ont été actualisées depuis le registre.','good');
+  }catch(e){queueDraftStatus('Reprise impossible : '+String(e?.message||e).slice(0,220),'warn');setStatus('Impossible de reprendre la série depuis Drive.','bad');}
+  finally{if(button){button.disabled=false;button.textContent='Reprendre la série sauvegardée';}}
+}
+async function deleteQueueDraft(){
+  if(state.queueMoveBusy)return;
+  if(!confirm('Supprimer le brouillon de série sauvegardé dans Google Drive pour ce téléphone ? Les scellés du registre ne seront pas modifiés.'))return;
+  const button=$('queueDeleteDraft');if(button){button.disabled=true;button.textContent='Suppression…';}
+  try{
+    const out=await apiPost('scanner-draft-save',{draftJson:'[]'},20000);
+    if(!out?.ok)throw new Error(out?.message||'Le serveur n’a pas confirmé la suppression du brouillon.');
+    state.queueDraftExists=false;state.queueDraftEnabled=false;state.queueDraftDirty=state.multiQueue.length>0;state.queueDraftUpdatedAt='';
+    queueDraftStatus(state.multiQueue.length?'Brouillon supprimé de Drive. La série affichée n’est plus sauvegardée.':'Brouillon Drive supprimé.','good');updateQueueDraftControls();
+  }catch(e){queueDraftStatus('Suppression impossible : '+String(e?.message||e).slice(0,220),'warn');}
+  finally{if(button){button.disabled=false;button.textContent='Supprimer le brouillon';updateQueueDraftControls();}}
+}
+async function persistQueueDraftQuietly(){if(!state.queueDraftEnabled&&!state.queueDraftExists)return true;return await saveQueueDraft(true);}
 
 function addCurrentToMultiQueue(){
   const d=state.sealData;if(!d?.ok){setStatus('Impossible d’ajouter un scellé non reconnu à la sélection.','bad');return false;}
   const entry=Number(d.entry),token=String(state.token||d.qrId||'').trim();if(!Number.isFinite(entry)||entry<1||!token){setStatus('Le numéro d’entrée ou le QR de ce scellé est manquant.','bad');return false;}
-  const existing=state.multiQueue.find(x=>Number(x.entry)===entry);if(existing){existing.data=Object.assign({},d);existing.token=token;existing.selected=true;if(existing.controlSaved){existing.controlSaved=false;existing.controlSavedResult='';existing.controlSavedAt='';existing.controlResult='';}if(state.guidedActive)existing.controlQueue=true;setStatus(`Le scellé N° ${entry} est déjà dans la sélection.`,'good');}else{if(state.multiQueue.length>=100){setStatus('Limite de 100 scellés par session atteinte. Termine cette sélection avant d’en commencer une autre.','bad');return false;}state.multiQueue.push({entry,token,data:Object.assign({},d),selected:true,controlResult:'',controlSaved:false,controlSavedResult:'',controlSavedAt:'',controlQueue:!!state.guidedActive});setStatus(`Scellé N° ${entry} ajouté • ${state.multiQueue.length} dans la sélection`,'good');}
-  renderMultiQueue();resumeScanner();return true;
+  const existing=state.multiQueue.find(x=>Number(x.entry)===entry);if(existing){const previousStatus=String(existing.data?.status||'').toUpperCase(),incomingStatus=String(d?.status||'').toUpperCase();existing.data=Object.assign({},d);existing.token=token;existing.selected=true;if(existing.controlSaved){existing.controlSaved=false;existing.controlSavedResult='';existing.controlSavedAt='';existing.controlResult='';existing.controlRequestId='';existing.controlRequestSignature='';}if(previousStatus!=='EN STOCK'&&incomingStatus==='EN STOCK'){existing.moveRequestId='';existing.moveRequestSignature='';existing.movementSaved=false;}if(state.guidedActive)existing.controlQueue=true;setStatus(`Le scellé N° ${entry} est déjà dans la sélection.`,'good');}else{if(state.multiQueue.length>=100){setStatus('Limite de 100 scellés par session atteinte. Termine cette sélection avant d’en commencer une autre.','bad');return false;}state.multiQueue.push({entry,token,data:Object.assign({},d),selected:true,controlResult:'',controlSaved:false,controlSavedResult:'',controlSavedAt:'',controlQueue:!!state.guidedActive});setStatus(`Scellé N° ${entry} ajouté • ${state.multiQueue.length} dans la sélection`,'good');}
+  markQueueDraftDirty();renderMultiQueue();resumeScanner();return true;
 }
-function toggleMultiQueueSelection(entry,checked){const item=state.multiQueue.find(x=>Number(x.entry)===Number(entry));if(item)item.selected=!!checked;renderMultiQueue();}
-function removeMultiQueueItem(entry){state.multiQueue=state.multiQueue.filter(x=>Number(x.entry)!==Number(entry));renderMultiQueue();}
+function toggleMultiQueueSelection(entry,checked){const item=state.multiQueue.find(x=>Number(x.entry)===Number(entry));if(item)item.selected=!!checked;markQueueDraftDirty();renderMultiQueue();}
+function removeMultiQueueItem(entry){state.multiQueue=state.multiQueue.filter(x=>Number(x.entry)!==Number(entry));markQueueDraftDirty();renderMultiQueue();}
 function openMultiQueueItem(entry){openSealSheetFromQueue(entry);}
-function clearMultiQueue(){if(state.queueMoveBusy)return;if(!state.multiQueue.length)return;if(!confirm('Vider la liste des scellés scannés ? Cela ne modifie pas les scellés enregistrés.'))return;state.multiQueue=[];$('multiQueueMoveForm').classList.add('hidden');$('multiQueueMoveForm').innerHTML='';$('multiQueueResult').classList.add('hidden');renderMultiQueue();}
+function clearMultiQueue(){if(state.queueMoveBusy)return;if(!state.multiQueue.length)return;if(!confirm('Vider la liste des scellés scannés ? Cela ne modifie pas les scellés enregistrés.'))return;state.multiQueue=[];$('multiQueueMoveForm').classList.add('hidden');$('multiQueueMoveForm').innerHTML='';$('multiQueueResult').classList.add('hidden');markQueueDraftDirty();renderMultiQueue();}
 function showMultiQueueMoveForm(){
   const auth=activeScannerSession(),isAdmin=!!auth?.session?.isAdmin,selected=(state.multiQueue||[]).filter(x=>x.selected),eligible=selected.filter(x=>String(x.data?.status||'').toUpperCase()==='EN STOCK'),form=$('multiQueueMoveForm');if(!form)return;
-  if(auth&&!isAdmin){setStatus('La sélection de lot n’est pas disponible pour ce rôle.','bad');return;}
   if(!selected.length){setStatus('Sélectionne au moins un scellé.','bad');return;}if(!eligible.length){setStatus('Aucun scellé sélectionné n’est actuellement en stock.','bad');return;}
-  const identityHtml=isAdmin?`<div class="move-identity"><span>Pris en charge par</span><strong>${esc(auth.session.name||'Administrateur')}${auth.session.grade?' • '+esc(auth.session.grade):''}</strong><small>Identité issue de la session administrateur.</small></div>`:`<label for="queueMoveName">Nom et prénom de la personne qui récupère les scellés *</label><input id="queueMoveName" maxlength="120" autocomplete="name" required placeholder="Ex. GND Prénom NOM"><p class="move-note">Sans connexion nominative, cette identité est déclarative.</p>`;
-  $('multiQueueCloseForm')?.classList.add('hidden');form.innerHTML=`<h3>Prise en charge groupée</h3><p class="muted">${eligible.length} scellé(s) en stock seront enregistrés séparément.</p>${identityHtml}<label for="queueMoveDestination">Destination commune *</label><input id="queueMoveDestination" maxlength="500" required placeholder="Ex. tribunal, laboratoire, autre service…"><div id="queueMoveError" class="session-login-error" role="alert"></div><div class="actions"><button id="queueMoveSubmit" class="btn primary" type="button">Confirmer pour ${eligible.length} scellé(s)</button><button class="btn" id="queueMoveCancel" type="button">Annuler</button></div><p class="muted">Les retours en stock et les contrôles groupés restent réservés aux administrateurs.</p>`;
+  const linkedIdentity=String(localStorage.getItem(DEVICE_IDENTITY_KEY)||'').trim();const identityHtml=linkedIdentity?`<div class="move-identity linked"><span>PRISE EN CHARGE ATTRIBUÉE À</span><strong>${esc(linkedIdentity)}</strong><small>Identité de cet appareil confirmée par le service d’activation. Elle est prioritaire sur la session du navigateur.</small></div>`:isAdmin?`<div class="move-identity"><span>Pris en charge par</span><strong>${esc(auth.session.name||'Administrateur')}${auth.session.grade?' • '+esc(auth.session.grade):''}</strong><small>Identité issue de la session administrateur authentifiée.</small></div>`:`<label for="queueMoveName">Nom et prénom de la personne qui récupère les scellés *</label><input id="queueMoveName" maxlength="120" autocomplete="name" required placeholder="Ex. GND Prénom NOM"><p class="move-note">Sans connexion nominative, cette identité est déclarative.</p>`;
+  $('multiQueueCloseForm')?.classList.add('hidden');form.innerHTML=`<h3>Prise en charge groupée</h3><p class="muted">${eligible.length} scellé(s) en stock seront traités dans une requête groupée avec un résultat individuel par scellé.</p>${identityHtml}<label for="queueMoveDestination">Destination commune *</label><input id="queueMoveDestination" maxlength="500" required placeholder="Ex. tribunal, laboratoire, autre service…"><div id="queueMoveError" class="session-login-error" role="alert"></div><div class="actions"><button id="queueMoveSubmit" class="btn primary" type="button">Confirmer pour ${eligible.length} scellé(s)</button><button class="btn" id="queueMoveCancel" type="button">Annuler</button></div><p class="muted">Les retours en stock et les contrôles groupés restent réservés aux administrateurs.</p>`;
   form.classList.remove('hidden');$('queueMoveSubmit').onclick=submitMultiQueueMovement;$('queueMoveCancel').onclick=()=>{form.classList.add('hidden');form.innerHTML='';};
 }
 async function submitMultiQueueMovement(){
-  if(state.queueMoveBusy)return;const auth=activeScannerSession(),isAdmin=!!auth?.session?.isAdmin,name=String(isAdmin?auth.session.name:($('queueMoveName')?.value||'')).trim().replace(/\s+/g,' '),destination=String($('queueMoveDestination')?.value||'').trim(),err=$('queueMoveError'),button=$('queueMoveSubmit');const fail=m=>{if(err){err.textContent=m;err.classList.add('show');}};
-  if(auth&&!isAdmin){fail('La prise en charge par lot n’est pas autorisée pour ce rôle.');return;}if(name.length<3){fail('Indique le nom et le prénom de la personne qui prend en charge les scellés.');$('queueMoveName')?.focus();return;}if(!destination){fail('La destination est obligatoire.');$('queueMoveDestination')?.focus();return;}
-  const selected=state.multiQueue.filter(x=>x.selected),eligible=selected.filter(x=>String(x.data?.status||'').toUpperCase()==='EN STOCK');if(!eligible.length){fail('Aucun scellé sélectionné n’est en stock.');return;}
-  if(!confirm(`Confirmer la mise en mouvement de ${eligible.length} scellé(s) ?\n\nDestination : ${destination}\nPris en charge par : ${name}\nIdentité : ${isAdmin?'session administrateur authentifiée':'déclarée sans connexion nominative'}\n\nChaque scellé sera enregistré séparément.`))return;
-  state.queueMoveBusy=true;if(button){button.disabled=true;button.textContent='Enregistrement…';}renderMultiQueue();const results=[],resultHost=$('multiQueueResult');if(resultHost){resultHost.classList.remove('hidden');resultHost.innerHTML=`<b>Traitement en cours…</b><div>0 / ${eligible.length} scellé(s) traités.</div>`;}
-  for(let i=0;i<eligible.length;i++){
-    const item=eligible[i];if(resultHost)resultHost.innerHTML=`<b>Traitement en cours…</b><div>${i+1} / ${eligible.length} — N° ${esc(item.entry)}</div>`;
-    try{const payload={scan:item.token,destination,investigatorName:name,motif:''};if(isAdmin&&auth?.session?.id&&auth?.token){payload.authToken=auth.token;payload.sessionId=String(auth.session.id);}const out=await apiPost('movement-start',payload,18000);if(!out?.ok)throw Object.assign(new Error(out?.message||'Mouvement refusé.'),{code:out?.code||'MOVEMENT_REFUSED'});item.data=Object.assign({},item.data,{status:out.status||'EN MOUVEMENT',dateSortie:out.dateSortie,dateSortieHeure:out.dateSortieHeure,destination:out.destination,retrievedBy:out.retrievedBy});results.push({entry:item.entry,scelle:item.data.scelle,ok:true,message:'Mouvement enregistré'});}
-    catch(e){results.push({entry:item.entry,scelle:item.data.scelle,ok:false,message:String(e.message||e).slice(0,220)});}
-  }
-  state.queueMoveBusy=false;renderMultiQueue();if(resultHost){resultHost.classList.remove('hidden');const good=results.filter(x=>x.ok).length,bad=results.length-good;resultHost.innerHTML=`<b>${good}/${results.length} mise(s) en mouvement enregistrée(s)${bad?` • ${bad} échec(s)`:''}</b><div>${results.map(r=>`<div class="${r.ok?'ok':'bad'}">${r.ok?'✓':'✕'} N° ${esc(r.entry)} — ${esc(r.scelle||'')} : ${esc(r.message)}</div>`).join('')}</div>`;}
-  if(button){button.disabled=false;button.textContent='Confirmer';}if(results.some(x=>x.ok)){beep();vibrate([70,35,70]);}setStatus(`Mise en mouvement groupée terminée : ${results.filter(x=>x.ok).length}/${results.length} réussi(s)`,results.every(x=>x.ok)?'good':'bad');
+  if(state.queueMoveBusy)return;
+  const auth=activeScannerSession(),isAdmin=!!auth?.session?.isAdmin,linkedIdentity=String(localStorage.getItem(DEVICE_IDENTITY_KEY)||'').trim();
+  const name=linkedIdentity||(isAdmin?String(auth.session.name||'').trim().replace(/\s+/g,' '):String($('queueMoveName')?.value||'').trim().replace(/\s+/g,' '));
+  const destination=String($('queueMoveDestination')?.value||'').trim(),err=$('queueMoveError'),button=$('queueMoveSubmit');
+  const fail=m=>{if(err){err.textContent=m;err.classList.add('show');}setStatus(m,'bad');};
+  if(name.length<3){fail('Identité de prise en charge absente ou invalide. Vérifie l’attribution du téléphone ou indique le nom et le prénom.');$('queueMoveName')?.focus();return;}
+  if(!destination){fail('La destination est obligatoire.');$('queueMoveDestination')?.focus();return;}
+  const selected=state.multiQueue.filter(x=>x.selected),eligible=selected.filter(x=>String(x.data?.status||'').toUpperCase()==='EN STOCK');
+  if(!eligible.length){fail('Aucun scellé sélectionné n’est en stock.');return;}
+  const identityLabel=linkedIdentity?'identité attribuée au téléphone':isAdmin?'session administrateur authentifiée':'identité déclarée sans connexion nominative';
+  if(!confirm(`Confirmer la mise en mouvement de ${eligible.length} scellé(s) ?\n\nDestination : ${destination}\nPris en charge par : ${name}\nIdentité : ${identityLabel}\n\nLe serveur traitera la liste en une seule opération groupée et indiquera le résultat de chaque scellé.`))return;
+  // Keep stable idempotency keys on each queue item. If the response is lost, retrying
+  // the batch reuses those keys and the server returns the recorded result instead of duplicating movements.
+  eligible.forEach(item=>{const moveSig=JSON.stringify([item.token,destination,name,linkedIdentity,isAdmin,String(item.moveMotif||'')]);if(item.moveRequestSignature!==moveSig){item.moveRequestSignature=moveSig;item.moveRequestId=makeScannerRequestId();}});
+  const signature=JSON.stringify({entries:eligible.map(x=>[Number(x.entry),x.moveRequestId]),destination,name,linkedIdentity,isAdmin});
+  if(state.pendingBatchMovementSignature!==signature){state.pendingBatchMovementSignature=signature;state.pendingBatchMovementId=makeScannerRequestId();}
+  if(state.queueDraftEnabled||state.queueDraftExists){state.queueDraftDirty=true;const saved=await saveQueueDraft(true);if(!saved){fail('La série et ses clés de reprise n’ont pas pu être sauvegardées dans Drive. Aucun mouvement groupé n’a été envoyé ; rétablis la connexion puis réessaie.');return;}}
+  state.queueMoveBusy=true;if(button){button.disabled=true;button.textContent='Enregistrement groupé…';}renderMultiQueue();
+  const resultHost=$('multiQueueResult');if(resultHost){resultHost.classList.remove('hidden');resultHost.textContent='Envoi de la demande groupée…';}
+  try{
+    const payload={destination,investigatorName:name,motif:'',requestId:state.pendingBatchMovementId,itemsJson:JSON.stringify(eligible.map(item=>({scan:item.token,requestId:item.moveRequestId,motif:String(item.moveMotif||'')})))};
+    // If the device is assigned, it is authoritative. The backend also enforces this priority.
+    if(!linkedIdentity&&isAdmin&&auth?.session?.id&&auth?.token){payload.authToken=auth.token;payload.sessionId=String(auth.session.id);}
+    const out=await apiPost('movement-start-batch',payload,35000);
+    if(!out?.ok||!Array.isArray(out.items))throw Object.assign(new Error(out?.message||'Le serveur n’a pas confirmé le traitement groupé.'),{code:out?.code||'BATCH_MOVEMENT_FAILED'});
+    const results=[];const byKey=new Map(out.items.map(x=>[String(x.requestId||''),x]));
+    for(const item of eligible){const one=byKey.get(String(item.moveRequestId));if(one?.ok){item.data=Object.assign({},item.data,{status:one.status||'EN MOUVEMENT',dateSortie:one.dateSortie||item.data?.dateSortie,dateSortieHeure:one.dateSortieHeure||item.data?.dateSortieHeure,destination:one.destination||destination,retrievedBy:one.retrievedBy||name});item.selected=false;item.movementSaved=true;results.push({entry:item.entry,scelle:item.data.scelle,ok:true,already:!!one.already,message:one.already?'Mouvement déjà enregistré (reprise sécurisée)':'Mouvement enregistré'});}else{results.push({entry:item.entry,scelle:item.data.scelle,ok:false,message:String(one?.message||'Le serveur n’a pas renvoyé de résultat pour ce scellé.').slice(0,220)});}}
+    const good=results.filter(x=>x.ok).length,bad=results.length-good;
+    if(!bad){state.pendingBatchMovementSignature='';state.pendingBatchMovementId='';}
+    renderMultiQueue();
+    if(resultHost){resultHost.classList.remove('hidden');resultHost.innerHTML=`<b>${good}/${results.length} mise(s) en mouvement confirmée(s)${bad?` • ${bad} échec(s)`:''}</b><div>${results.map(r=>`<div class="${r.ok?'ok':'bad'}">${r.ok?'✓':'✕'} N° ${esc(r.entry)} — ${esc(r.scelle||'')} : ${esc(r.message)}</div>`).join('')}</div>`;}
+    if(good){beep();vibrate([70,35,70]);}
+    setStatus(`Mise en mouvement groupée terminée : ${good}/${results.length} confirmé(s)`,bad?'bad':'good');
+    if(state.queueDraftEnabled||state.queueDraftExists){const persisted=await persistQueueDraftQuietly();if(!persisted)queueDraftStatus('Mouvements traités ; la mise à jour du brouillon Drive a échoué. Les statuts du registre restent prioritaires.','warn');}
+  }catch(e){
+    // Keep the request keys: a timeout does not prove the server failed to commit.
+    fail(`Résultat du serveur incertain : ${String(e?.message||e||'Erreur inconnue').slice(0,220)}. Tu peux réessayer sans créer volontairement de doublon.`);
+    if(resultHost){resultHost.classList.remove('hidden');resultHost.innerHTML=`<b>Résultat à vérifier avant nouvelle tentative</b><div>${esc(String(e?.message||e||'Erreur inconnue'))}</div><p>Le serveur peut avoir enregistré tout ou partie de la demande avant la coupure. La prochaine tentative réutilisera les mêmes identifiants sécurisés.</p>`;}
+  }finally{state.queueMoveBusy=false;renderMultiQueue();if(button){button.disabled=false;button.textContent='Réessayer / confirmer';}updateCameraControls();}
 }
 
 function setMultiQueueControlResult(entry,result){
   const allowed=['CONFORME','ABSENT','EMPLACEMENT NON CONFORME','SCELLÉ À VÉRIFIER',''];
   if(!allowed.includes(String(result||'')))return;
   const item=state.multiQueue.find(x=>Number(x.entry)===Number(entry));if(!item||item.controlSaved)return;
-  item.controlResult=String(result||'');
+  item.controlResult=String(result||'');markQueueDraftDirty();
   // Keep focus in the current select; rebuilds here would make entering mixed results tedious on mobile.
   const auth=activeScannerSession(),selected=state.multiQueue.filter(x=>x.selected),pending=selected.filter(x=>!x.controlSaved&&!multiQueueControlAlreadyDone(x)),stock=pending.filter(x=>String(x.data?.status||'').toUpperCase()==='EN STOCK');
   const apply=$('queueApplyControlResult'),submit=$('queueSubmitControls'),help=$('queueControlHelp');
@@ -1138,41 +1247,47 @@ async function submitMultiQueueControls(){
   if(!selected.length){fail('Les scellés sélectionnés ont déjà été contrôlés. Scanne de nouveaux scellés ou change la sélection.');return;}
   const notStock=selected.filter(x=>String(x.data?.status||'').toUpperCase()!=='EN STOCK');
   if(notStock.length){fail(`Contrôle annulé : ${notStock.map(x=>'N° '+x.entry).join(', ')} n’est pas en stock. Désélectionne ces éléments.`);return;}
-  const missing=selected.filter(x=>!['CONFORME','ABSENT','EMPLACEMENT NON CONFORME','SCELLÉ À VÉRIFIER'].includes(String(x.controlResult||'')));
+  const allowed=['CONFORME','ABSENT','EMPLACEMENT NON CONFORME','SCELLÉ À VÉRIFIER'];
+  const missing=selected.filter(x=>!allowed.includes(String(x.controlResult||'')));
   if(missing.length){fail(`Choisis un résultat pour : ${missing.map(x=>'N° '+x.entry).join(', ')}. Tu peux appliquer un statut commun ou utiliser le menu de chaque ligne.`);return;}
   if(!state.guidedPlan?.campaign?.id){fail('Charge une campagne ouverte depuis « Contrôle guidé par emplacement » avant de soumettre les résultats groupés.');return;}
-  const planned=new Set((state.guidedPlan.items||[]).map(x=>Number(x.entry)));
-  const outside=selected.filter(x=>!planned.has(Number(x.entry)));
+  const planned=new Set((state.guidedPlan.items||[]).map(x=>Number(x.entry))),outside=selected.filter(x=>!planned.has(Number(x.entry)));
   if(outside.length){fail(`Ces scellés ne font pas partie de la campagne chargée : ${outside.map(x=>'N° '+x.entry).join(', ')}. Actualise la campagne ou retire-les de la sélection.`);return;}
   const description=selected.map(x=>`N° ${x.entry} — ${x.data?.scelle||'Scellé'} : ${x.controlResult}`).join('\n');
-  if(!confirm(`Enregistrer les contrôles physiques de ${selected.length} scellé(s) ?\n\n${description}\n\nChaque résultat sera enregistré individuellement dans la campagne ouverte. Les contrôles déjà enregistrés seront ignorés.`))return;
-  state.queueMoveBusy=true;if(button){button.disabled=true;button.textContent='Enregistrement des contrôles…';}renderMultiQueue();
-  if(resultHost){resultHost.classList.remove('hidden');resultHost.innerHTML=`<b>Contrôles en cours…</b><div>0 / ${selected.length} traité(s).</div>`;}
-  const results=[];let lastOut=null;
-  for(let i=0;i<selected.length;i++){
-    const item=selected[i],result=String(item.controlResult||'');
-    if(resultHost)resultHost.innerHTML=`<b>Contrôles en cours…</b><div>${i+1} / ${selected.length} — N° ${esc(item.entry)} • ${esc(result)}</div>`;
-    try{
-      const out=await apiPost('control',{scan:item.token,result,obs:String(item.controlObs||''),authToken:auth.token,agent:auth.session.name||''},20000);
-      if(!out?.ok)throw Object.assign(new Error(out?.message||'Contrôle refusé.'),{code:out?.code||'CONTROL_REFUSED'});
-      item.controlSaved=true;item.controlSavedResult=String(out.result||result);item.controlSavedAt=String(out.controlledAt||'');item.selected=false;
-      item.data=Object.assign({},item.data,{lastControlResult:item.controlSavedResult,lastControl:out.controlledAt||item.data?.lastControl||''});
-      if(!out.already){state.sessionChecks++;updateSessionProgress();}
-      if(out.campaignTitle){campaignUI({title:out.campaignTitle,progress:out.progress||{}});}
-      lastOut=out;results.push({entry:item.entry,scelle:item.data?.scelle||'',result:item.controlSavedResult,ok:true,already:!!out.already,message:out.already?'Résultat déjà présent dans la campagne':'Contrôle enregistré',dateTime:item.controlSavedAt});
-      beep();vibrate(25);
-    }catch(e){results.push({entry:item.entry,scelle:item.data?.scelle||'',result,ok:false,message:String(e?.message||e||'Erreur inconnue').slice(0,220)});}
-    if(resultHost)resultHost.innerHTML=`<b>Contrôles en cours…</b><div>${i+1} / ${selected.length} traités.</div>`;
-  }
-  state.queueMoveBusy=false;
-  if(state.guidedActive)await loadGuidedControlPlan(true);else if(activeScannerSession()?.session?.isAdmin)await loadGuidedControlPlan(true).catch(()=>{});
-  renderMultiQueue();
-  const ok=results.filter(x=>x.ok).length,bad=results.length-ok,skippedSaved=chosen.length-selected.length;
-  if(resultHost){resultHost.classList.remove('hidden');resultHost.innerHTML=`<b>${ok}/${results.length} contrôle(s) enregistré(s)${bad?` • ${bad} échec(s)`:''}</b>${skippedSaved?`<div>${skippedSaved} scellé(s) déjà contrôlé(s) ignoré(s).</div>`:''}<div>${results.map(r=>`<div class="${r.ok?'ok':'bad'}">${r.ok?'✓':'✕'} N° ${esc(r.entry)} — ${esc(r.scelle)} : ${esc(r.message)}${r.ok?` • ${esc(r.result)}${r.dateTime?' • '+esc(r.dateTime):''}`:''}${!r.ok?`<br><small>${esc(r.message)}</small>`:''}</div>`).join('')}</div>`;}
-  if(button){button.disabled=false;button.textContent='Enregistrer les contrôles sélectionnés';}
-  setStatus(`Contrôles groupés terminés : ${ok}/${results.length} réussi(s)`,bad?'bad':'good');
-  if(help)help.textContent=bad?'Les réussites sont enregistrées ; les lignes en échec restent sélectionnées pour permettre une nouvelle tentative.':'Tous les contrôles sélectionnés sont enregistrés. Tu peux continuer à scanner ou vider la liste.';
+  if(!confirm(`Enregistrer les contrôles physiques de ${selected.length} scellé(s) ?\n\n${description}\n\nLe serveur validera chaque résultat et enregistrera les réussites dans une seule écriture.`))return;
+  selected.forEach(item=>{const controlSig=JSON.stringify([item.token,String(item.controlResult||''),String(item.controlObs||'')]);if(item.controlRequestSignature!==controlSig){item.controlRequestSignature=controlSig;item.controlRequestId=makeScannerRequestId();}});
+  const signature=JSON.stringify(selected.map(x=>[Number(x.entry),x.controlRequestId,x.controlResult,String(x.controlObs||'')]));
+  state.pendingBatchControlSignature=signature;
+  if(state.queueDraftEnabled||state.queueDraftExists){state.queueDraftDirty=true;const saved=await saveQueueDraft(true);if(!saved){fail('La série et ses clés de reprise n’ont pas pu être sauvegardées dans Drive. Aucun contrôle groupé n’a été envoyé ; rétablis la connexion puis réessaie.');return;}}
+  state.queueMoveBusy=true;if(button){button.disabled=true;button.textContent='Enregistrement groupé…';}renderMultiQueue();
+  if(resultHost){resultHost.classList.remove('hidden');resultHost.textContent=`Envoi des ${selected.length} contrôles…`;}
+  try{
+    const payload={itemsJson:JSON.stringify(selected.map(item=>({scan:item.token,requestId:item.controlRequestId,result:String(item.controlResult||''),obs:String(item.controlObs||'')}))),requestId:makeScannerRequestId()};
+    const out=await apiPost('control-batch',payload,35000);
+    if(!out?.ok||!Array.isArray(out.items))throw Object.assign(new Error(out?.message||'Le serveur n’a pas confirmé le traitement groupé.'),{code:out?.code||'BATCH_CONTROL_FAILED'});
+    const byKey=new Map(out.items.map(x=>[String(x.requestId||''),x])),results=[];
+    for(const item of selected){const one=byKey.get(String(item.controlRequestId)),result=String(item.controlResult||'');
+      if(one?.ok){item.controlSaved=true;item.controlSavedResult=String(one.result||result);item.controlSavedAt=String(one.controlledAt||'');item.selected=false;item.data=Object.assign({},item.data,{lastControlResult:item.controlSavedResult,lastControl:one.controlledAt||item.data?.lastControl||''});if(!one.already){state.sessionChecks++;updateSessionProgress();}results.push({entry:item.entry,scelle:item.data?.scelle||'',result:item.controlSavedResult,ok:true,already:!!one.already,message:one.already?'Résultat déjà enregistré (reprise sécurisée)':'Contrôle enregistré',dateTime:item.controlSavedAt});beep();vibrate(25);
+      }else{results.push({entry:item.entry,scelle:item.data?.scelle||'',result,ok:false,message:String(one?.message||'Le serveur n’a pas renvoyé de résultat pour ce scellé.').slice(0,220)});}}
+    const ok=results.filter(x=>x.ok).length,bad=results.length-ok;
+    if(!bad)state.pendingBatchControlSignature='';
+    if(out.campaignTitle)campaignUI({title:out.campaignTitle,progress:out.progress||{}});
+    // Refreshing the view is secondary: it must not turn a confirmed server write
+    // into a misleading 'result uncertain' message if the refresh itself fails.
+    if(state.guidedActive||activeScannerSession()?.session?.isAdmin){
+      try{await loadGuidedControlPlan(true);}catch(refreshError){setStatus('Contrôles enregistrés ; actualisation du plan indisponible. Utilise Actualiser pour resynchroniser.','warn');}
+    }
+    renderMultiQueue();
+    if(resultHost){resultHost.classList.remove('hidden');resultHost.innerHTML=`<b>${ok}/${results.length} contrôle(s) confirmé(s)${bad?` • ${bad} échec(s)`:''}</b><div>${results.map(r=>`<div class="${r.ok?'ok':'bad'}">${r.ok?'✓':'✕'} N° ${esc(r.entry)} — ${esc(r.scelle)} : ${esc(r.message)}${r.ok?` • ${esc(r.result)}${r.dateTime?' • '+esc(r.dateTime):''}`:''}</div>`).join('')}</div>`;}
+    setStatus(`Contrôles groupés terminés : ${ok}/${results.length} confirmé(s)`,bad?'bad':'good');
+    if(help)help.textContent=bad?'Les réussites sont enregistrées. Les lignes en échec restent sélectionnées ; réessaie après avoir vérifié la connexion.':'Tous les contrôles sélectionnés sont enregistrés. Tu peux continuer à scanner ou vider la liste.';
+    if(state.queueDraftEnabled||state.queueDraftExists){const persisted=await persistQueueDraftQuietly();if(!persisted)queueDraftStatus('Contrôles traités ; la mise à jour du brouillon Drive a échoué. Le registre demeure la référence.','warn');}
+  }catch(e){
+    fail(`Résultat du serveur incertain : ${String(e?.message||e||'Erreur inconnue').slice(0,220)}. Les identifiants de demande sont conservés pour permettre une reprise sans doublon.`);
+    if(resultHost){resultHost.classList.remove('hidden');resultHost.innerHTML=`<b>Résultat à vérifier avant nouvelle tentative</b><div>${esc(String(e?.message||e||'Erreur inconnue'))}</div><p>La demande a pu être enregistrée malgré la coupure. Réessaie avec les mêmes lignes : le serveur vérifiera les identifiants de demande.</p>`;}
+  }finally{state.queueMoveBusy=false;renderMultiQueue();if(button){button.disabled=false;button.textContent='Enregistrer les contrôles sélectionnés';}updateCameraControls();}
 }
+
 window.setMultiQueueControlResult=setMultiQueueControlResult;
 window.applyMultiQueueControlResult=applyMultiQueueControlResult;
 window.submitMultiQueueControls=submitMultiQueueControls;
@@ -1187,7 +1302,7 @@ async function submitAdminClose(stock,single,prefix){
   if(!auth?.session?.isAdmin){fail('Reconnecte-toi avec un compte administrateur.');return;}if(reason.length<5){fail('Le motif doit comporter au moins cinq caractères.');return;}if(!stock.length){fail('Aucun scellé en stock à clôturer.');return;}
   if(!confirm(`CONFIRMATION ADMINISTRATIVE\n\nClôturer et archiver ${stock.length} scellé(s) ?\n\n${stock.map(x=>'N° '+x.entry+' — '+(x.data?.scelle||'')).join('\n')}\n\nMotif : ${reason}\n\nCette action est définitive pour le registre actif.`))return;
   state.queueMoveBusy=true;if(button){button.disabled=true;button.textContent='Clôture sécurisée…';}renderMultiQueue();
-  try{const out=await apiPost('seal-admin-close',{sessionId:String(auth.session.id),authToken:auth.token,scansJson:JSON.stringify(stock.map(x=>x.token)),closingReason:reason},30000);if(!out?.ok)throw Object.assign(new Error(out?.message||'La clôture a été refusée.'),{code:out?.code||'CLOSURE_REFUSED'});if(!Array.isArray(out.closed)||out.closed.length!==stock.length)throw new Error('Le serveur n’a pas confirmé la clôture de tous les scellés. Actualise la liste avant toute nouvelle action.');
+  try{const closureSignature=JSON.stringify([stock.map(x=>x.token),reason]);if(button.dataset.requestSignature!==closureSignature){button.dataset.requestSignature=closureSignature;button.dataset.requestId=makeScannerRequestId();}const out=await apiPost('seal-admin-close',{sessionId:String(auth.session.id),authToken:auth.token,scansJson:JSON.stringify(stock.map(x=>x.token)),closingReason:reason,requestId:button.dataset.requestId||makeScannerRequestId()},30000);if(!out?.ok)throw Object.assign(new Error(out?.message||'La clôture a été refusée.'),{code:out?.code||'CLOSURE_REFUSED'});if(!Array.isArray(out.closed)||out.closed.length!==stock.length)throw new Error('Le serveur n’a pas confirmé la clôture de tous les scellés. Actualise la liste avant toute nouvelle action.');
     const closed=Array.isArray(out.closed)?out.closed:[],closedMap=new Map(closed.map(x=>[Number(x.entry),x]));stock.forEach(item=>{const saved=closedMap.get(Number(item.entry));if(saved){item.data=Object.assign({},item.data,{status:'CLOTURE',dateClose:saved.dateClose,closedBy:saved.closedBy,closingReason:reason});item.selected=false;const queued=state.multiQueue.find(x=>Number(x.entry)===Number(item.entry));if(queued){queued.data=Object.assign({},queued.data,{status:'CLOTURE',dateClose:saved.dateClose,closedBy:saved.closedBy,closingReason:reason});queued.selected=false;}}});
     if(single){const form=$('adminCloseForm');if(form)form.innerHTML=`<div class="notice good">Scellé clôturé et archivé. Motif : ${esc(reason)}</div>`;state.sealData=Object.assign({},state.sealData,{status:'CLOTURE'});const card=$('sealCard');if(card)card.innerHTML=`<div class="saved"><div class="big">✅</div><b>Scellé clôturé et archivé</b><div class="pill">N° ${esc(stock[0].entry)}</div><p class="muted">${esc(reason)}</p><button class="next" id="nextBtn" type="button">📷 Scanner un autre scellé</button></div>`;$('nextBtn')?.addEventListener('click',resumeScanner);}
     else {const form=$('multiQueueCloseForm');if(form)form.innerHTML=`<div class="notice good">${closed.length} scellé(s) clôturé(s) et archivé(s). ${esc(reason)}</div>`;}
@@ -1196,7 +1311,8 @@ async function submitAdminClose(stock,single,prefix){
   finally{state.queueMoveBusy=false;if(button){button.disabled=false;button.textContent='Confirmer la clôture';}renderMultiQueue();updateCameraControls();}
 }
 window.toggleMultiQueueSelection=toggleMultiQueueSelection;window.removeMultiQueueItem=removeMultiQueueItem;window.openMultiQueueItem=openMultiQueueItem;
-$('queueSelectAll')?.addEventListener('click',()=>{const allSelected=state.multiQueue.length&&state.multiQueue.every(x=>x.selected);state.multiQueue.forEach(x=>x.selected=!allSelected);renderMultiQueue();});
+$('queueSelectAll')?.addEventListener('click',()=>{const allSelected=state.multiQueue.length&&state.multiQueue.every(x=>x.selected);state.multiQueue.forEach(x=>x.selected=!allSelected);markQueueDraftDirty();renderMultiQueue();});
+$('queueSaveDraft')?.addEventListener('click',()=>{void saveQueueDraft(false);});$('queueResumeDraft')?.addEventListener('click',()=>{void resumeQueueDraft();});$('queueDeleteDraft')?.addEventListener('click',()=>{void deleteQueueDraft();});
 $('queueClear')?.addEventListener('click',clearMultiQueue);$('queueOpenBulkMove')?.addEventListener('click',showMultiQueueMoveForm);$('queueOpenBulkClose')?.addEventListener('click',()=>showAdminCloseForm(false));
 $('queueApplyControlResult')?.addEventListener('click',applyMultiQueueControlResult);$('queueSubmitControls')?.addEventListener('click',submitMultiQueueControls);
 
@@ -1511,7 +1627,6 @@ function formatMovementDate(value){
 }
 function showMovementForm(){
   const auth=activeScannerSession(),session=auth?.session,isAdmin=!!auth?.session?.isAdmin,form=$('movementForm');if(!form)return;
-  if(auth&&!isAdmin){setStatus('Une session agent ne permet pas d’ouvrir une prise en charge depuis les fonctions d’administration.','bad');return;}
   if(!state.sealData||String(state.sealData.status||'').toUpperCase()!=='EN STOCK'){setStatus('Seul un scellé actuellement en stock peut être pris en charge.','bad');return;}
   const linkedIdentity=String(localStorage.getItem(DEVICE_IDENTITY_KEY)||'').trim();
   const identityHtml=linkedIdentity?`<div class="move-identity linked"><span>PRISE EN CHARGE ATTRIBUÉE À</span><strong>${esc(linkedIdentity)}</strong><small>Identité attribuée à ce téléphone par le code d’activation. Cette identité de poste est prioritaire et ne peut pas être modifiée ici.</small></div>`:isAdmin?`<div class="move-identity"><span>Pris en charge par</span><strong>${esc(session.name)}${session.grade?' • '+esc(session.grade):''}</strong><small>Identité issue de la session administrateur authentifiée.</small></div>`:`<label for="movementAgentName">Nom et prénom de la personne qui récupère le scellé *</label><input id="movementAgentName" maxlength="120" autocomplete="name" required placeholder="Ex. GND Prénom NOM"><p class="move-note">Ce téléphone n’a pas d’identité liée confirmée. Demande à un administrateur de créer un nouveau code d’activation attribué à cet agent, puis utilise « Réassocier ».</p>`;
@@ -1523,7 +1638,6 @@ async function submitScannerMovement(){
   if(state.busy)return;
   const auth=activeScannerSession(),session=auth?.session,isAdmin=!!auth?.session?.isAdmin,linkedIdentity=String(localStorage.getItem(DEVICE_IDENTITY_KEY)||'').trim(),token=String(state.token||''),declaredName=String($('movementAgentName')?.value||'').trim().replace(/\s+/g,' '),investigatorName=linkedIdentity||(isAdmin?String(session?.name||'').trim():declaredName),destination=String($('movementDestination')?.value||'').trim(),motif=String($('movementMotif')?.value||'').trim(),button=$('submitMovementButton'),err=$('movementError');
   const fail=message=>{if(err){err.textContent=String(message||'Opération refusée.');err.classList.add('show');}};
-  if(auth&&!isAdmin){fail('La prise en charge sans connexion est le seul mode agent. Ferme et rouvre la fiche en mode terrain.');return;}
   if(investigatorName.length<3){fail(linkedIdentity?'L’identité liée à ce téléphone est invalide. Demande un nouvel appairage à un administrateur.':'Indique le nom et le prénom de la personne qui récupère le scellé.');$('movementAgentName')?.focus();return;}
   if(!destination){fail('La destination est obligatoire.');$('movementDestination')?.focus();return;}
   if(String(state.sealData?.status||'').toUpperCase()!=='EN STOCK'){fail('Ce scellé n’est plus en stock. Recharge sa fiche avant de continuer.');return;}
@@ -1531,7 +1645,7 @@ async function submitScannerMovement(){
   if(!confirm(`Confirmer la prise en charge du scellé N° ${state.sealData?.entry||'—'} ?\n\nPris en charge par : ${investigatorName}\nDestination : ${destination}\nIdentité : ${identityLabel}\n\nLe scellé passera EN MOUVEMENT.`))return;
   state.busy=true;if(button){button.disabled=true;button.textContent='Enregistrement…';}
   try{
-    const payload={scan:token,destination,investigatorName,motif};
+    const signature=JSON.stringify([token,destination,motif,investigatorName,linkedIdentity,isAdmin]);if(button.dataset.requestSignature!==signature){button.dataset.requestSignature=signature;button.dataset.requestId=makeScannerRequestId();}const payload={scan:token,destination,investigatorName,motif,requestId:button.dataset.requestId||makeScannerRequestId()};
     // If this phone has an assigned identity, omit the admin session fields so the server records the identity attached to the device token.
     if(!linkedIdentity&&isAdmin&&auth?.token&&session?.id){payload.authToken=auth.token;payload.sessionId=String(session.id);}
     const out=await apiPost('movement-start',payload,18000);if(!out?.ok)throw Object.assign(new Error(out?.message||'Le mouvement a été refusé.'),{code:out?.code||'MOVEMENT_REFUSED'});
@@ -1560,7 +1674,7 @@ async function submitScannerReturn(){
   const fail=message=>{if(err){err.textContent=String(message||'Opération refusée.');err.classList.add('show');}};
   if(!auth?.session?.isAdmin){fail('Connexion administrateur obligatoire.');return;}if(!confirmedInPlace){fail('Confirme que le scellé est physiquement présent à son emplacement attendu.');return;}
   state.busy=true;if(button){button.disabled=true;button.textContent='Vérification…';}
-  try{const out=await apiPost('movement-return',{scan:token,authToken:auth.token,returnState,confirmedInPlace,obs},18000);if(!out?.ok)throw Object.assign(new Error(out?.message||'Le retour a été refusé.'),{code:out?.code||'RETURN_REFUSED'});state.busy=false;beep();vibrate([70,35,70]);state.sealData=null;await lookupToken(token);}
+  try{const signature=JSON.stringify([token,returnState,obs,confirmedInPlace]);if(button&&button.dataset.requestSignature!==signature){button.dataset.requestSignature=signature;button.dataset.requestId=makeScannerRequestId();}const out=await apiPost('movement-return',{scan:token,authToken:auth.token,returnState,confirmedInPlace,obs,requestId:button?.dataset.requestId||makeScannerRequestId()},18000);if(!out?.ok)throw Object.assign(new Error(out?.message||'Le retour a été refusé.'),{code:out?.code||'RETURN_REFUSED'});state.busy=false;beep();vibrate([70,35,70]);state.sealData=null;await lookupToken(token);}
   catch(e){state.busy=false;if(button){button.disabled=false;button.textContent='Confirmer le retour';}if(['AUTH_REQUIRED','AUTH_EXPIRED','AUTH_REVOKED'].includes(String(e.code||''))){clearSavedScannerSession();await showSessionLogin('La session a expiré. Reconnecte-toi puis recommence.');return;}fail(String(e.message||e||'Échec du retour.'));}finally{updateCameraControls();}
 }
 async function lookupToken(token){
@@ -1659,13 +1773,15 @@ Veux-tu quand même enregistrer le contrôle de ce scellé ?`))return;}
   state.busy=true;if(button)button.disabled=true;const card=$('sealCard'),obs=(card.querySelector('#obs')?.value||'').trim();
   card.querySelectorAll('[data-result]').forEach(b=>b.disabled=true);card.insertAdjacentHTML('beforeend','<div id="saving" class="status">Enregistrement du contrôle…</div>');
   try{
-    const out=await apiPost('control',{scan:state.token,result,obs,authToken:auth.token,agent:auth.session.name||''},12000);$('saving')?.remove();
+    const requestSignature=JSON.stringify([state.token,result,obs]);if(button){if(button.dataset.requestSignature!==requestSignature){button.dataset.requestSignature=requestSignature;button.dataset.requestId=makeScannerRequestId();}}
+    const out=await apiPost('control',{scan:state.token,result,obs,authToken:auth.token,agent:auth.session.name||'',requestId:button?.dataset.requestId||makeScannerRequestId()},12000);$('saving')?.remove();
     if(!out?.ok)throw Object.assign(new Error(out?.message||'Contrôle refusé.'),{code:out?.code||'CONTROL_REFUSED'});
     if(!out.already){state.sessionChecks++;updateSessionProgress();}beep();vibrate([60,40,60]);const p=out.progress||{};if(out.campaignTitle)campaignUI({title:out.campaignTitle,progress:p});
-    if(state.guidedActive){await loadGuidedControlPlan(true);}
+    let refreshWarning='';
+    if(state.guidedActive){try{await loadGuidedControlPlan(true);}catch(refreshError){refreshWarning=' Le contrôle est enregistré, mais le plan de contrôle n’a pas pu être actualisé.';}}
     const nextGuided=guidedNextItem();
     card.innerHTML=`<div class="saved"><div class="big">✅</div><b>${out.already?'Résultat déjà enregistré':'Contrôle enregistré'}</b><div class="pill">${esc(out.result||result)}</div>${out.campaignTitle?`<div class="muted" style="margin-top:8px"><b>${esc(out.campaignTitle)}</b><br>${Number(p.done||0)}/${Number(p.total||0)} contrôlés • ${Number(p.remaining||0)} restant(s)</div>`:''}${state.guidedActive?`<div class="muted" style="margin-top:8px">${nextGuided?`Prochain : <b>N° ${esc(nextGuided.entry)} — ${esc(nextGuided.scelle||'Scellé')}</b><br>${esc(nextGuided.locationLabel||'')}`:'Tous les scellés de ce lieu ont été traités.'}</div>`:''}</div><button class="next" id="nextBtn" type="button">${state.guidedActive&&nextGuided?`📷 Scanner le suivant — N° ${esc(nextGuided.entry)}`:'📷 Contrôler le scellé suivant'}</button>`;
-    $('nextBtn').onclick=resumeScanner;state.busy=false;showResultCameraState();setStatus(state.guidedActive&&nextGuided?`Contrôle enregistré • prochain scellé N° ${nextGuided.entry}`:'Contrôle enregistré • prêt pour le suivant','good');updateCameraControls();
+    $('nextBtn').onclick=resumeScanner;state.busy=false;showResultCameraState();setStatus((state.guidedActive&&nextGuided?`Contrôle enregistré • prochain scellé N° ${nextGuided.entry}`:'Contrôle enregistré • prêt pour le suivant')+refreshWarning,refreshWarning?'warn':'good');updateCameraControls();
   }catch(e){state.busy=false;if(button)button.disabled=false;card.querySelectorAll('[data-result]').forEach(b=>b.disabled=false);$('saving')?.remove();if(['AUTH_REQUIRED','AUTH_EXPIRED','AUTH_REVOKED'].includes(String(e.code||''))){clearSavedScannerSession();await showSessionLogin('La session a expiré. Reconnecte-toi puis recommence.');return;}card.insertAdjacentHTML('beforeend',`<div class="error" style="margin-top:9px"><b>Échec de l’enregistrement</b><div style="margin-top:4px">${esc(e.message)}</div><div style="margin-top:4px">Le contrôle n’est pas confirmé. Réessaie après vérification de la connexion.</div></div>`);setStatus('Contrôle non confirmé • vérifie la connexion puis réessaie','bad');updateCameraControls();}
 }
 function pauseReader(){
@@ -2049,8 +2165,8 @@ async function loadZxing(){
   // UMD sont ensuite essayées en premier (elles exposent ZXingBrowser en script classique).
   const urls=[
     './vendor/zxing-browser.umd.min.js',
-    'https://cdn.jsdelivr.net/npm/@zxing/browser@0.2.1/umd/index.min.js',
-    'https://unpkg.com/@zxing/browser@0.2.1/umd/index.min.js',
+    'https://cdn.jsdelivr.net/npm/@zxing/browser@0.2.1/umd/zxing-browser.min.js',
+    'https://unpkg.com/@zxing/browser@0.2.1/umd/zxing-browser.min.js',
   ];
   const errors=[];
   for(const url of urls){try{await loadScriptUrl(url,4500);if(window.ZXingBrowser?.BrowserQRCodeReader)return true;errors.push(safeUrlHost(url)+': le script ne fournit pas ZXingBrowser');}catch(e){errors.push(String(e?.message||e));}}
@@ -2062,6 +2178,7 @@ async function loadJsQR(){
   if(window.jsQR)return true;
   if(jsQrLoadPromise)return jsQrLoadPromise;
   jsQrLoadPromise=(async()=>{
+  // A vendor/ copy is preferred when shipped; CDN endpoints remain as a fallback.
   const urls=['./vendor/jsQR.min.js','https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js','https://unpkg.com/jsqr@1.4.0/dist/jsQR.js'];
   for(const url of urls){try{await loadScriptUrl(url,4500);if(window.jsQR)return true;}catch(e){}}
   throw new Error('Le lecteur QR par photo ne peut pas être chargé. Vérifie la connexion puis réessaie.');
@@ -2070,7 +2187,7 @@ async function loadJsQR(){
 }
 $('qrPhoto').onchange=async()=>{
   const file=$('qrPhoto').files?.[0];$('qrPhoto').value='';if(!file||state.busy)return;stopCamera();state.busy=true;setStatus('Analyse de la photo…');
-  try{if(!window.jsQR)await loadJsQR();const bmp=await createImageBitmap(file);let code=null;try{const max=1600,scale=Math.min(1,max/Math.max(bmp.width,bmp.height)),canvas=document.createElement('canvas');canvas.width=Math.round(bmp.width*scale);canvas.height=Math.round(bmp.height*scale);const ctx=canvas.getContext('2d',{willReadFrequently:true});if(!ctx)throw new Error('Canvas indisponible pour analyser la photo.');ctx.drawImage(bmp,0,0,canvas.width,canvas.height);const image=ctx.getImageData(0,0,canvas.width,canvas.height);code=jsQR(image.data,image.width,image.height,{inversionAttempts:'attemptBoth'});}finally{try{bmp.close();}catch(e){}}if(!code)throw new Error('Aucun QR trouvé sur la photo.');await lookupToken(tokenFrom(code.data));}catch(e){state.busy=false;$('sealCard').classList.remove('hidden');$('sealCard').innerHTML=`<div class="error"><b>QR non détecté</b><div style="margin-top:4px">${esc(e.message)}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Revenir au scanner</button>`;setStatus('Lecture impossible','bad');}
+  try{if(!window.jsQR)await loadJsQR();const bmp=await createImageBitmap(file);let code=null;try{const max=1600,scale=Math.min(1,max/Math.max(bmp.width,bmp.height)),canvas=document.createElement('canvas');canvas.width=Math.round(bmp.width*scale);canvas.height=Math.round(bmp.height*scale);const ctx=canvas.getContext('2d',{willReadFrequently:true});if(!ctx)throw new Error('Canvas indisponible pour analyser la photo.');ctx.drawImage(bmp,0,0,canvas.width,canvas.height);const image=ctx.getImageData(0,0,canvas.width,canvas.height);code=jsQR(image.data,image.width,image.height,{inversionAttempts:'attemptBoth'});}finally{try{bmp.close();}catch(e){}}if(!code)throw new Error('Aucun QR trouvé sur la photo.');const token=tokenFrom(code.data);state.busy=false;await lookupToken(token);}catch(e){state.busy=false;$('sealCard').classList.remove('hidden');$('sealCard').innerHTML=`<div class="error"><b>QR non détecté</b><div style="margin-top:4px">${esc(e.message)}</div></div><button class="next" type="button" onclick="resumeScanner()">📷 Revenir au scanner</button>`;setStatus('Lecture impossible','bad');}
 };
 async function boot(){
   updateModeButton();updateFeedbackControls();updateSessionProgress();renderMultiQueue();updateConnectionBadge();
@@ -2148,7 +2265,8 @@ $('navQueue')?.addEventListener('click',()=>{
 $('roleStartScan')?.addEventListener('click',()=>{$('navScan')?.click();});
 $('roleStartGuided')?.addEventListener('click',()=>{$('navCampaigns')?.click();});
 $('diagProbeButton')?.addEventListener('click',async()=>{const auth=activeScannerSession();if(!auth?.session?.isAdmin){setStatus('Diagnostic réservé à l’administration.','bad');return;}const b=$('diagProbeButton');if(b){b.disabled=true;b.textContent='Test en cours…';}try{const result=await apiCall('ping',{},7000);if(!result?.ok)throw new Error(result?.message||'Le service n’a pas confirmé le test.');setStatus('Test du service terminé.','good');}catch(e){scannerTelemetry.connection.service=(typeof navigator!=='undefined'&&!navigator.onLine)?'offline':'error';scannerTelemetry.connection.lastError=String(e?.message||e);updateConnectionBadge();setStatus('Test du service en échec : '+String(e?.message||e),'bad');}finally{if(b){b.disabled=false;b.textContent='Tester le service';}refreshPerformanceDiagnostics();}});
-window.resumeScanner=resumeScanner;try{document.title='SCELLÉS — ESPACES V8.4.4';document.body.dataset.scannerVersion='8.4.4';}catch(_){}updateConnectionBadge();activateAppView('home');boot();
+window.addEventListener('beforeunload',event=>{const pending=(state.multiQueue||[]).some(item=>!item.movementSaved&&!item.controlSaved);if(pending&&!state.queueMoveBusy){event.preventDefault();event.returnValue='';}});
+window.resumeScanner=resumeScanner;try{document.title='SCELLÉS — ESPACES V8.5.0';document.body.dataset.scannerVersion='8.5.0';}catch(_){}updateQueueDraftControls();updateConnectionBadge();activateAppView('home');boot();
 
 </script>
 <script>
