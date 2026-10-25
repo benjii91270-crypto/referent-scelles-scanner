@@ -9,7 +9,7 @@
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<title>SCELLÉS — ESPACES V8.4.3</title>
+<title>SCELLÉS — ESPACES V8.4.4</title>
 <style>
 :root{--paper:#f4f1e9;--paper-2:#ebe7dd;--white:#fffdf9;--ink:#191b19;--muted:#70746d;--line:#d7d4ca;--line-dark:#aaa99e;--red:#df4c30;--red-dark:#af321e;--orange-soft:#fae0d7;--acid:#d5f35c;--green:#1f785e;--green-soft:#e0efe8;--blue:#244d90;--blue-soft:#e4ebf7;--shadow:0 10px 24px rgba(31,32,27,.06);--safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}html{background:var(--paper);scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.42;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #ed8a71;outline-offset:2px}svg{display:block}a{color:inherit}.hidden{display:none!important}
@@ -494,7 +494,7 @@ button,.btn,.mobile-more-link,.command-row,.admin-command-card,.workstation-note
 .lookup-skeleton{display:flex;align-items:center;gap:15px;min-height:150px;padding:22px;background:#f8f8f4;border:1px solid #e1e4dc;border-radius:14px;color:#20251f}.lookup-skeleton b{display:block;font-size:16px;line-height:1.3}.lookup-skeleton small{display:block;margin-top:5px;color:#727970;font-size:12px}.lookup-spinner{width:30px;height:30px;border:3px solid #e2e7da;border-top-color:#657d29;border-radius:50%;animation:lookupSpin .7s linear infinite;flex:none}@keyframes lookupSpin{to{transform:rotate(360deg)}}.lookup-error-actions{display:flex;gap:9px;flex-wrap:wrap}.anomaly-loading{min-height:94px}.anomaly-loading-bar{height:4px;border-radius:99px;background:#e7eadf;overflow:hidden;margin-top:16px}.anomaly-loading-bar i{display:block;width:35%;height:100%;background:#8ab73e;border-radius:99px;animation:anomalyLoad 1.1s ease-in-out infinite alternate}@keyframes anomalyLoad{from{transform:translateX(0)}to{transform:translateX(185%)}}.scanner-diagnostics pre{user-select:text}
 @media(prefers-reduced-motion:reduce){.lookup-spinner,.anomaly-loading-bar i{animation:none!important}}
 
-/* V8.4.3 — commandes caméra contextuelles et sélecteur d’objectif tactile. */
+/* V8.4.4 — retour automatique au scan et attribution fiable du poste. */
 .camera-select-wrap{display:none;gap:6px;flex-direction:column;margin:10px 0 2px;padding:10px 12px;border:1px solid #d3dedf;background:#f5faf9;border-radius:10px;max-width:100%;}
 .camera-select-wrap.show{display:flex;}
 .camera-select-wrap span{font-size:9px;letter-spacing:.13em;font-weight:950;color:#526b70;}
@@ -504,7 +504,7 @@ button,.btn,.mobile-more-link,.command-row,.admin-command-card,.workstation-note
 @media(max-width:700px){.camera-select-wrap{margin-top:9px}.camera-select-wrap select{min-height:48px;font-size:13px}.scanner-diagnostics .diag-health{align-items:flex-start;gap:12px}.scanner-diagnostics .diag-health strong{max-width:64%;}}
 </style>
 </head>
-<body data-scanner-version="8.4.0">
+<body data-scanner-version="8.4.4">
 <div id="sealSheetOverlay" class="seal-sheet-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="sealSheetDialogTitle">
   <div class="seal-sheet-dialog" role="document">
     <header class="seal-sheet-header">
@@ -553,7 +553,7 @@ button,.btn,.mobile-more-link,.command-row,.admin-command-card,.workstation-note
         <button id="navAdminFunctions" class="task-tab hidden needs-admin" type="button" aria-pressed="false"><span class="v8-nav-icon">⚙</span><span class="v8-nav-text">Gestion du scellé</span></button>
         <div class="v8-nav-footer"><span class="v8-live-dot"></span><span id="v8NavStatus">Poste vérifié</span><small id="v8NavIdentity">Poste autorisé</small></div>
       </nav>
-      <div class="atelier-tools"><span class="signal-label"><i class="signal-dot"></i><span id="connectionLabel">Connexion en cours</span></span><span id="deviceReadyText" class="status-chip" aria-live="polite">Vérification…</span><div id="userBar" class="user-bar"><span id="userLabel" class="user-label"></span><button id="changeUser" class="identity-action hidden" type="button">Espace admin</button></div></div>
+      <div class="atelier-tools"><span class="signal-label"><i class="signal-dot"></i><span id="connectionLabel">Connexion en cours</span></span><span id="deviceReadyText" class="status-chip" aria-live="polite">Vérification…</span><div id="userBar" class="user-bar"><span id="userLabel" class="user-label"></span><button id="changeUser" class="identity-action hidden" type="button">Espace admin</button><button id="relinkDevice" class="identity-action hidden" type="button" title="Associer ce téléphone à un autre agent avec un nouveau code d’activation">Réassocier</button></div></div>
     </div>
     <div class="atelier-pagebar"><span id="pageCrumb" class="page-crumb">SCELLÉS / OPÉRATIONS</span><h1 id="pageTitle" class="page-title">Espaces de travail</h1></div>
   </header>
@@ -602,7 +602,7 @@ button,.btn,.mobile-more-link,.command-row,.admin-command-card,.workstation-note
     </section>
 <section id="adminView" class="app-page" data-app-view="admin" aria-label="Contrôles physiques"><div class="v8-module-head"><div><span class="v8-overline">ESPACE 06 / ADMINISTRATION</span><h2>Contrôles physiques</h2><p>Contrôle un scellé après lecture ou lance une tournée guidée par emplacement.</p></div><span class="v8-module-index">06</span></div><div id="controlEmpty" class="v8-empty-module"><div class="v8-empty-symbol">✓</div><h3>Contrôle individuel ou tournée guidée</h3><p>Pour un contrôle individuel, lis un scellé. Pour une tournée, charge le plan de campagne ci-dessous.</p><button class="v8-button-primary" type="button" id="controlGoScan">Lire un scellé <span>→</span></button></div><div id="controlContext" class="v8-context-card hidden"></div><div id="individualControlWorkspace" class="v8-operation-workspace"></div><section id="scannerDiagnosticsPanel" class="scanner-diagnostics hidden" aria-label="Diagnostic du scanner"><div class="scanner-diagnostics-head"><div><span class="v8-overline">DIAGNOSTIC / ADMINISTRATION</span><h3>Performances du poste</h3><p>Mesures locales de lecture et de réponse du service. Aucun QR ni contenu de scellé n’est conservé ici.</p></div><button class="v8-button-secondary" id="diagProbeButton" type="button">Tester le service</button></div><div class="scanner-diagnostics-grid"><div class="diag-kpi"><span>Dernière ouverture de fiche</span><strong id="diagLastLookup">Aucune mesure</strong></div><div class="diag-kpi"><span>Médiane des 10 dernières</span><strong id="diagLookupMedian">—</strong></div><div class="diag-kpi"><span>Réponse du registre</span><strong id="diagLastResponse">—</strong></div><div class="diag-kpi"><span>Rendu fiche</span><strong id="diagLastRender">—</strong></div><div class="diag-kpi"><span>Complément anomalies</span><strong id="diagLastAnomaly">Non mesuré</strong></div><div class="diag-kpi"><span>QR reconnu → requête</span><strong id="diagDecodeOverhead">—</strong></div><div class="diag-kpi"><span>État lecteur</span><strong id="diagReader">—</strong></div></div><div class="diag-health"><span>Interprétation de la latence</span><strong id="diagLatencyAdvice">En attente de mesures</strong></div><div class="diag-health"><span>Connexion au service</span><strong id="diagNetwork">Non vérifié</strong></div><div class="diag-error"><span>Dernier état réseau</span><div id="diagLastError">Aucune erreur réseau observée.</div></div><details class="diag-request-details"><summary>Historique des 8 dernières requêtes</summary><pre id="diagRecentRequests">Aucune requête mesurée.</pre></details><p class="diag-disclaimer">Ces mesures sont conservées uniquement en mémoire sur cet appareil et sont remises à zéro au rechargement. Les durées observées dépendent également du réseau et du service Google.</p></section></section>
   </main>
-  <footer class="v7-footer"><span class="footer-logo">SCELLÉS / ESPACES</span><span>Une fonction par espace. Une trace par opération.</span><span class="footer-right">V8.4.3 • Choix direct de la caméra, latence mesurée et reprises terrain.</span></footer>
+  <footer class="v7-footer"><span class="footer-logo">SCELLÉS / ESPACES</span><span>Une fonction par espace. Une trace par opération.</span><span class="footer-right">V8.4.4 • Attribution du poste et retour automatique au scan après mouvement.</span></footer>
 </div>
 <script>
 
@@ -611,7 +611,7 @@ const SCANNER_API_ENDPOINT='https://referent-scelles-api.benjii91270.workers.dev
 const DEVICE_TOKEN_KEY='referent_scelles_device_token_v2';
 const DEVICE_IDENTITY_KEY='referent_scelles_assigned_identity_v1';
 const DEVICE_NAME_KEY='referent_scelles_device_name_v1';
-const SCANNER_VERSION='8.4.3';
+const SCANNER_VERSION='8.4.4';
 const SERIES_MODE_KEY='referent_scelles_series_mode_v1';
 const SOUND_PREF_KEY='referent_scelles_scanner_sound_v1';
 const VIBRATION_PREF_KEY='referent_scelles_scanner_vibration_v1';
@@ -624,7 +624,7 @@ function readPreferredCamera(){try{return localStorage.getItem(CAMERA_DEVICE_KEY
 function savePreferredCamera(id){try{if(id)localStorage.setItem(CAMERA_DEVICE_KEY,id);}catch(e){}}
 const state={lookupGeneration:0,lookupInProgress:false,lastDecodedAt:0,reader:null,controls:null,readerMode:'none',readerRunning:false,readerGeneration:0,decodeLoopTimer:null,nativeDetector:null,nativeDecodeErrors:0,stream:null,track:null,devices:[],deviceIndex:0,deviceId:readPreferredCamera(),busy:false,cameraOpening:false,cameraSwitching:false,cameraResumeOnVisible:false,resumeDecodeAfterVisibility:false,seriesMode:readSeriesMode(),soundEnabled:readBoolPreference(SOUND_PREF_KEY,true),vibrationEnabled:readBoolPreference(VIBRATION_PREF_KEY,true),sessionChecks:0,token:'',lastToken:'',lastAt:0,torch:false,torchSupported:false,zoom:null,campaign:null,photoMode:false,userAuth:null,pendingToken:'',sealData:null,sessionOptionsLoading:false,multiQueue:[],queueMoveBusy:false,investigatorOptions:[],recipientOptions:[],peopleOptionsRevision:0,guidedPlan:null,guidedLocationKey:'',guidedActive:false,guidedExpectedEntry:null,guidedLoading:false,guidedMissingBusy:false,qrCanvas:null,qrContext:null,jsqrDecodeErrors:0};
 const $=id=>document.getElementById(id);
-/* V8.4.3 — sélection directe de la caméra, mesure de latence et chargement QR rationalisé. */
+/* V8.4.4 — identité d’appareil prioritaire et reprise du scan après mouvement confirmé. */
 const scannerTelemetry={requests:[],lookups:[],lastLookup:null,connection:{network:(typeof navigator==='undefined'||navigator.onLine)?'online':'offline',service:'unknown',lastSuccessAt:0,lastError:'',lastProbeMs:null}};
 function perfClock(){return (typeof performance!=='undefined'&&performance.now)?performance.now():Date.now();}
 function durationLabel(ms){if(!Number.isFinite(Number(ms)))return '—';const n=Math.max(0,Number(ms));return n<1000?`${Math.round(n)} ms`:`${(n/1000).toFixed(2).replace('.',',')} s`;}
@@ -676,7 +676,10 @@ function loadSavedScannerSession(){
 function activeScannerSession(){const a=state.userAuth;if(!a?.token||!a?.session?.id)return null;if(!Number(a.expiresAt)||Date.now()>=Number(a.expiresAt)){clearSavedScannerSession();return null;}return a;}
 function clearSavedScannerSession(){state.userAuth=null;try{localStorage.removeItem(APP_SESSION_STORAGE_KEY);}catch(e){}updateSessionBadge();}
 function updateSessionBadge(){
-  const ready=$('deviceReadyText');if(ready)ready.textContent=localStorage.getItem(DEVICE_TOKEN_KEY)?'Poste autorisé':'À activer';
+  const deviceToken=localStorage.getItem(DEVICE_TOKEN_KEY)||'';
+  const ready=$('deviceReadyText');if(ready)ready.textContent=deviceToken?'Poste autorisé':'À activer';
+  const relink=$('relinkDevice');if(relink){relink.classList.toggle('hidden',!deviceToken);relink.disabled=!deviceToken;}
+  const homeIdentity=$('homeAgentInfo');if(homeIdentity){const identity=String(localStorage.getItem(DEVICE_IDENTITY_KEY)||'').trim();homeIdentity.textContent=identity|| (deviceToken?'Identité à vérifier':'Téléphone non attribué');}
   const bar=$('userBar'),label=$('userLabel'),button=$('changeUser'),auth=activeScannerSession(),sess=auth?.session,isAdmin=!!auth&&!!sess?.isAdmin;
   const guidedPanel=$('guidedControlPanel');if(guidedPanel){guidedPanel.classList.toggle('hidden',!isAdmin);if(!isAdmin)state.guidedActive=false;}const diagnostics=$('scannerDiagnosticsPanel');if(diagnostics)diagnostics.classList.toggle('hidden',!isAdmin);
   const guidedNav=$('navGuided'),guidedMeta=$('navGuidedMeta');if(guidedNav){guidedNav.classList.toggle('hidden',!isAdmin);guidedNav.classList.toggle('admin-visible',isAdmin);if(guidedMeta)guidedMeta.textContent=isAdmin?'Campagnes et contrôles':'Réservé administrateur';}
@@ -752,11 +755,33 @@ function showActivation(message){
   $('sessionLogin')?.classList.remove('show');updateSessionBadge();$('activation').classList.add('show');$('activationMsg').textContent=message||'Ce téléphone doit être autorisé une seule fois avant le premier contrôle.';
 }
 function hideActivation(){$('activation').classList.remove('show');}
+function requestDeviceReassignment(){
+  const currentIdentity=String(localStorage.getItem(DEVICE_IDENTITY_KEY)||'').trim();
+  const who=currentIdentity?` actuellement associé à ${currentIdentity}`:'';
+  const message=`Réassocier ce téléphone${who} ?\n\nCette action efface l’autorisation enregistrée dans ce navigateur et demande un nouveau code d’activation à usage unique créé par un administrateur.\n\nImportant : elle ne révoque pas l’ancien jeton côté serveur. Après la nouvelle activation, un administrateur devra révoquer l’ancienne entrée dans le logiciel principal.\n\nContinuer ?`;
+  if(!confirm(message))return;
+  stopCamera();clearSavedScannerSession();
+  [DEVICE_TOKEN_KEY,DEVICE_IDENTITY_KEY,DEVICE_NAME_KEY].forEach(key=>{try{localStorage.removeItem(key);}catch(_){}});
+  state.token='';state.lastToken='';state.lastAt=0;state.sealData=null;state.pendingToken='';state.busy=false;state.multiQueue=[];renderMultiQueue();updateUrlWithoutToken();
+  showActivation('Saisis le nouveau code créé par un administrateur pour associer ce téléphone à un gendarme précis.');
+  const input=$('pairCode');if(input){input.value='';input.focus();}
+  updateSessionBadge();
+}
 async function activateScanner(){
   const code=$('pairCode').value.trim().toUpperCase(); if(!code)return;
   $('activateBtn').disabled=true;$('activationMsg').textContent='Vérification du code…';
-  try{const d=await apiCall('pair',{code});if(!d?.ok)throw new Error(d?.message||'Code invalide.');localStorage.setItem(DEVICE_TOKEN_KEY,d.token);localStorage.setItem(DEVICE_IDENTITY_KEY,String(d.assignedIdentity||''));localStorage.setItem(DEVICE_NAME_KEY,String(d.deviceName||'Téléphone terrain'));hideActivation();$('pairCode').value='';await boot();}
-  catch(e){$('activationMsg').textContent=e.message==='SCANNER_NOT_ACTIVATED'?'Autorisation nécessaire.':String(e.message||e);}
+  try{
+    const d=await apiCall('pair',{code});if(!d?.ok)throw new Error(d?.message||'Code invalide.');
+    if(!d.token)throw new Error('Le serveur a accepté le code mais n’a pas renvoyé de jeton. Demande à un administrateur de vérifier l’appairage.');
+    localStorage.setItem(DEVICE_TOKEN_KEY,d.token);
+    if(Object.prototype.hasOwnProperty.call(d,'assignedIdentity')){const assigned=String(d.assignedIdentity||'').trim().replace(/\s+/g,' ');if(assigned)localStorage.setItem(DEVICE_IDENTITY_KEY,assigned);else localStorage.removeItem(DEVICE_IDENTITY_KEY);}
+    if(d.deviceName)localStorage.setItem(DEVICE_NAME_KEY,String(d.deviceName).trim());
+    hideActivation();$('pairCode').value='';
+    await boot();
+    const confirmedIdentity=String(localStorage.getItem(DEVICE_IDENTITY_KEY)||'').trim();
+    if(confirmedIdentity)setStatus(`Téléphone associé à ${confirmedIdentity}.`,'good');
+    else setStatus('Téléphone autorisé, mais le service n’a pas confirmé d’identité attribuée. Vérifie l’appairage depuis le logiciel principal avant toute prise en charge nominative.','warn');
+  }catch(e){$('activationMsg').textContent=e.message==='SCANNER_NOT_ACTIVATED'?'Autorisation nécessaire.':String(e.message||e);}
   finally{$('activateBtn').disabled=false;}
 }
 async function showSessionLogin(message){
@@ -1489,26 +1514,38 @@ function showMovementForm(){
   if(auth&&!isAdmin){setStatus('Une session agent ne permet pas d’ouvrir une prise en charge depuis les fonctions d’administration.','bad');return;}
   if(!state.sealData||String(state.sealData.status||'').toUpperCase()!=='EN STOCK'){setStatus('Seul un scellé actuellement en stock peut être pris en charge.','bad');return;}
   const linkedIdentity=String(localStorage.getItem(DEVICE_IDENTITY_KEY)||'').trim();
-  const identityHtml=isAdmin?`<div class="move-identity"><span>Pris en charge par</span><strong>${esc(session.name)}${session.grade?' • '+esc(session.grade):''}</strong><small>Identité issue de la session administrateur authentifiée.</small></div>`:linkedIdentity?`<div class="move-identity linked"><span>PRISE EN CHARGE ATTRIBUÉE À</span><strong>${esc(linkedIdentity)}</strong><small>Identité associée côté serveur à cet appareil par l’administrateur. Elle ne peut pas être modifiée sur cet écran.</small></div>`:`<label for="movementAgentName">Nom et prénom de la personne qui récupère le scellé *</label><input id="movementAgentName" maxlength="120" autocomplete="name" required placeholder="Ex. GND Prénom NOM"><p class="move-note">Ce téléphone utilise un ancien appairage sans identité liée. Pour une identité automatique, demande à l’administrateur de créer un nouvel appairage pour cet agent.</p>`;
+  const identityHtml=linkedIdentity?`<div class="move-identity linked"><span>PRISE EN CHARGE ATTRIBUÉE À</span><strong>${esc(linkedIdentity)}</strong><small>Identité attribuée à ce téléphone par le code d’activation. Cette identité de poste est prioritaire et ne peut pas être modifiée ici.</small></div>`:isAdmin?`<div class="move-identity"><span>Pris en charge par</span><strong>${esc(session.name)}${session.grade?' • '+esc(session.grade):''}</strong><small>Identité issue de la session administrateur authentifiée.</small></div>`:`<label for="movementAgentName">Nom et prénom de la personne qui récupère le scellé *</label><input id="movementAgentName" maxlength="120" autocomplete="name" required placeholder="Ex. GND Prénom NOM"><p class="move-note">Ce téléphone n’a pas d’identité liée confirmée. Demande à un administrateur de créer un nouveau code d’activation attribué à cet agent, puis utilise « Réassocier ».</p>`;
   form.innerHTML=`<div class="move-form"><div class="move-step"><span class="step-index">PRISE EN CHARGE</span><b>Confirmer la sortie du scellé</b><p class="move-note">La prise en charge change le statut du scellé en « EN MOUVEMENT ».</p></div>${identityHtml}<label for="movementDestination">Destination *</label><input id="movementDestination" maxlength="500" required placeholder="Ex. tribunal, laboratoire, autre service…"><label for="movementMotif">Précision / motif (facultatif)</label><textarea id="movementMotif" maxlength="500" placeholder="Informations utiles pour la traçabilité…"></textarea><div id="movementError" class="session-login-error" role="alert"></div><div class="actions"><button id="submitMovementButton" class="btn primary" type="button">Confirmer la prise en charge</button><button id="cancelMovementButton" class="btn" type="button">Annuler</button></div></div>`;
   $('submitMovementButton').onclick=submitScannerMovement;$('cancelMovementButton').onclick=()=>{form.innerHTML='';};if(!isAdmin)$('movementAgentName')?.focus();else $('movementDestination')?.focus();
 }
 
 async function submitScannerMovement(){
   if(state.busy)return;
-  const auth=activeScannerSession(),session=auth?.session,isAdmin=!!auth?.session?.isAdmin,linkedIdentity=String(localStorage.getItem(DEVICE_IDENTITY_KEY)||'').trim(),token=String(state.token||''),declaredName=String($('movementAgentName')?.value||'').trim().replace(/\s+/g,' '),investigatorName=isAdmin?String(session?.name||'').trim():(linkedIdentity||declaredName),destination=String($('movementDestination')?.value||'').trim(),motif=String($('movementMotif')?.value||'').trim(),button=$('submitMovementButton'),err=$('movementError');
+  const auth=activeScannerSession(),session=auth?.session,isAdmin=!!auth?.session?.isAdmin,linkedIdentity=String(localStorage.getItem(DEVICE_IDENTITY_KEY)||'').trim(),token=String(state.token||''),declaredName=String($('movementAgentName')?.value||'').trim().replace(/\s+/g,' '),investigatorName=linkedIdentity||(isAdmin?String(session?.name||'').trim():declaredName),destination=String($('movementDestination')?.value||'').trim(),motif=String($('movementMotif')?.value||'').trim(),button=$('submitMovementButton'),err=$('movementError');
   const fail=message=>{if(err){err.textContent=String(message||'Opération refusée.');err.classList.add('show');}};
   if(auth&&!isAdmin){fail('La prise en charge sans connexion est le seul mode agent. Ferme et rouvre la fiche en mode terrain.');return;}
   if(investigatorName.length<3){fail(linkedIdentity?'L’identité liée à ce téléphone est invalide. Demande un nouvel appairage à un administrateur.':'Indique le nom et le prénom de la personne qui récupère le scellé.');$('movementAgentName')?.focus();return;}
   if(!destination){fail('La destination est obligatoire.');$('movementDestination')?.focus();return;}
   if(String(state.sealData?.status||'').toUpperCase()!=='EN STOCK'){fail('Ce scellé n’est plus en stock. Recharge sa fiche avant de continuer.');return;}
-  const identityLabel=isAdmin?'session administrateur authentifiée':linkedIdentity?'identité liée côté serveur à ce téléphone':'identité déclarée sans connexion nominative';
+  const identityLabel=linkedIdentity?'identité attribuée à ce téléphone par le code d’activation':isAdmin?'session administrateur authentifiée':'identité déclarée sans connexion nominative';
   if(!confirm(`Confirmer la prise en charge du scellé N° ${state.sealData?.entry||'—'} ?\n\nPris en charge par : ${investigatorName}\nDestination : ${destination}\nIdentité : ${identityLabel}\n\nLe scellé passera EN MOUVEMENT.`))return;
   state.busy=true;if(button){button.disabled=true;button.textContent='Enregistrement…';}
   try{
-    const payload={scan:token,destination,investigatorName,motif};if(isAdmin&&auth?.token&&session?.id){payload.authToken=auth.token;payload.sessionId=String(session.id);}
+    const payload={scan:token,destination,investigatorName,motif};
+    // If this phone has an assigned identity, omit the admin session fields so the server records the identity attached to the device token.
+    if(!linkedIdentity&&isAdmin&&auth?.token&&session?.id){payload.authToken=auth.token;payload.sessionId=String(session.id);}
     const out=await apiPost('movement-start',payload,18000);if(!out?.ok)throw Object.assign(new Error(out?.message||'Le mouvement a été refusé.'),{code:out?.code||'MOVEMENT_REFUSED'});
-    beep();vibrate([70,35,70]);state.busy=false;state.sealData=null;await lookupToken(token);setStatus(`Prise en charge enregistrée pour ${out.retrievedBy||investigatorName}.`,'good');
+    beep();vibrate([70,35,70]);state.busy=false;state.sealData=null;
+    const successMessage=`Prise en charge enregistrée pour ${out.retrievedBy||investigatorName}.`;
+    // A confirmed movement returns directly to the live scanner; do not look up the same QR again.
+    try{
+      const movementForm=$('movementForm');if(movementForm)movementForm.replaceChildren();
+      sealSheetReturnView='scan';activateAppView('scan');
+      await resumeScanner();
+      setStatus(`${successMessage} Le scanner est prêt pour le prochain scellé.`,'good');
+    }catch(scanResumeError){
+      setStatus(`${successMessage} Le scellé est bien enregistré, mais le scanner n’a pas redémarré : ${String(scanResumeError?.message||scanResumeError||'réactive la caméra')}`,'warn');
+    }
   }catch(e){state.busy=false;if(button){button.disabled=false;button.textContent='Confirmer la prise en charge';}if(['AUTH_REQUIRED','AUTH_EXPIRED','AUTH_REVOKED','ADMIN_REQUIRED'].includes(String(e.code||''))){clearSavedScannerSession();await showSessionLogin('La session administrateur est nécessaire pour cette opération.');return;}fail(String(e.message||e||'Échec de la prise en charge.'));}
   finally{updateCameraControls();}
 }
@@ -1991,6 +2028,7 @@ async function setZoom(d){if(!state.track||!state.zoom)return;const z=state.zoom
 $('zoomMinus').onclick=()=>setZoom(-1);$('zoomPlus').onclick=()=>setZoom(1);
 $('activateBtn').onclick=activateScanner;
 $('pairCode').addEventListener('keydown',e=>{if(e.key==='Enter')activateScanner();});
+$('relinkDevice')?.addEventListener('click',requestDeviceReassignment);
 let zxingLoadPromise=null,jsQrLoadPromise=null;
 function safeUrlHost(url){try{return new URL(url,location.href).hostname||'origine du site';}catch(_){return 'source inconnue';}}
 function loadScriptUrl(url,timeoutMs=4500){return new Promise((resolve,reject)=>{
@@ -2045,7 +2083,10 @@ async function boot(){
     // Always refresh the assigned identity from the server-side device record before showing it as current.
     try{
       const deviceInfo=await apiCall('ping',{},7000);
-      if(deviceInfo?.ok){localStorage.setItem(DEVICE_IDENTITY_KEY,String(deviceInfo.assignedIdentity||''));localStorage.setItem(DEVICE_NAME_KEY,String(deviceInfo.deviceName||'Téléphone autorisé'));}
+      if(deviceInfo?.ok){
+        if(Object.prototype.hasOwnProperty.call(deviceInfo,'assignedIdentity')){const serverIdentity=String(deviceInfo.assignedIdentity||'').trim().replace(/\s+/g,' ');if(serverIdentity)localStorage.setItem(DEVICE_IDENTITY_KEY,serverIdentity);else localStorage.removeItem(DEVICE_IDENTITY_KEY);}
+        if(deviceInfo.deviceName)localStorage.setItem(DEVICE_NAME_KEY,String(deviceInfo.deviceName).trim());
+      }
     }catch(deviceError){
       if(deviceError?.code==='SCANNER_NOT_ACTIVATED'||deviceError?.message==='SCANNER_NOT_ACTIVATED'){showActivation();return;}
       setStatus('Connexion de synchronisation indisponible. Le scan peut démarrer, mais les opérations nécessitent le retour du réseau.','warn');
@@ -2107,11 +2148,11 @@ $('navQueue')?.addEventListener('click',()=>{
 $('roleStartScan')?.addEventListener('click',()=>{$('navScan')?.click();});
 $('roleStartGuided')?.addEventListener('click',()=>{$('navCampaigns')?.click();});
 $('diagProbeButton')?.addEventListener('click',async()=>{const auth=activeScannerSession();if(!auth?.session?.isAdmin){setStatus('Diagnostic réservé à l’administration.','bad');return;}const b=$('diagProbeButton');if(b){b.disabled=true;b.textContent='Test en cours…';}try{const result=await apiCall('ping',{},7000);if(!result?.ok)throw new Error(result?.message||'Le service n’a pas confirmé le test.');setStatus('Test du service terminé.','good');}catch(e){scannerTelemetry.connection.service=(typeof navigator!=='undefined'&&!navigator.onLine)?'offline':'error';scannerTelemetry.connection.lastError=String(e?.message||e);updateConnectionBadge();setStatus('Test du service en échec : '+String(e?.message||e),'bad');}finally{if(b){b.disabled=false;b.textContent='Tester le service';}refreshPerformanceDiagnostics();}});
-window.resumeScanner=resumeScanner;try{document.title='SCELLÉS — ESPACES V8.4.3';document.body.dataset.scannerVersion='8.4.3';}catch(_){}updateConnectionBadge();activateAppView('home');boot();
+window.resumeScanner=resumeScanner;try{document.title='SCELLÉS — ESPACES V8.4.4';document.body.dataset.scannerVersion='8.4.4';}catch(_){}updateConnectionBadge();activateAppView('home');boot();
 
 </script>
 <script>
-(function(){const $=id=>document.getElementById(id);const home=$('navHome');home?.addEventListener('click',()=>{activateAppView('home');if(state.readerRunning||hasLiveCamera())stopCamera();setCameraNote('Caméra en pause • ouvre le lecteur quand tu en as besoin.','paused');updateCameraControls();});$('homeStartScanShortcut')?.addEventListener('click',()=>$('navScan')?.click());$('homeQueueShortcut')?.addEventListener('click',()=>{if((state.multiQueue||[]).length)$('navQueue')?.click();else{$('navScan')?.click();setStatus('Scanne un scellé et ajoute-le à ta série depuis sa fiche.','');}});$('homeSeriesAction')?.addEventListener('click',()=>{if((state.multiQueue||[]).length)$('navQueue')?.click();else{$('navScan')?.click();setStatus('Scanne un scellé et ajoute-le à ta série depuis sa fiche.','');}});$('homePhotoShortcut')?.addEventListener('click',()=>{$('navScan')?.click();$('photoRow')?.classList.add('show');$('qrPhoto')?.click();});const updateHomeCounters=()=>{const n=Number($('navQueueCount')?.textContent||0);if($('homeSeriesCount'))$('homeSeriesCount').textContent=String(n);const c=$('connectionLabel')?.textContent||'';if($('homeNetworkState'))$('homeNetworkState').textContent=/hors|indisponible|erreur/i.test(c)?'À vérifier':/connect|disponible|en ligne/i.test(c)?'Connecté au service':'Vérification…';const b=$('homeStatusTitle'),d=$('homeStatusDetail');if(b&&d){b.textContent=n?`${n} scellé(s) dans ta série`:'Poste prêt';d.textContent=n?'Tu peux vérifier ta série avant l’enregistrement.':(/hors|indisponible|erreur/i.test(c)?'Connexion à vérifier. La lecture peut rester possible, les écritures doivent être confirmées.':'Le lecteur s’ouvre uniquement lorsque tu le demandes.');}};const queueCount=$('navQueueCount');if(queueCount)new MutationObserver(updateHomeCounters).observe(queueCount,{subtree:true,childList:true,characterData:true});const connectionLabel=$('connectionLabel');if(connectionLabel)new MutationObserver(updateHomeCounters).observe(connectionLabel,{subtree:true,childList:true,characterData:true});updateHomeCounters();const syncStatusMirror=()=>{const a=$('status'),b=$('workflowStatusText');if(a&&b)a.classList.toggle('duplicate-status',a.textContent.trim()!==''&&a.textContent.trim()===b.textContent.trim());};['status','workflowStatusText'].forEach(id=>{const e=$(id);if(e)new MutationObserver(syncStatusMirror).observe(e,{subtree:true,childList:true,characterData:true});});syncStatusMirror();const idLabel=$('homeAgentInfo');const refreshIdentity=()=>{if(!idLabel)return;const ident=localStorage.getItem('referent_scelles_assigned_identity_v1')||'';idLabel.textContent=ident||'Poste autorisé';};refreshIdentity();$('navScan')?.addEventListener('click',()=>setTimeout(()=>{const scanHeading=document.querySelector('#scanView .view-intro h2');if(scanHeading)scanHeading.textContent='Lire un scellé.';},0));})();
+(function(){const $=id=>document.getElementById(id);const home=$('navHome');home?.addEventListener('click',()=>{activateAppView('home');if(state.readerRunning||hasLiveCamera())stopCamera();setCameraNote('Caméra en pause • ouvre le lecteur quand tu en as besoin.','paused');updateCameraControls();});$('homeStartScanShortcut')?.addEventListener('click',()=>$('navScan')?.click());$('homeQueueShortcut')?.addEventListener('click',()=>{if((state.multiQueue||[]).length)$('navQueue')?.click();else{$('navScan')?.click();setStatus('Scanne un scellé et ajoute-le à ta série depuis sa fiche.','');}});$('homeSeriesAction')?.addEventListener('click',()=>{if((state.multiQueue||[]).length)$('navQueue')?.click();else{$('navScan')?.click();setStatus('Scanne un scellé et ajoute-le à ta série depuis sa fiche.','');}});$('homePhotoShortcut')?.addEventListener('click',()=>{$('navScan')?.click();$('photoRow')?.classList.add('show');$('qrPhoto')?.click();});const updateHomeCounters=()=>{const n=Number($('navQueueCount')?.textContent||0);if($('homeSeriesCount'))$('homeSeriesCount').textContent=String(n);const c=$('connectionLabel')?.textContent||'';if($('homeNetworkState'))$('homeNetworkState').textContent=/hors|indisponible|erreur/i.test(c)?'À vérifier':/connect|disponible|en ligne/i.test(c)?'Connecté au service':'Vérification…';const b=$('homeStatusTitle'),d=$('homeStatusDetail');if(b&&d){b.textContent=n?`${n} scellé(s) dans ta série`:'Poste prêt';d.textContent=n?'Tu peux vérifier ta série avant l’enregistrement.':(/hors|indisponible|erreur/i.test(c)?'Connexion à vérifier. La lecture peut rester possible, les écritures doivent être confirmées.':'Le lecteur s’ouvre uniquement lorsque tu le demandes.');}};const queueCount=$('navQueueCount');if(queueCount)new MutationObserver(updateHomeCounters).observe(queueCount,{subtree:true,childList:true,characterData:true});const connectionLabel=$('connectionLabel');if(connectionLabel)new MutationObserver(updateHomeCounters).observe(connectionLabel,{subtree:true,childList:true,characterData:true});updateHomeCounters();const syncStatusMirror=()=>{const a=$('status'),b=$('workflowStatusText');if(a&&b)a.classList.toggle('duplicate-status',a.textContent.trim()!==''&&a.textContent.trim()===b.textContent.trim());};['status','workflowStatusText'].forEach(id=>{const e=$(id);if(e)new MutationObserver(syncStatusMirror).observe(e,{subtree:true,childList:true,characterData:true});});syncStatusMirror();$('navScan')?.addEventListener('click',()=>setTimeout(()=>{const scanHeading=document.querySelector('#scanView .view-intro h2');if(scanHeading)scanHeading.textContent='Lire un scellé.';},0));})();
 </script>
 
 <script>
