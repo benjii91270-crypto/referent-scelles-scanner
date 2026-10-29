@@ -1596,7 +1596,7 @@ function renderSeal(data){
     </section><div class="fiche-operation-stack"><div class="fiche-operation-heading"><span>OPÉRATIONS LIÉES</span><span>${isAdmin?'ESPACE ADMINISTRATEUR':'ESPACE TERRAIN'}</span></div>`;
   if(statusUpper==='EN MOUVEMENT'){
     html+=`<div class="notice warn"><b>Scellé en déplacement</b><div style="margin-top:5px">Pris en charge par : <b>${esc(data.retrievedBy||'—')}</b></div><div>Destination : <b>${esc(data.destination||'Non renseignée')}</b></div><div>Date de sortie : <b>${esc(formatMovementDate(data.dateSortieHeure||data.dateSortie))}</b></div></div>`;
-    if(isAdmin)html+=`<section class="move-panel"><h3>Retour en stock</h3><p class="hintline">Réservé à l’administrateur connecté. Vérifie physiquement la présence du scellé à son emplacement attendu.</p><div id="movementForm"></div><button class="next" id="openReturnForm" type="button">↩ Confirmer le retour en stock</button></section>`;
+    if(isAdmin)html+=`<section class="move-panel" data-operation="return"><h3>Retour en stock</h3><p class="hintline">Action réservée à l’administrateur. Vérifie la présence physique du scellé, son état et son emplacement de rangement.</p><div id="returnForm"></div><button class="next" id="openReturnForm" type="button">↩ Ouvrir le formulaire de retour</button></section>`;
     else html+=`<div class="notice info"><b>Retour réservé à l’administrateur</b><div style="margin-top:4px">L’enquêteur ne peut pas clôturer le déplacement ni réaliser le contrôle physique.</div></div>`;
   }else if(!inStock){
     html+=`<div class="notice bad"><b>Actions bloquées</b><div style="margin-top:4px">Statut enregistré : ${esc(status||'inconnu')}. Le scellé doit être en stock pour démarrer un mouvement ou être contrôlé.</div></div>`;
@@ -1610,7 +1610,7 @@ function renderSeal(data){
     }else{
       html+=`<div class="notice info"><b>Fiche en consultation</b><div style="margin-top:4px">Mode terrain : tu peux consulter cette fiche et prendre en charge un scellé en stock. Les contrôles et les retours sont réservés à l’administration.</div></div>`;
     }
-    html+=`<section class="move-panel"><h3>📦 Prise en charge du scellé</h3><p class="hintline">Action disponible en mode terrain sans connexion nominative. Le nom de la personne et la destination sont obligatoires. Pour un administrateur connecté, l’identité provient de la session.</p><div id="movementForm"></div><button class="next" id="openMovementForm" type="button">📦 Récupérer ce scellé</button></section>`;
+    html+=`<section class="move-panel" data-operation="movement"><h3>📦 Prise en charge du scellé</h3><p class="hintline">Action de sortie distincte du retour en stock. Le statut passera à « EN MOUVEMENT » après confirmation.</p><div id="movementForm"></div><button class="next" id="openMovementForm" type="button">📦 Ouvrir le formulaire de prise en charge</button></section>`;
   }
   if(isAdmin && statusUpper!=='EN STOCK') html+=`<section class="move-panel"><h3>🛠 Panneau administrateur — actions disponibles</h3><p class="hintline">Actions autorisées : corriger les informations descriptives ; valider le retour en stock lorsque le scellé est en mouvement ; effectuer le contrôle physique lorsqu’il est en stock. Les historiques de mouvement ne sont pas réécrits.</p><div class="actions"><button class="btn primary" id="openAdminEdit" type="button">✏️ Modifier les informations</button></div><div id="adminEditForm"></div></section>`;
   html+=renderIndividualAnomalyPanel(data);
@@ -1624,9 +1624,9 @@ function renderSeal(data){
   bindIndividualAnomalyPanelEvents(card);
   card.querySelector('#addToMultiQueue')?.addEventListener('click',addCurrentToMultiQueue);
   card.querySelectorAll('[data-result]').forEach(b=>b.addEventListener('click',()=>submitControl(b.dataset.result,b)));
-  card.querySelector('#openMovementForm')?.addEventListener('click',()=>{activateAppView('recovery');showMovementForm();});
-  card.querySelector('#openReturnForm')?.addEventListener('click',()=>{activateAppView('returns');showReturnForm();});
-  card.querySelector('#openAdminEdit')?.addEventListener('click',()=>{activateAppView('adminFunctions');showAdminEditForm();});card.querySelector('#openAdminClose')?.addEventListener('click',()=>{activateAppView('adminFunctions');showAdminCloseForm(true);});
+  card.querySelector('#openMovementForm')?.addEventListener('click',()=>openSealWorkspace('recovery'))
+  card.querySelector('#openReturnForm')?.addEventListener('click',()=>openSealWorkspace('returns'))
+  card.querySelector('#openAdminEdit')?.addEventListener('click',()=>openSealWorkspace('adminFunctions'));card.querySelector('#openAdminClose')?.addEventListener('click',()=>{dismissSealSheetOnly(true);openDedicatedWindow('adminFunctions');showAdminCloseForm(true);});
   relocateSealActionsToWindows();syncWindowContexts();refreshSealSheetHeader();openSealSheet();
   setStatus(isAdmin?'Scellé reconnu • mode administrateur':`Scellé reconnu • ${statusUpper==='EN STOCK'?'fiche consultable et récupération autorisée':'consultation seule'}`,'good');updateCameraControls();
 }
@@ -1653,9 +1653,10 @@ function relocateSealActionsToWindows(){
   // All task-specific content leaves the reading workspace and gets its own independent screen.
   const anomaly=card.querySelector('.individual-anomaly');relocateNode(anomaly,'anomalyWorkspace');
   card.querySelectorAll('section.move-panel').forEach(panel=>{
+    const operation=String(panel.dataset.operation||'').toLowerCase();
     const title=String(panel.querySelector('h3')?.textContent||'').toLowerCase();
-    if(title.includes('prise en charge'))relocateNode(panel,'recoveryWorkspace');
-    else if(title.includes('retour en stock'))relocateNode(panel,'returnWorkspace');
+    if(operation==='movement'||title.includes('prise en charge'))relocateNode(panel,'recoveryWorkspace');
+    else if(operation==='return'||title.includes('retour en stock'))relocateNode(panel,'returnWorkspace');
     else if(title.includes('panneau administrateur'))relocateNode(panel,'adminFunctionsWorkspace');
   });
   const h=card.querySelector('.control-heading');if(h){const target=$('individualControlWorkspace');if(target){let n=h;while(n&&n!==card){const next=n.nextElementSibling;target.appendChild(n);if(!next||next.id==='addToMultiQueue'||next.id==='guidedScanNotice'||next.id==='cancelSeal'||next.classList?.contains('queue-add-button'))break;n=next;}}}
@@ -1666,6 +1667,7 @@ function requireAdminWindow(target){
   state.pendingAdminPage=target;setStatus('Cette fenêtre est réservée aux administrateurs.','warn');void showSessionLogin('Ouvre une session administrateur pour accéder à cette fonction.');return false;
 }
 function openDedicatedWindow(target){
+  if(target!=='scan'&&$('sealSheetOverlay')?.classList.contains('is-open'))dismissSealSheetOnly(true);
   if(['anomalies','returns','adminFunctions','admin','campaigns'].includes(target)&&!requireAdminWindow(target))return;
   if(!['anomalies','returns','adminFunctions','admin','campaigns'].includes(target))activateAppView(target);
   if(target==='queue')renderMultiQueue();
@@ -1692,17 +1694,40 @@ function formatMovementDate(value){
   if(m)return m[1]+'/'+m[2]+'/'+m[3]+(m[4]?' à '+m[4]+':'+m[5]:'');return raw;
 }
 function showMovementForm(){
-  const auth=activeScannerSession(),session=auth?.session,isAdmin=!!auth?.session?.isAdmin,form=$('movementForm');if(!form)return;
-  if(!state.sealData||String(state.sealData.status||'').toUpperCase()!=='EN STOCK'){setStatus('Seul un scellé actuellement en stock peut être pris en charge.','bad');return;}
+  const auth=activeScannerSession(),session=auth?.session,isAdmin=!!session?.isAdmin,form=$('movementForm');
+  if(!form){setStatus('Le formulaire de prise en charge n’est pas disponible dans cette vue. Ouvre Prise en charge depuis la navigation.','bad');return;}
+  if(!state.sealData||String(state.sealData.status||'').toUpperCase()!=='EN STOCK'){
+    setStatus('Seul un scellé actuellement en stock peut être pris en charge.','bad');return;
+  }
   const linkedIdentity=String(localStorage.getItem(DEVICE_IDENTITY_KEY)||'').trim();
-  const identityHtml=linkedIdentity?`<div class="move-identity linked"><span>PRISE EN CHARGE ATTRIBUÉE À</span><strong>${esc(linkedIdentity)}</strong><small>Identité attribuée à ce téléphone par le code d’activation. Cette identité de poste est prioritaire et ne peut pas être modifiée ici.</small></div>`:isAdmin?`<div class="move-identity"><span>Pris en charge par</span><strong>${esc(session.name)}${session.grade?' • '+esc(session.grade):''}</strong><small>Identité issue de la session administrateur authentifiée.</small></div>`:`<label for="movementAgentName">Nom et prénom de la personne qui récupère le scellé *</label><input id="movementAgentName" maxlength="120" autocomplete="name" required placeholder="Ex. GND Prénom NOM"><p class="move-note">Ce téléphone n’a pas d’identité liée confirmée. Demande à un administrateur de créer un nouveau code d’activation attribué à cet agent, puis utilise « Réassocier ».</p>`;
-  form.innerHTML=`<div class="move-form"><div class="move-step"><span class="step-index">PRISE EN CHARGE</span><b>Confirmer la sortie du scellé</b><p class="move-note">La prise en charge change le statut du scellé en « EN MOUVEMENT ».</p></div>${identityHtml}<label for="movementDestination">Destination *</label><input id="movementDestination" maxlength="500" required placeholder="Ex. tribunal, laboratoire, autre service…"><label for="movementMotif">Précision / motif (facultatif)</label><textarea id="movementMotif" maxlength="500" placeholder="Informations utiles pour la traçabilité…"></textarea><div id="movementError" class="session-login-error" role="alert"></div><div class="actions"><button id="submitMovementButton" class="btn primary" type="button">Confirmer la prise en charge</button><button id="cancelMovementButton" class="btn" type="button">Annuler</button></div></div>`;
-  $('submitMovementButton').onclick=submitScannerMovement;$('cancelMovementButton').onclick=()=>{form.innerHTML='';};if(!isAdmin)$('movementAgentName')?.focus();else $('movementDestination')?.focus();
+  const identityHtml=linkedIdentity
+    ?`<div class="move-identity linked"><span>PRISE EN CHARGE ATTRIBUÉE À</span><strong>${esc(linkedIdentity)}</strong><small>Identité attribuée à ce téléphone par le code d’activation. Cette identité de poste est prioritaire et ne peut pas être modifiée ici.</small></div>`
+    :isAdmin
+      ?`<div class="move-identity"><span>Pris en charge par</span><strong>${esc(session.name)}${session.grade?' • '+esc(session.grade):''}</strong><small>Identité issue de la session administrateur authentifiée.</small></div>`
+      :`<label for="movementAgentName">Nom et prénom de la personne qui récupère le scellé *</label><input id="movementAgentName" maxlength="120" autocomplete="name" required placeholder="Ex. GND Prénom NOM"><p class="move-note">Ce téléphone n’a pas d’identité liée confirmée. Demande à un administrateur de créer un nouveau code d’activation attribué à cet agent, puis utilise « Réassocier ».</p>`;
+  form.innerHTML=`<div class="move-form movement-form" data-operation-form="movement">
+    <div class="move-step"><span class="step-index">ACTION 1 · SORTIE</span><b>Prise en charge du scellé</b><p class="move-note">Cette action fait passer le statut de « EN STOCK » à « EN MOUVEMENT ». Elle n’enregistre pas un retour en stock.</p></div>
+    ${identityHtml}
+    <label for="movementDestination">Destination *</label><input id="movementDestination" maxlength="500" required placeholder="Ex. tribunal, laboratoire, autre service…">
+    <label for="movementMotif">Précision / motif (facultatif)</label><textarea id="movementMotif" maxlength="500" placeholder="Informations utiles pour la traçabilité…"></textarea>
+    <div id="movementError" class="session-login-error" role="alert"></div>
+    <div class="actions"><button id="submitMovementButton" class="btn primary" type="button">Confirmer la prise en charge</button><button id="cancelMovementButton" class="btn" type="button">Annuler</button></div>
+  </div>`;
+  $('submitMovementButton').onclick=submitScannerMovement;
+  $('cancelMovementButton').onclick=()=>{form.replaceChildren();};
+  if(!isAdmin)$('movementAgentName')?.focus();else $('movementDestination')?.focus();
 }
 
 async function submitScannerMovement(){
   if(state.busy)return;
-  const auth=activeScannerSession(),session=auth?.session,isAdmin=!!auth?.session?.isAdmin,linkedIdentity=String(localStorage.getItem(DEVICE_IDENTITY_KEY)||'').trim(),token=String(state.token||''),declaredName=String($('movementAgentName')?.value||'').trim().replace(/\s+/g,' '),investigatorName=linkedIdentity||(isAdmin?String(session?.name||'').trim():declaredName),destination=String($('movementDestination')?.value||'').trim(),motif=String($('movementMotif')?.value||'').trim(),button=$('submitMovementButton'),err=$('movementError');
+  const auth=activeScannerSession(),session=auth?.session,isAdmin=!!session?.isAdmin;
+  const linkedIdentity=String(localStorage.getItem(DEVICE_IDENTITY_KEY)||'').trim();
+  const token=String(state.token||'');
+  const declaredName=String($('movementAgentName')?.value||'').trim().replace(/\s+/g,' ');
+  const investigatorName=linkedIdentity||(isAdmin?String(session?.name||'').trim():declaredName);
+  const destination=String($('movementDestination')?.value||'').trim();
+  const motif=String($('movementMotif')?.value||'').trim();
+  const button=$('submitMovementButton'),err=$('movementError');
   const fail=message=>{if(err){err.textContent=String(message||'Opération refusée.');err.classList.add('show');}};
   if(investigatorName.length<3){fail(linkedIdentity?'L’identité liée à ce téléphone est invalide. Demande un nouvel appairage à un administrateur.':'Indique le nom et le prénom de la personne qui récupère le scellé.');$('movementAgentName')?.focus();return;}
   if(!destination){fail('La destination est obligatoire.');$('movementDestination')?.focus();return;}
@@ -1711,54 +1736,103 @@ async function submitScannerMovement(){
   if(!confirm(`Confirmer la prise en charge du scellé N° ${state.sealData?.entry||'—'} ?\n\nPris en charge par : ${investigatorName}\nDestination : ${destination}\nIdentité : ${identityLabel}\n\nLe scellé passera EN MOUVEMENT.`))return;
   state.busy=true;if(button){button.disabled=true;button.textContent='Enregistrement…';}
   try{
-    const signature=JSON.stringify([token,destination,motif,investigatorName,linkedIdentity,isAdmin]);if(button.dataset.requestSignature!==signature){button.dataset.requestSignature=signature;button.dataset.requestId=makeScannerRequestId();}const payload={scan:token,destination,investigatorName,motif,requestId:button.dataset.requestId||makeScannerRequestId()};
-    // If this phone has an assigned identity, omit the admin session fields so the server records the identity attached to the device token.
+    const signature=JSON.stringify([token,destination,motif,investigatorName,linkedIdentity,isAdmin]);
+    if(button.dataset.requestSignature!==signature){button.dataset.requestSignature=signature;button.dataset.requestId=makeScannerRequestId();}
+    const payload={scan:token,destination,investigatorName,motif,requestId:button.dataset.requestId||makeScannerRequestId()};
     if(!linkedIdentity&&isAdmin&&auth?.token&&session?.id){payload.authToken=auth.token;payload.sessionId=String(session.id);}
-    const out=await apiPost('movement-start',payload,18000);if(!out?.ok)throw Object.assign(new Error(out?.message||'Le mouvement a été refusé.'),{code:out?.code||'MOVEMENT_REFUSED'});
-    beep();vibrate([70,35,70]);state.busy=false;state.sealData=null;
-    const successMessage=`Prise en charge enregistrée pour ${out.retrievedBy||investigatorName}.`;
-    // A confirmed movement returns directly to the live scanner; do not look up the same QR again.
-    try{
-      const movementForm=$('movementForm');if(movementForm)movementForm.replaceChildren();
-      sealSheetReturnView='scan';activateAppView('scan');
-      await resumeScanner();
-      setStatus(`${successMessage} Le scanner est prêt pour le prochain scellé.`,'good');
-    }catch(scanResumeError){
-      setStatus(`${successMessage} Le scellé est bien enregistré, mais le scanner n’a pas redémarré : ${String(scanResumeError?.message||scanResumeError||'réactive la caméra')}`,'warn');
+    const out=await apiPost('movement-start',payload,18000);
+    if(!out?.ok)throw Object.assign(new Error(out?.message||'La prise en charge a été refusée.'),{code:out?.code||'MOVEMENT_REFUSED'});
+    beep();vibrate([70,35,70]);state.busy=false;
+    state.sealData=Object.assign({},state.sealData||{},out,{ok:true,status:'EN MOUVEMENT',retrievedBy:out.retrievedBy||investigatorName,destination:out.destination||destination,motif:out.motif||motif});
+    const who=String(state.sealData.retrievedBy||investigatorName),where=String(state.sealData.destination||destination);
+    const context=$('recoveryContext'),workspace=$('recoveryWorkspace');
+    $('recoveryEmpty')?.classList.add('hidden');
+    if(context){context.innerHTML=makeV8ContextMarkup(state.sealData);context.classList.remove('hidden');}
+    if(workspace){
+      workspace.innerHTML=`<section class="v8-action-result movement-result" role="status" aria-live="polite"><span class="v8-action-result-icon" aria-hidden="true">↗</span><span class="v8-action-result-kicker">ACTION TERMINÉE · SORTIE</span><h3>Prise en charge enregistrée</h3><p>Le scellé <strong>N° ${esc(state.sealData.entry||'—')} · ${esc(state.sealData.scelle||'Scellé')}</strong> est maintenant en mouvement.</p><dl class="v8-action-result-details"><div><dt>Pris en charge par</dt><dd>${esc(who)}</dd></div><div><dt>Destination</dt><dd>${esc(where)}</dd></div>${motif?`<div><dt>Précision</dt><dd>${esc(motif)}</dd></div>`:''}</dl><button id="movementNextScan" class="v8-button-primary" type="button">Scanner le scellé suivant <span>→</span></button></section>`;
+      $('movementNextScan')?.addEventListener('click',async()=>{
+        state.sealData=null;state.token='';state.busy=false;workspace.replaceChildren();
+        if(context){context.replaceChildren();context.classList.add('hidden');}
+        activateAppView('scan');
+        try{await resumeScanner();setStatus(`Prise en charge enregistrée pour ${who}. Scanner prêt pour le suivant.`,'good');}
+        catch(scanError){setStatus(`Prise en charge enregistrée. Réactive la caméra pour continuer : ${String(scanError?.message||scanError||'caméra indisponible')}`,'warn');}
+      });
     }
-  }catch(e){state.busy=false;if(button){button.disabled=false;button.textContent='Confirmer la prise en charge';}if(['AUTH_REQUIRED','AUTH_EXPIRED','AUTH_REVOKED','ADMIN_REQUIRED'].includes(String(e.code||''))){clearSavedScannerSession();await showSessionLogin('La session administrateur est nécessaire pour cette opération.');return;}fail(String(e.message||e||'Échec de la prise en charge.'));}
-  finally{updateCameraControls();}
+    setStatus(`Prise en charge enregistrée pour ${who}.`,'good');
+  }catch(e){
+    state.busy=false;if(button){button.disabled=false;button.textContent='Confirmer la prise en charge';}
+    if(['AUTH_REQUIRED','AUTH_EXPIRED','AUTH_REVOKED','ADMIN_REQUIRED'].includes(String(e.code||''))){clearSavedScannerSession();await showSessionLogin('La session administrateur est nécessaire pour cette opération.');return;}
+    fail(String(e.message||e||'Échec de la prise en charge.'));
+  }finally{updateCameraControls();}
 }
 
 async function showReturnForm(){
-  const auth=activeScannerSession(),form=$('movementForm');if(!auth||!auth.session?.isAdmin){void showSessionLogin('Le retour en stock exige une session administrateur.');return;}if(!form)return;
-  form.innerHTML=`<div class="move-form"><b>Contrôle du retour en stock</b><p class="move-note">Vérifie l’emplacement proposé. Tu peux choisir une autre zone de rangement avant de confirmer le retour.</p><div id="returnCurrentLocation" class="notice">Emplacement actuel : ${esc([state.sealData?.location,state.sealData?.locationDetail].filter(Boolean).join(' — ')||'Non renseigné')}</div><label for="returnStorageKey">Emplacement où ranger le scellé *</label><select id="returnStorageKey" required><option value="">Chargement des emplacements…</option></select><div id="returnStorageHelp" class="move-note">Le rangement sera enregistré dans le registre avec le retour.</div><label style="display:flex;gap:8px;align-items:flex-start"><input id="confirmedInPlace" type="checkbox" style="width:18px;min-height:18px;flex:none">Je confirme avoir physiquement récupéré le scellé et le déposer à l’emplacement sélectionné.</label><label for="returnState">État constaté</label><select id="returnState"><option value="CONFORME">Conforme</option><option value="DETERIORE">Détérioré</option><option value="INTEGRITE DOUTEUSE">Intégrité douteuse</option></select><label for="returnObservation">Observation (facultative)</label><textarea id="returnObservation" maxlength="1000" placeholder="Précision utile…"></textarea><div id="returnError" class="session-login-error"></div><div class="actions"><button id="submitReturnButton" class="btn primary" type="button" disabled>Confirmer le retour</button><button id="cancelReturnButton" class="btn" type="button">Annuler</button></div></div>`;
-  const select=$('returnStorageKey'),submit=$('submitReturnButton'),oldKey=String(state.sealData?.storageKey||'');
+  const auth=activeScannerSession(),form=$('returnForm');
+  if(!auth||!auth.session?.isAdmin){void showSessionLogin('Le retour en stock exige une session administrateur.');return;}
+  if(!form){setStatus('Le formulaire de retour n’est pas disponible dans cette vue. Ouvre Retour en stock depuis la navigation.','bad');return;}
+  if(!state.sealData||String(state.sealData.status||'').toUpperCase()!=='EN MOUVEMENT'){setStatus('Le retour concerne uniquement un scellé actuellement en mouvement.','bad');return;}
+  form.innerHTML=`<div class="move-form return-form" data-operation-form="return"><div class="move-step"><span class="step-index">ACTION 2 · RETOUR</span><b>Remettre le scellé en stock</b><p class="move-note">Cette action clôt le mouvement ouvert et remet le scellé à l’emplacement choisi. Elle ne crée pas un nouveau mouvement.</p></div><div id="returnCurrentLocation" class="notice">Emplacement actuellement enregistré : ${esc([state.sealData?.location,state.sealData?.locationDetail].filter(Boolean).join(' — ')||'Non renseigné')}</div><label for="returnStorageKey">Nouvel emplacement de rangement *</label><select id="returnStorageKey" required><option value="">Chargement des emplacements…</option></select><div id="returnStorageHelp" class="move-note">L’emplacement sera enregistré dans le registre avec le retour.</div><label for="confirmedInPlace" class="return-confirm-label"><input id="confirmedInPlace" type="checkbox"> <span>Je confirme avoir physiquement récupéré le scellé et le déposer à l’emplacement sélectionné.</span></label><label for="returnState">État constaté au retour</label><select id="returnState"><option value="CONFORME">Conforme</option><option value="DETERIORE">Détérioré</option><option value="INTEGRITE DOUTEUSE">Intégrité douteuse</option></select><label for="returnObservation">Observation sur le retour (facultative)</label><textarea id="returnObservation" maxlength="1000" placeholder="Précision constatée lors du retour…"></textarea><div id="returnError" class="session-login-error" role="alert"></div><div class="actions"><button id="submitReturnButton" class="btn primary" type="button" disabled>Confirmer le retour en stock</button><button id="cancelReturnButton" class="btn" type="button">Annuler</button></div></div>`;
+  const select=$('returnStorageKey'),submit=$('submitReturnButton'),checkbox=$('confirmedInPlace'),oldKey=String(state.sealData?.storageKey||'');
+  const updateReady=()=>{if(submit)submit.disabled=!(select?.value&&checkbox?.checked);};
   try{
-    const result=await apiCall('storage-options',{},10000);if(!result?.ok||!Array.isArray(result.options))throw new Error(result?.message||'Impossible de charger les emplacements.');
-    const options=result.options;select.innerHTML='<option value="">Choisir l’emplacement…</option>'+options.map(o=>`<option value="${esc(o.key)}" ${o.key===oldKey?'selected':''}>${esc(o.label)}</option>`).join('');
+    // storage-options must be dispatched as a JSON API by Apps Script doGet.
+    const result=await apiCall('storage-options',{},10000);
+    if(!result?.ok||!Array.isArray(result.options))throw new Error(result?.message||'Impossible de charger les emplacements.');
+    const options=result.options;
+    select.innerHTML='<option value="">Choisir l’emplacement…</option>'+options.map(o=>`<option value="${esc(o.key)}" ${o.key===oldKey?'selected':''}>${esc(o.label)}</option>`).join('');
     if(!options.length){$('returnStorageHelp').textContent='Aucun emplacement actif n’est configuré. Configure le rangement dans le logiciel principal avant le retour.';}
-    select.addEventListener('change',()=>{if(submit)submit.disabled=!select.value;const picked=options.find(x=>x.key===select.value);$('returnStorageHelp').textContent=picked?`Le scellé sera enregistré à : ${picked.label}`:'Choisis un emplacement actif pour continuer.';});
-    if(submit)submit.disabled=!select.value;
-  }catch(e){select.innerHTML='<option value="">Emplacements indisponibles</option>';const help=$('returnStorageHelp');if(help)help.textContent='Impossible de récupérer le rangement depuis le serveur. Recharge les données ou réessaie.';const err=$('returnError');if(err){err.textContent=String(e?.message||e);err.classList.add('show');}}
-  submit.onclick=submitScannerReturn;$('cancelReturnButton').onclick=()=>{form.innerHTML='';};
+    select.addEventListener('change',()=>{const picked=options.find(x=>x.key===select.value);$('returnStorageHelp').textContent=picked?`Le scellé sera enregistré à : ${picked.label}`:'Choisis un emplacement actif pour continuer.';updateReady();});
+    checkbox.addEventListener('change',updateReady);updateReady();
+  }catch(e){
+    select.innerHTML='<option value="">Emplacements indisponibles</option>';
+    const help=$('returnStorageHelp');if(help)help.textContent='Impossible de charger les emplacements depuis le registre Google. Vérifie la connexion, puis réessaie.';
+    const err=$('returnError');if(err){err.textContent=String(e?.message||e);err.classList.add('show');}
+  }
+  submit.onclick=submitScannerReturn;$('cancelReturnButton').onclick=()=>{form.replaceChildren();};
 }
+
 async function submitScannerReturn(){
-  if(state.busy)return;const auth=activeScannerSession(),confirmedInPlace=!!$('confirmedInPlace')?.checked,returnState=String($('returnState')?.value||'CONFORME'),obs=String($('returnObservation')?.value||'').trim(),token=String(state.token||''),targetStorageKey=String($('returnStorageKey')?.value||'').trim(),button=$('submitReturnButton'),err=$('returnError');
+  if(state.busy)return;
+  const auth=activeScannerSession(),confirmedInPlace=!!$('confirmedInPlace')?.checked;
+  const returnState=String($('returnState')?.value||'CONFORME'),obs=String($('returnObservation')?.value||'').trim();
+  const token=String(state.token||''),targetStorageKey=String($('returnStorageKey')?.value||'').trim();
+  const button=$('submitReturnButton'),err=$('returnError');
   const fail=message=>{if(err){err.textContent=String(message||'Opération refusée.');err.classList.add('show');}};
-  if(!auth?.session?.isAdmin){fail('Connexion administrateur obligatoire.');return;}if(!confirmedInPlace){fail('Confirme que tu as récupéré le scellé physiquement et que tu le déposes à l’emplacement choisi.');return;}if(!targetStorageKey){fail('Choisis l’emplacement où ranger le scellé.');$('returnStorageKey')?.focus();return;}
-  state.busy=true;if(button){button.disabled=true;button.textContent='Vérification…';}
+  if(!auth?.session?.isAdmin){fail('Connexion administrateur obligatoire.');return;}
+  if(!confirmedInPlace){fail('Confirme la présence physique du scellé avant le retour.');return;}
+  if(!targetStorageKey){fail('Choisis l’emplacement de rangement du retour.');$('returnStorageKey')?.focus();return;}
+  if(String(state.sealData?.status||'').toUpperCase()!=='EN MOUVEMENT'){fail('Le scellé n’est plus en mouvement. Recharge sa fiche avant de continuer.');return;}
+  state.busy=true;if(button){button.disabled=true;button.textContent='Enregistrement du retour…';}
   try{
-    const signature=JSON.stringify([token,returnState,obs,confirmedInPlace,targetStorageKey]);if(button&&button.dataset.requestSignature!==signature){button.dataset.requestSignature=signature;button.dataset.requestId=makeScannerRequestId();}
-    const out=await apiPost('movement-return',{scan:token,authToken:auth.token,returnState,confirmedInPlace,obs,targetStorageKey,requestId:button?.dataset.requestId||makeScannerRequestId()},18000);
+    const signature=JSON.stringify([token,returnState,obs,confirmedInPlace,targetStorageKey]);
+    if(button&&button.dataset.requestSignature!==signature){button.dataset.requestSignature=signature;button.dataset.requestId=makeScannerRequestId();}
+    const out=await apiPost('movement-return',{scan:token,authToken:auth.token,sessionId:String(auth.session.id||''),returnState,confirmedInPlace,obs,targetStorageKey,requestId:button?.dataset.requestId||makeScannerRequestId()},18000);
     if(!out?.ok)throw Object.assign(new Error(out?.message||'Le retour a été refusé.'),{code:out?.code||'RETURN_REFUSED'});
-    state.busy=false;beep();vibrate([70,35,70]);state.sealData=Object.assign({},state.sealData||{},out,{ok:true,status:'EN STOCK'});
+    state.busy=false;beep();vibrate([70,35,70]);
+    state.sealData=Object.assign({},state.sealData||{},out,{ok:true,status:'EN STOCK',returnState,returnObs:obs,location:out.location||state.sealData?.location,locationDetail:out.returnStorageLabel||out.locationDetail||state.sealData?.locationDetail});
     const where=String(out.returnStorageLabel||[out.location,out.locationDetail].filter(Boolean).join(' — ')||out.location||'Emplacement enregistré');
-    $('sealCard').innerHTML=`<div class="notice good" role="status"><h3 style="margin:0 0 8px">✓ Retour en stock confirmé</h3><p><b>N° ${esc(out.entry||state.sealData?.entry||'—')} — ${esc(out.scelle||state.sealData?.scelle||'Scellé')}</b></p><p style="margin:8px 0 4px">À ranger à :</p><div style="font-size:17px;font-weight:900">📍 ${esc(where)}</div><p class="move-note">${out.returnStorageLabel&&String(out.returnStorageLabel)!==where?esc(out.returnStorageLabel):''}</p><button id="returnNextScan" class="btn primary" type="button">📷 Scanner le suivant</button></div>`;
-    $('sealCard').classList.remove('hidden');openSealSheet();refreshSealSheetHeader();
-    $('returnNextScan')?.addEventListener('click',async()=>{dismissSealSheetOnly(true);state.sealData=null;state.token='';state.busy=false;activateAppView('scan');await resumeScanner();setStatus(`Retour confirmé • à ranger : ${where} • scanner prêt pour le suivant.`,'good');});
-  }catch(e){state.busy=false;if(button){button.disabled=false;button.textContent='Confirmer le retour';}if(['AUTH_REQUIRED','AUTH_EXPIRED','AUTH_REVOKED'].includes(String(e.code||''))){clearSavedScannerSession();await showSessionLogin('La session a expiré. Reconnecte-toi puis recommence.');return;}fail(String(e.message||e||'Échec du retour.'));}finally{updateCameraControls();}
+    const returnStateLabel=returnState==='CONFORME'?'Conforme':returnState==='DETERIORE'?'Détérioré':'Intégrité douteuse';
+    const context=$('returnsContext'),workspace=$('returnWorkspace');
+    $('returnsEmpty')?.classList.add('hidden');
+    if(context){context.innerHTML=makeV8ContextMarkup(state.sealData);context.classList.remove('hidden');}
+    if(workspace){
+      workspace.innerHTML=`<section class="v8-action-result return-result" role="status" aria-live="polite"><span class="v8-action-result-icon" aria-hidden="true">✓</span><span class="v8-action-result-kicker">ACTION TERMINÉE · RETOUR ADMINISTRATEUR</span><h3>Retour en stock enregistré</h3><p>Le scellé <strong>N° ${esc(state.sealData.entry||'—')} · ${esc(state.sealData.scelle||'Scellé')}</strong> est de nouveau en stock.</p><dl class="v8-action-result-details"><div><dt>Emplacement de retour</dt><dd>${esc(where)}</dd></div><div><dt>État constaté</dt><dd>${esc(returnStateLabel)}</dd></div><div><dt>Validé par</dt><dd>${esc(out.returnedBy||auth.session.name||'Administrateur')}</dd></div>${obs?`<div><dt>Observation</dt><dd>${esc(obs)}</dd></div>`:''}</dl><button id="returnNextScan" class="v8-button-primary" type="button">Scanner le scellé suivant <span>→</span></button></section>`;
+      $('returnNextScan')?.addEventListener('click',async()=>{
+        state.sealData=null;state.token='';state.busy=false;workspace.replaceChildren();
+        if(context){context.replaceChildren();context.classList.add('hidden');}
+        activateAppView('scan');
+        try{await resumeScanner();setStatus(`Retour confirmé : ${where}. Scanner prêt pour le suivant.`,'good');}
+        catch(scanError){setStatus(`Retour enregistré. Réactive la caméra pour continuer : ${String(scanError?.message||scanError||'caméra indisponible')}`,'warn');}
+      });
+    }
+    setStatus(`Retour en stock enregistré : ${where}.`,'good');
+  }catch(e){
+    state.busy=false;if(button){button.disabled=false;button.textContent='Confirmer le retour en stock';}
+    if(['AUTH_REQUIRED','AUTH_EXPIRED','AUTH_REVOKED','SESSION_MISMATCH','ADMIN_REQUIRED'].includes(String(e.code||''))){clearSavedScannerSession();await showSessionLogin('La session administrateur a expiré. Reconnecte-toi puis recommence.');return;}
+    fail(String(e.message||e||'Échec du retour en stock.'));
+  }finally{updateCameraControls();}
 }
+
 async function lookupToken(token){
   token=String(token||'').trim();if(!token||state.busy)return;
   const lookupGeneration=++state.lookupGeneration;
@@ -2303,6 +2377,8 @@ function setQuickNavActive(id){
   document.querySelectorAll('#quickNavigation .task-tab').forEach(btn=>{const active=btn.id===id;btn.classList.toggle('active',active);btn.setAttribute('aria-pressed',String(active));});
 }
 function activateAppView(view){
+  // Une seule surface doit être visible : fermer la fiche modale avant tout changement de page.
+  const overlay=$('sealSheetOverlay');if(overlay?.classList.contains('is-open'))dismissSealSheetOnly(true);
   const allowed=['home','scan','recovery','anomalies','returns','adminFunctions','queue','admin','campaigns'];if(!allowed.includes(view))view='home';
   if(['anomalies','returns','adminFunctions','admin','campaigns'].includes(view)&&!activeScannerSession()?.session?.isAdmin){state.pendingAdminPage=view;void showSessionLogin('Cette fenêtre est réservée aux administrateurs.');return;}
   const main=$('mainContent');if(main)main.dataset.activeView=view;
@@ -2479,6 +2555,49 @@ try{document.title='SCELLÉS ESPACES — V8.5.5';document.body.dataset.scannerVe
 <style id="v855-visible-build-marker">
 .v855-build-chip{display:inline-flex;align-items:center;gap:6px;margin-left:8px;padding:5px 7px;border:1px solid #a8c5e6;border-radius:6px;background:#eaf4ff;color:#194b7a;font-size:10px;font-weight:900;letter-spacing:.04em;white-space:nowrap}
 @media(max-width:600px){.v855-build-chip{font-size:9px;padding:4px 5px;margin-left:3px}}
+
+/* V1.0.4 — one visible surface per action; mobile-safe operation forms. */
+.v8-operation-workspace{min-width:0;width:100%;max-width:100%;}
+.v8-operation-workspace>*{min-width:0;max-width:100%;box-sizing:border-box;}
+.v8-operation-workspace .move-panel{min-width:0;max-width:100%;overflow:hidden;}
+.v8-operation-workspace [data-operation-form]{min-width:0;width:100%;max-width:100%;box-sizing:border-box;}
+.v8-operation-workspace .move-form>*{min-width:0;max-width:100%;box-sizing:border-box;}
+.v8-operation-workspace .move-form label{white-space:normal;overflow-wrap:anywhere;}
+.v8-operation-workspace .move-form input:not([type="checkbox"]),
+.v8-operation-workspace .move-form select,
+.v8-operation-workspace .move-form textarea{display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box;}
+.v8-operation-workspace .return-confirm-label{display:grid;grid-template-columns:22px minmax(0,1fr);align-items:start;gap:10px;white-space:normal;}
+.v8-operation-workspace .return-confirm-label input{width:20px;min-width:20px;min-height:20px;margin:2px 0 0;padding:0;}
+.v8-operation-workspace .return-confirm-label span{min-width:0;overflow-wrap:anywhere;}
+.v8-action-result{box-sizing:border-box;width:100%;min-width:0;max-width:100%;padding:clamp(18px,4vw,30px);border:1px solid var(--line-dark);border-top:4px solid var(--green);background:var(--white);display:grid;gap:12px;overflow:hidden;}
+.v8-action-result.movement-result{border-top-color:var(--turq,var(--green));}
+.v8-action-result.return-result{border-top-color:var(--green);}
+.v8-action-result-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--green-soft);color:var(--green);font-size:24px;font-weight:950;}
+.v8-action-result-kicker{font-size:9px;letter-spacing:.14em;font-weight:950;color:var(--muted);text-transform:uppercase;overflow-wrap:anywhere;}
+.v8-action-result h3{margin:0;font-size:clamp(21px,4vw,30px);line-height:1.15;letter-spacing:-.035em;overflow-wrap:anywhere;}
+.v8-action-result p{margin:0;line-height:1.6;overflow-wrap:anywhere;}
+.v8-action-result-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:5px 0 8px;}
+.v8-action-result-details>div{min-width:0;padding:12px;border:1px solid var(--line);background:var(--paper-soft,var(--paper,#f7f6f1));}
+.v8-action-result-details dt{font-size:10px;font-weight:800;color:var(--muted);margin-bottom:5px;}
+.v8-action-result-details dd{margin:0;font-size:13px;font-weight:850;line-height:1.5;overflow-wrap:anywhere;word-break:normal;}
+.v8-action-result .v8-button-primary{width:100%;justify-content:center;white-space:normal;overflow-wrap:anywhere;}
+#recoveryWorkspace .move-panel[data-operation="movement"] h3:before{content:"ACTION 1 · SORTIE DE SCELLÉ";display:block;font-size:9px;letter-spacing:.14em;color:var(--green);margin-bottom:8px;}
+#returnWorkspace .move-panel[data-operation="return"] h3:before{content:"ACTION 2 · RETOUR ADMINISTRATEUR";display:block;font-size:9px;letter-spacing:.14em;color:var(--green);margin-bottom:8px;}
+@media(max-width:700px){
+  .app-page.is-active{position:relative;z-index:1;min-width:0;max-width:100%;overflow-x:clip;}
+  .v8-module-head,.v8-context-card,.v8-operation-workspace,.v8-operation-workspace .move-panel{min-width:0;max-width:100%;}
+  .v8-context-card{grid-template-columns:minmax(0,1fr)!important;}
+  .v8-context-main{grid-column:auto!important;min-width:0;}
+  .v8-context-main strong,.v8-context-main span,.v8-context-fact strong,.v8-context-fact small{overflow-wrap:anywhere;word-break:normal;}
+  .v8-operation-workspace .move-panel{padding:14px!important;margin:0 0 14px!important;}
+  .v8-operation-workspace .move-form{width:100%;min-width:0;max-width:100%;padding:14px!important;box-sizing:border-box;}
+  .v8-operation-workspace .move-form .actions{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;}
+  .v8-operation-workspace .move-form .actions>.btn{width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere;}
+  .v8-action-result{padding:17px;gap:11px;border-radius:14px;}
+  .v8-action-result-details{grid-template-columns:minmax(0,1fr);}
+  .v8-action-result-details>div{padding:11px;}
+  .v8-action-result p,.v8-action-result dd{overflow-wrap:anywhere;}
+}
 </style>
 <script id="v855-visible-build-marker-script">
 (function(){
@@ -2491,4 +2610,5 @@ try{document.title='SCELLÉS ESPACES — V8.5.5';document.body.dataset.scannerVe
 })();
 </script>
 
+<script id="v104-action-separation-build-marker">window.__RS_SCANNER_V104 = 'V1.0.4 — ACTIONS SÉPARÉES';</script>
 </body></html>
