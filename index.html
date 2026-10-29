@@ -504,8 +504,13 @@ button,.btn,.mobile-more-link,.command-row,.admin-command-card,.workstation-note
 .scanner-diagnostics .diag-health strong{max-width:68%;text-align:right;}
 @media(max-width:700px){.camera-select-wrap{margin-top:9px}.camera-select-wrap select{min-height:48px;font-size:13px}.scanner-diagnostics .diag-health{align-items:flex-start;gap:12px}.scanner-diagnostics .diag-health strong{max-width:64%;}}
 </style>
+<style id="v854VisibleEntryStyles">
+.v854-help-quick{border:1px solid #b6c5d9;background:#fff;color:#183653;border-radius:9px;padding:9px 12px;font-weight:750;font-size:12px;white-space:nowrap;box-shadow:0 2px 7px rgba(12,31,52,.06)}
+.v854-help-quick:hover,.v854-help-quick:focus-visible{background:#eaf2fa;outline:2px solid #597fa6;outline-offset:2px}
+@media(max-width:740px){.v854-help-quick{padding:7px 9px;font-size:11px}}
+</style>
 </head>
-<body data-scanner-version="8.5.0">
+<body data-scanner-version="8.5.4">
 <div id="sealSheetOverlay" class="seal-sheet-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="sealSheetDialogTitle">
   <div class="seal-sheet-dialog" role="document">
     <header class="seal-sheet-header">
@@ -554,7 +559,7 @@ button,.btn,.mobile-more-link,.command-row,.admin-command-card,.workstation-note
         <button id="navAdminFunctions" class="task-tab hidden needs-admin" type="button" aria-pressed="false"><span class="v8-nav-icon">⚙</span><span class="v8-nav-text">Gestion du scellé</span></button>
         <div class="v8-nav-footer"><span class="v8-live-dot"></span><span id="v8NavStatus">Poste vérifié</span><small id="v8NavIdentity">Poste autorisé</small></div>
       </nav>
-      <div class="atelier-tools"><span class="signal-label"><i class="signal-dot"></i><span id="connectionLabel">Connexion en cours</span></span><span id="deviceReadyText" class="status-chip" aria-live="polite">Vérification…</span><div id="userBar" class="user-bar"><span id="userLabel" class="user-label"></span><button id="changeUser" class="identity-action hidden" type="button">Espace admin</button><button id="relinkDevice" class="identity-action hidden" type="button" title="Associer ce téléphone à un autre agent avec un nouveau code d’activation">Réassocier</button></div></div>
+      <div class="atelier-tools"><span class="signal-label"><i class="signal-dot"></i><span id="connectionLabel">Connexion en cours</span></span><span id="deviceReadyText" class="status-chip" aria-live="polite">Vérification…</span><div id="userBar" class="user-bar"><span id="userLabel" class="user-label"></span><button id="changeUser" class="identity-action hidden" type="button">Espace admin</button><button id="relinkDevice" class="identity-action hidden" type="button" title="Associer ce téléphone à un autre agent avec un nouveau code d’activation">Réassocier</button></div><button id="v854HelpQuick" class="v854-help-quick" type="button" aria-label="Ouvrir l’aide terrain">? Aide terrain</button></div>
     </div>
     <div class="atelier-pagebar"><span id="pageCrumb" class="page-crumb">SCELLÉS / OPÉRATIONS</span><h1 id="pageTitle" class="page-title">Espaces de travail</h1></div>
   </header>
@@ -2458,16 +2463,32 @@ function showHelp(){let overlay=document.getElementById('v853HelpOverlay');if(!o
 function closeHelp(){document.getElementById('v853HelpOverlay')?.classList.remove('open');}
 function renderFaq(){const host=document.getElementById('v853HelpResults');if(!host)return;const q=normalize(document.getElementById('v853HelpSearch')?.value||'');const rows=faq.map(item=>({item,score:item.keys.reduce((s,k)=>s+(q.includes(normalize(k))?2:0),0)})).filter(x=>!q||x.score>0).sort((a,b)=>b.score-a.score);host.innerHTML=rows.length?rows.map(x=>`<article class="v853-help-row"><b>${escHelp(x.item.title)}</b><p>${escHelp(x.item.answer)}</p></article>`).join(''):'<div class="v853-help-row">Je ne trouve pas cette rubrique. Essaie « caméra », « mouvement », « retour » ou « activation ».</div>';}
 window.openScannerHelp=showHelp;
+document.getElementById('v854HelpQuick')?.addEventListener('click',()=>showHelp());
 function exportSafeDiagnostic(){
   if(typeof scannerTelemetry==='undefined'){if(typeof setStatus==='function')setStatus('Diagnostic indisponible.','warn');return;}
   const t=scannerTelemetry,last=t.lastLookup||{};
-  const report={schema:'scanner-diagnostic-safe-v1',exportedAt:new Date().toISOString(),scannerVersion:'8.5.3',network:{online:typeof navigator==='undefined'?null:!!navigator.onLine,service:String(t.connection?.service||'unknown'),lastSuccessAt:Number(t.connection?.lastSuccessAt)||null,lastProbeMs:Number(t.connection?.lastProbeMs)||null,lastErrorClass:(()=>{const e=String(t.connection?.lastError||'').toLowerCase();return !e?'none':/timeout|delai|délai|timed out/.test(e)?'timeout':/offline|réseau|reseau|network/.test(e)?'network':/permission|camera|caméra|autorisation/.test(e)?'permission':'other';})()},lookup:last?{totalMs:Number.isFinite(Number(last.totalMs))?Number(last.totalMs):null,lookupMs:Number.isFinite(Number(last.lookupMs))?Number(last.lookupMs):null,renderMs:Number.isFinite(Number(last.renderMs))?Number(last.renderMs):null,anomalyMs:Number.isFinite(Number(last.anomalyMs))?Number(last.anomalyMs):null,decodeToRequestMs:Number.isFinite(Number(last.decodeToRequestMs))?Number(last.decodeToRequestMs):null}:null,requests:(Array.isArray(t.requests)?t.requests:[]).slice(-30).map(x=>({method:String(x.method||''),api:String(x.api||''),ms:Number(x.ms)||0,ok:!!x.ok,at:Number(x.at)||0})),disclaimer:'Aucun contenu QR, identifiant de scellé, nom de personne, numéro de procédure ou corps de requête inclus.'};
+  const report={schema:'scanner-diagnostic-safe-v1',exportedAt:new Date().toISOString(),scannerVersion:'8.5.5',network:{online:typeof navigator==='undefined'?null:!!navigator.onLine,service:String(t.connection?.service||'unknown'),lastSuccessAt:Number(t.connection?.lastSuccessAt)||null,lastProbeMs:Number(t.connection?.lastProbeMs)||null,lastErrorClass:(()=>{const e=String(t.connection?.lastError||'').toLowerCase();return !e?'none':/timeout|delai|délai|timed out/.test(e)?'timeout':/offline|réseau|reseau|network/.test(e)?'network':/permission|camera|caméra|autorisation/.test(e)?'permission':'other';})()},lookup:last?{totalMs:Number.isFinite(Number(last.totalMs))?Number(last.totalMs):null,lookupMs:Number.isFinite(Number(last.lookupMs))?Number(last.lookupMs):null,renderMs:Number.isFinite(Number(last.renderMs))?Number(last.renderMs):null,anomalyMs:Number.isFinite(Number(last.anomalyMs))?Number(last.anomalyMs):null,decodeToRequestMs:Number.isFinite(Number(last.decodeToRequestMs))?Number(last.decodeToRequestMs):null}:null,requests:(Array.isArray(t.requests)?t.requests:[]).slice(-30).map(x=>({method:String(x.method||''),api:String(x.api||''),ms:Number(x.ms)||0,ok:!!x.ok,at:Number(x.at)||0})),disclaimer:'Aucun contenu QR, identifiant de scellé, nom de personne, numéro de procédure ou corps de requête inclus.'};
   const blob=new Blob([JSON.stringify(report,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='diagnostic-scanner-sans-donnees-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);if(typeof setStatus==='function')setStatus('Diagnostic technique expurgé exporté.','good');
 }
 window.exportSafeScannerDiagnostic=exportSafeDiagnostic;
 function ensureHelpButton(){const links=document.querySelector('#mobileMoreMenu .mobile-more-links');if(links&&!links.querySelector('[data-mobile-action="help"]')){const btn=document.createElement('button');btn.type='button';btn.className='mobile-more-link';btn.dataset.mobileAction='help';btn.innerHTML='<span class="mobile-more-icon" aria-hidden="true">?</span><span>Aide terrain</span>';btn.addEventListener('click',()=>{document.getElementById('mobileMoreClose')?.click();showHelp();});links.appendChild(btn);}const probe=document.getElementById('diagProbeButton');if(probe&&probe.parentElement&&!document.getElementById('diagSafeExportButton')){const b=document.createElement('button');b.type='button';b.id='diagSafeExportButton';b.className='v8-button-secondary';b.textContent='Exporter diagnostic expurgé';b.title='Export sans QR, données du scellé, noms ni numéro de procédure';b.addEventListener('click',exportSafeDiagnostic);probe.parentElement.appendChild(b);}}
 ensureHelpButton();const mo=new MutationObserver(()=>ensureHelpButton());mo.observe(document.body,{childList:true,subtree:true});setTimeout(()=>mo.disconnect(),15000);
-try{document.title=String(document.title||'SCELLÉS — ESPACES').replace('V8.5.2','V8.5.3');document.body.dataset.scannerVersion='8.5.3';}catch(_){}
+try{document.title='SCELLÉS ESPACES — V8.5.5';document.body.dataset.scannerVersion='8.5.5';document.documentElement.dataset.scannerVersion='8.5.5';}catch(_){}
 })();
 </script>
+<style id="v855-visible-build-marker">
+.v855-build-chip{display:inline-flex;align-items:center;gap:6px;margin-left:8px;padding:5px 7px;border:1px solid #a8c5e6;border-radius:6px;background:#eaf4ff;color:#194b7a;font-size:10px;font-weight:900;letter-spacing:.04em;white-space:nowrap}
+@media(max-width:600px){.v855-build-chip{font-size:9px;padding:4px 5px;margin-left:3px}}
+</style>
+<script id="v855-visible-build-marker-script">
+(function(){
+ try{
+   document.title='SCELLÉS ESPACES — V8.5.5';document.body.dataset.scannerVersion='8.5.5';document.documentElement.dataset.scannerVersion='8.5.5';
+   const tools=document.querySelector('.atelier-tools');
+   if(tools&&!tools.querySelector('[data-v855-build-chip]')){const chip=document.createElement('span');chip.className='v855-build-chip';chip.dataset.v855BuildChip='1';chip.textContent='SCANNER V8.5.5';chip.setAttribute('aria-label','Version du scanner 8.5.5');tools.appendChild(chip);}
+   const help=document.getElementById('v854HelpQuick');if(help){help.title='Ouvrir l’aide terrain — Scanner V8.5.5';help.setAttribute('aria-label','Ouvrir l’aide terrain — Scanner V8.5.5');}
+ }catch(e){console.warn('Affichage version scanner V8.5.5',e);}
+})();
+</script>
+
 </body></html>
