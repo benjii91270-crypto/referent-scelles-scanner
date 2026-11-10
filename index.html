@@ -9,7 +9,7 @@
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<title>SCELLÉS — ESPACES V8.5.6</title>
+<title>SCELLÉS — ESPACES V8.5.7</title>
 <style>
 :root{--paper:#f4f1e9;--paper-2:#ebe7dd;--white:#fffdf9;--ink:#191b19;--muted:#70746d;--line:#d7d4ca;--line-dark:#aaa99e;--red:#df4c30;--red-dark:#af321e;--orange-soft:#fae0d7;--acid:#d5f35c;--green:#1f785e;--green-soft:#e0efe8;--blue:#244d90;--blue-soft:#e4ebf7;--shadow:0 10px 24px rgba(31,32,27,.06);--safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}html{background:var(--paper);scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.42;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #ed8a71;outline-offset:2px}svg{display:block}a{color:inherit}.hidden{display:none!important}
@@ -533,8 +533,123 @@ button,.btn,.mobile-more-link,.command-row,.admin-command-card,.workstation-note
 .v106-search-status.error{background:#fae0d7;color:#8a2d1a}
 @media(max-width:620px){.v106-action-shell,.v106-search-shell{border-radius:14px;padding:14px}.v106-action-header{display:block}.v106-action-header .v8-module-index{display:none}.v106-action-footer{display:grid;grid-template-columns:1fr}.v106-action-footer .btn{width:100%;white-space:normal}.v106-search-form{grid-template-columns:1fr}.v106-search-result{grid-template-columns:minmax(0,1fr)}.v106-search-result .btn{width:100%}}
 </style>
+
+<style id="v857MobileHeaderLayoutFix">
+/* V8.5.7 — barre supérieure mobile : les commandes ne se chevauchent plus. */
+@media (max-width: 1050px) {
+  .atelier-topline {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    gap: 10px !important;
+    padding-top: 10px !important;
+    padding-bottom: 9px !important;
+    align-items: center !important;
+  }
+  .atelier-brand { grid-column: 1 !important; grid-row: 1 !important; min-width: 0 !important; }
+  .atelier-nav {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+  }
+  .atelier-tools {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+  }
+  .atelier-tools > * { min-width: 0 !important; max-width: 100% !important; }
+  .user-bar.show {
+    display: flex !important;
+    flex: 1 1 100% !important;
+    flex-wrap: wrap !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    gap: 8px !important;
+  }
+  .user-bar.show .user-label {
+    display: flex !important;
+    flex: 1 1 100% !important;
+    min-width: 0 !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+  .identity-action {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 38px !important;
+    line-height: 1.25 !important;
+    white-space: normal !important;
+  }
+  .v854-help-quick {
+    flex: 0 1 auto !important;
+    max-width: 100% !important;
+    min-height: 38px !important;
+    white-space: normal !important;
+  }
+  .v855-build-chip { margin-left: auto !important; }
+}
+@media (max-width: 700px) {
+  .atelier-header { padding-left: 12px !important; padding-right: 12px !important; }
+  .atelier-topline { gap: 8px !important; padding-top: 8px !important; }
+  .atelier-tools {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+  .atelier-tools .signal-label { grid-column: 1; grid-row: 1; align-self: center; }
+  .atelier-tools .status-chip { grid-column: 2; grid-row: 1; justify-self: end; align-self: center; }
+  .atelier-tools .user-bar.show {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+  }
+  .atelier-tools .user-bar.show .user-label { display: none !important; }
+  .atelier-tools .identity-action {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 40px !important;
+    padding: 8px 6px !important;
+    text-align: center !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    font-size: 11px !important;
+  }
+  .atelier-tools .v854-help-quick {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    min-height: 40px !important;
+    text-align: center !important;
+  }
+  .atelier-tools .v855-build-chip {
+    grid-column: 1 / -1 !important;
+    justify-self: start !important;
+    width: max-content !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+}
+</style>
 </head>
-<body data-scanner-version="8.5.6">
+<body data-scanner-version="8.5.7">
 <div id="sealSheetOverlay" class="seal-sheet-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="sealSheetDialogTitle">
   <div class="seal-sheet-dialog" role="document">
     <header class="seal-sheet-header">
@@ -649,7 +764,7 @@ button,.btn,.mobile-more-link,.command-row,.admin-command-card,.workstation-note
     </section>
 <section id="adminView" class="app-page" data-app-view="admin" aria-label="Contrôles physiques"><div class="v8-module-head"><div><span class="v8-overline">ESPACE 06 / ADMINISTRATION</span><h2>Contrôles physiques</h2><p>Contrôle un scellé après lecture ou lance une tournée guidée par emplacement.</p></div><span class="v8-module-index">06</span></div><div id="controlEmpty" class="v8-empty-module"><div class="v8-empty-symbol">✓</div><h3>Contrôle individuel ou tournée guidée</h3><p>Pour un contrôle individuel, lis un scellé. Pour une tournée, charge le plan de campagne ci-dessous.</p><button class="v8-button-primary" type="button" id="controlGoScan">Lire un scellé <span>→</span></button></div><div id="controlContext" class="v8-context-card hidden"></div><div id="individualControlWorkspace" class="v8-operation-workspace"></div><section id="scannerDiagnosticsPanel" class="scanner-diagnostics hidden" aria-label="Diagnostic du scanner"><div class="scanner-diagnostics-head"><div><span class="v8-overline">DIAGNOSTIC / ADMINISTRATION</span><h3>Performances du poste</h3><p>Mesures locales de lecture et de réponse du service. Aucun QR ni contenu de scellé n’est conservé ici.</p></div><button class="v8-button-secondary" id="diagProbeButton" type="button">Tester le service</button></div><div class="scanner-diagnostics-grid"><div class="diag-kpi"><span>Dernière ouverture de fiche</span><strong id="diagLastLookup">Aucune mesure</strong></div><div class="diag-kpi"><span>Médiane des 10 dernières</span><strong id="diagLookupMedian">—</strong></div><div class="diag-kpi"><span>Réponse du registre</span><strong id="diagLastResponse">—</strong></div><div class="diag-kpi"><span>Rendu fiche</span><strong id="diagLastRender">—</strong></div><div class="diag-kpi"><span>Complément anomalies</span><strong id="diagLastAnomaly">Non mesuré</strong></div><div class="diag-kpi"><span>QR reconnu → requête</span><strong id="diagDecodeOverhead">—</strong></div><div class="diag-kpi"><span>État lecteur</span><strong id="diagReader">—</strong></div></div><div class="diag-health"><span>Interprétation de la latence</span><strong id="diagLatencyAdvice">En attente de mesures</strong></div><div class="diag-health"><span>Connexion au service</span><strong id="diagNetwork">Non vérifié</strong></div><div class="diag-error"><span>Dernier état réseau</span><div id="diagLastError">Aucune erreur réseau observée.</div></div><details class="diag-request-details"><summary>Historique des 8 dernières requêtes</summary><pre id="diagRecentRequests">Aucune requête mesurée.</pre></details><p class="diag-disclaimer">Ces mesures sont conservées uniquement en mémoire sur cet appareil et sont remises à zéro au rechargement. Les durées observées dépendent également du réseau et du service Google.</p></section></section>
   </main>
-  <footer class="v7-footer"><span class="footer-logo">SCELLÉS / ESPACES</span><span>Une fonction par espace. Une trace par opération.</span><span class="footer-right">V8.5.6 • Actions groupées séparées et recherche sans QR.</span></footer>
+  <footer class="v7-footer"><span class="footer-logo">SCELLÉS / ESPACES</span><span>Une fonction par espace. Une trace par opération.</span><span class="footer-right">V8.5.7 • Actions groupées séparées et recherche sans QR.</span></footer>
 </div>
 <script>
 
@@ -658,7 +773,7 @@ const SCANNER_API_ENDPOINT='https://referent-scelles-api.benjii91270.workers.dev
 const DEVICE_TOKEN_KEY='referent_scelles_device_token_v2';
 const DEVICE_IDENTITY_KEY='referent_scelles_assigned_identity_v1';
 const DEVICE_NAME_KEY='referent_scelles_device_name_v1';
-const SCANNER_VERSION='8.5.6';
+const SCANNER_VERSION='8.5.7';
 const SERIES_MODE_KEY='referent_scelles_series_mode_v1';
 const SOUND_PREF_KEY='referent_scelles_scanner_sound_v1';
 const VIBRATION_PREF_KEY='referent_scelles_scanner_vibration_v1';
@@ -2556,7 +2671,7 @@ $('roleStartScan')?.addEventListener('click',()=>{$('navScan')?.click();});
 $('roleStartGuided')?.addEventListener('click',()=>{$('navCampaigns')?.click();});
 $('diagProbeButton')?.addEventListener('click',async()=>{const auth=activeScannerSession();if(!auth?.session?.isAdmin){setStatus('Diagnostic réservé à l’administration.','bad');return;}const b=$('diagProbeButton');if(b){b.disabled=true;b.textContent='Test en cours…';}try{const result=await apiCall('ping',{},7000);if(!result?.ok)throw new Error(result?.message||'Le service n’a pas confirmé le test.');setStatus('Test du service terminé.','good');}catch(e){scannerTelemetry.connection.service=(typeof navigator!=='undefined'&&!navigator.onLine)?'offline':'error';scannerTelemetry.connection.lastError=String(e?.message||e);updateConnectionBadge();setStatus('Test du service en échec : '+String(e?.message||e),'bad');}finally{if(b){b.disabled=false;b.textContent='Tester le service';}refreshPerformanceDiagnostics();}});
 window.addEventListener('beforeunload',event=>{const pending=(state.multiQueue||[]).some(item=>!item.movementSaved&&!item.controlSaved);if(pending&&!state.queueMoveBusy){event.preventDefault();event.returnValue='';}});
-window.resumeScanner=resumeScanner;try{document.title='SCELLÉS — ESPACES V8.5.6';document.body.dataset.scannerVersion='8.5.6';}catch(_){}updateQueueDraftControls();updateConnectionBadge();activateAppView('home');boot();
+window.resumeScanner=resumeScanner;try{document.title='SCELLÉS — ESPACES V8.5.7';document.body.dataset.scannerVersion='8.5.7';}catch(_){}updateQueueDraftControls();updateConnectionBadge();activateAppView('home');boot();
 
 </script>
 <script>
@@ -2676,13 +2791,13 @@ document.getElementById('v854HelpQuick')?.addEventListener('click',()=>showHelp(
 function exportSafeDiagnostic(){
   if(typeof scannerTelemetry==='undefined'){if(typeof setStatus==='function')setStatus('Diagnostic indisponible.','warn');return;}
   const t=scannerTelemetry,last=t.lastLookup||{};
-  const report={schema:'scanner-diagnostic-safe-v1',exportedAt:new Date().toISOString(),scannerVersion:'8.5.6',network:{online:typeof navigator==='undefined'?null:!!navigator.onLine,service:String(t.connection?.service||'unknown'),lastSuccessAt:Number(t.connection?.lastSuccessAt)||null,lastProbeMs:Number(t.connection?.lastProbeMs)||null,lastErrorClass:(()=>{const e=String(t.connection?.lastError||'').toLowerCase();return !e?'none':/timeout|delai|délai|timed out/.test(e)?'timeout':/offline|réseau|reseau|network/.test(e)?'network':/permission|camera|caméra|autorisation/.test(e)?'permission':'other';})()},lookup:last?{totalMs:Number.isFinite(Number(last.totalMs))?Number(last.totalMs):null,lookupMs:Number.isFinite(Number(last.lookupMs))?Number(last.lookupMs):null,renderMs:Number.isFinite(Number(last.renderMs))?Number(last.renderMs):null,anomalyMs:Number.isFinite(Number(last.anomalyMs))?Number(last.anomalyMs):null,decodeToRequestMs:Number.isFinite(Number(last.decodeToRequestMs))?Number(last.decodeToRequestMs):null}:null,requests:(Array.isArray(t.requests)?t.requests:[]).slice(-30).map(x=>({method:String(x.method||''),api:String(x.api||''),ms:Number(x.ms)||0,ok:!!x.ok,at:Number(x.at)||0})),disclaimer:'Aucun contenu QR, identifiant de scellé, nom de personne, numéro de procédure ou corps de requête inclus.'};
+  const report={schema:'scanner-diagnostic-safe-v1',exportedAt:new Date().toISOString(),scannerVersion:'8.5.7',network:{online:typeof navigator==='undefined'?null:!!navigator.onLine,service:String(t.connection?.service||'unknown'),lastSuccessAt:Number(t.connection?.lastSuccessAt)||null,lastProbeMs:Number(t.connection?.lastProbeMs)||null,lastErrorClass:(()=>{const e=String(t.connection?.lastError||'').toLowerCase();return !e?'none':/timeout|delai|délai|timed out/.test(e)?'timeout':/offline|réseau|reseau|network/.test(e)?'network':/permission|camera|caméra|autorisation/.test(e)?'permission':'other';})()},lookup:last?{totalMs:Number.isFinite(Number(last.totalMs))?Number(last.totalMs):null,lookupMs:Number.isFinite(Number(last.lookupMs))?Number(last.lookupMs):null,renderMs:Number.isFinite(Number(last.renderMs))?Number(last.renderMs):null,anomalyMs:Number.isFinite(Number(last.anomalyMs))?Number(last.anomalyMs):null,decodeToRequestMs:Number.isFinite(Number(last.decodeToRequestMs))?Number(last.decodeToRequestMs):null}:null,requests:(Array.isArray(t.requests)?t.requests:[]).slice(-30).map(x=>({method:String(x.method||''),api:String(x.api||''),ms:Number(x.ms)||0,ok:!!x.ok,at:Number(x.at)||0})),disclaimer:'Aucun contenu QR, identifiant de scellé, nom de personne, numéro de procédure ou corps de requête inclus.'};
   const blob=new Blob([JSON.stringify(report,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='diagnostic-scanner-sans-donnees-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);if(typeof setStatus==='function')setStatus('Diagnostic technique expurgé exporté.','good');
 }
 window.exportSafeScannerDiagnostic=exportSafeDiagnostic;
 function ensureHelpButton(){const links=document.querySelector('#mobileMoreMenu .mobile-more-links');if(links&&!links.querySelector('[data-mobile-action="help"]')){const btn=document.createElement('button');btn.type='button';btn.className='mobile-more-link';btn.dataset.mobileAction='help';btn.innerHTML='<span class="mobile-more-icon" aria-hidden="true">?</span><span>Aide terrain</span>';btn.addEventListener('click',()=>{document.getElementById('mobileMoreClose')?.click();showHelp();});links.appendChild(btn);}const probe=document.getElementById('diagProbeButton');if(probe&&probe.parentElement&&!document.getElementById('diagSafeExportButton')){const b=document.createElement('button');b.type='button';b.id='diagSafeExportButton';b.className='v8-button-secondary';b.textContent='Exporter diagnostic expurgé';b.title='Export sans QR, données du scellé, noms ni numéro de procédure';b.addEventListener('click',exportSafeDiagnostic);probe.parentElement.appendChild(b);}}
 ensureHelpButton();const mo=new MutationObserver(()=>ensureHelpButton());mo.observe(document.body,{childList:true,subtree:true});setTimeout(()=>mo.disconnect(),15000);
-try{document.title='SCELLÉS ESPACES — V8.5.6';document.body.dataset.scannerVersion='8.5.6';document.documentElement.dataset.scannerVersion='8.5.6';}catch(_){}
+try{document.title='SCELLÉS ESPACES — V8.5.7';document.body.dataset.scannerVersion='8.5.7';document.documentElement.dataset.scannerVersion='8.5.7';}catch(_){}
 })();
 </script>
 <style id="v855-visible-build-marker">
@@ -2735,11 +2850,11 @@ try{document.title='SCELLÉS ESPACES — V8.5.6';document.body.dataset.scannerVe
 <script id="v855-visible-build-marker-script">
 (function(){
  try{
-   document.title='SCELLÉS ESPACES — V8.5.6';document.body.dataset.scannerVersion='8.5.6';document.documentElement.dataset.scannerVersion='8.5.6';
+   document.title='SCELLÉS ESPACES — V8.5.7';document.body.dataset.scannerVersion='8.5.7';document.documentElement.dataset.scannerVersion='8.5.7';
    const tools=document.querySelector('.atelier-tools');
-   if(tools&&!tools.querySelector('[data-v855-build-chip]')){const chip=document.createElement('span');chip.className='v855-build-chip';chip.dataset.v855BuildChip='1';chip.textContent='SCANNER V8.5.6';chip.setAttribute('aria-label','Version du scanner 8.5.6');tools.appendChild(chip);}
-   const help=document.getElementById('v854HelpQuick');if(help){help.title='Ouvrir l’aide terrain — Scanner V8.5.6';help.setAttribute('aria-label','Ouvrir l’aide terrain — Scanner V8.5.6');}
- }catch(e){console.warn('Affichage version scanner V8.5.6',e);}
+   if(tools&&!tools.querySelector('[data-v855-build-chip]')){const chip=document.createElement('span');chip.className='v855-build-chip';chip.dataset.v855BuildChip='1';chip.textContent='SCANNER V8.5.7';chip.setAttribute('aria-label','Version du scanner 8.5.7');tools.appendChild(chip);}
+   const help=document.getElementById('v854HelpQuick');if(help){help.title='Ouvrir l’aide terrain — Scanner V8.5.7';help.setAttribute('aria-label','Ouvrir l’aide terrain — Scanner V8.5.7');}
+ }catch(e){console.warn('Affichage version scanner V8.5.7',e);}
 })();
 </script>
 
